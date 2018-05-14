@@ -7,7 +7,7 @@ class Button extends Component {
         const { text, buttonColor, onPress } = this.props;
         const { buttonStyle, textStyle } = styles;
         return (
-            <TouchableOpacity onPress={onPress} style={[buttonStyle, {backgroundColor: buttonColor}]}>
+            <TouchableOpacity onPress={onPress} style={[buttonStyle, {backgroundColor: buttonColor || '#6495ED'}]}>
                 <Text style={textStyle}>{text}</Text>
             </TouchableOpacity>    
         );
