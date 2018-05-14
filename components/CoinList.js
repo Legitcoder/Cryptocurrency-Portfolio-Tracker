@@ -1,37 +1,36 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, List, FlatList, ListItem, ScrollView } from 'react-native';
+import {View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { List, ListItem } from 'react-native-elements';
 
 
 class CoinList extends Component {
     render() {
         const { coins } = this.props;
-        //if(coins === null) {return <Text style={styles.textStyles}>Loading...</Text>}
         return(
             <ScrollView style={styles.container}>
-                <Text>CoinList</Text>
+                <List>
                     <FlatList
                         data={coins}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({item}) => {
-                            if(!item) {console.log("Nothing")}
-                            return <Text key={item.coinName}style={styles.textStyles}>{item.coinName}</Text>
+                            console.log(item.coinName);
+                            return <ListItem key={item.coinName} title={item.coinName} subtitle={item.symbol} styles={styles.listItemStyles} />
                         }
                         }
                     />  
+                </List>    
             </ScrollView>    
         );
     }
 }
 
 const styles = StyleSheet.create({
-    textStyles: {
-        color: '#fff',
-        fontSize: 30
+    listItemStyles: {
     },
     container: {
         flex: 1,
-        height: 50,
-        alignSelf: 'center',
+        alignSelf: 'stretch',
+        marginTop: -20
     },
   });
 

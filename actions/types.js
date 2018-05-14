@@ -1,0 +1,1 @@
+export const MATCH_SEARCH_ARRAY = 'MATCH_SEARCH_ARRAY';

@@ -16,7 +16,6 @@ console.ignoredYellowBox = ['Remote debugger'];
 var cryptos = _.invert(cryptocurrencies);
 export const coins = Object.entries(cryptos).map(([coinName, symbol]) => ({coinName,symbol}));
 coins.pop();
-console.log(coins);
 
 
 
