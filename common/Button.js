@@ -22,10 +22,13 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     buttonStyle: {
-      alignSelf: 'stretch',
       padding: 20,
       alignItems: 'center',
       justifyContent: 'center',
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      left: 0
     },
   });
 

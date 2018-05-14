@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View, Platform, YellowBox } from 'react-native';
 import { createBottomTabNavigator, StackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -12,8 +12,9 @@ import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 
 console.ignoredYellowBox = ['Remote debugger'];
+//YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 // Invert key value pairs for search
-var coins = _.invert(cryptocurrencies);
+export const coins = _.invert(cryptocurrencies);
 
 
 
@@ -43,7 +44,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
   },
 });

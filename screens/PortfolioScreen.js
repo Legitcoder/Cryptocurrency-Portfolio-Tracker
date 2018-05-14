@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import SearchBar from '../components/SearchBar';
+import { coins } from '../App';
 
 
 class PortfolioScreen extends Component {
     render() {
+        console.log(coins);
         return(
             <View style={styles.container}>
-                <Text>Portfolio Screen</Text>
+                <SearchBar />
             </View>    
         );
     }
@@ -15,6 +18,8 @@ class PortfolioScreen extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      justifyContent: 'flex-start',
+      marginTop: 30
     },
   });
 
