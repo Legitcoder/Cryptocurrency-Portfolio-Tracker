@@ -8,11 +8,12 @@ import { coins } from '../App';
 
 class PortfolioScreen extends Component {
     render() {
-        if(!this.props.searchArray === null) return <ActivityIndicator />
+        const { searchArray } = this.props;
+        if(!searchArray === null) return <ActivityIndicator />
         return(
             <View style={styles.container}>
                 <SearchBar />
-                <CoinList coins={this.props.searchArray} />
+                <CoinList coins={searchArray} />
             </View>    
         );
     }
