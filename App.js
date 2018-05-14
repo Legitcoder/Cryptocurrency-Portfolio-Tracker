@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform, YellowBox } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import { createBottomTabNavigator, StackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -12,10 +12,11 @@ import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 
 console.ignoredYellowBox = ['Remote debugger'];
-//YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
-// Invert key value pairs for search
-export const coins = _.invert(cryptocurrencies);
 
+var cryptos = _.invert(cryptocurrencies);
+export const coins = Object.entries(cryptos).map(([coinName, symbol]) => ({coinName,symbol}));
+coins.pop();
+console.log(coins);
 
 
 

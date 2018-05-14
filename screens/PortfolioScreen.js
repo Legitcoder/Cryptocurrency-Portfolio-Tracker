@@ -6,7 +6,6 @@ import { coins } from '../App';
 
 class PortfolioScreen extends Component {
     render() {
-        console.log(coins);
         return(
             <View style={styles.container}>
                 <SearchBar />

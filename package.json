@@ -4,6 +4,7 @@
   "dependencies": {
     "apollo-boost": "^0.1.6",
     "apollo-client": "^2.3.1",
+    "axios": "^0.18.0",
     "cryptocurrencies": "^3.0.1",
     "expo": "^27.0.1",
     "graphql": "^0.13.2",
