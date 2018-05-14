@@ -1,13 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './store';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
-import query from './queries';
-import { client } from './queries';
 import cryptocurrencies from 'cryptocurrencies';
 import _ from 'lodash';
+
+import Button from './common/Button';
 
 // Invert key value pairs for search
 var coins = _.invert(cryptocurrencies);
@@ -19,7 +17,8 @@ export default class App extends React.Component {
     return (
     <Provider store={store}>   
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+      <Text>SOme Text Here</Text>
+        <Button onPress={() => {console.log("Do something")}} text={'Add Transaction'} buttonColor={'#228B22'} />
       </View>
       </Provider>
     );
