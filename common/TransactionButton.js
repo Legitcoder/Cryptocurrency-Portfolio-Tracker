@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, TextInput, View, Text, StyleSheet } from 'react-native';
 
 
-class Button extends Component {
+class TransactionButton extends Component {
     render() {
         const { text, buttonColor, onPress } = this.props;
         const { buttonStyle, textStyle } = styles;
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Button;
+export default TransactionButton;

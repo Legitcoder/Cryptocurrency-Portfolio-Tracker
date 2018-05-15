@@ -6,7 +6,7 @@ import store from './store';
 import cryptocurrencies from 'cryptocurrencies';
 import _ from 'lodash';
 
-import Button from './common/Button';
+//import TransactionButton from './common/TransactionButton';
 import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
@@ -44,6 +44,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#282E33',
     marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
   },
 });
