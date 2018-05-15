@@ -8,25 +8,22 @@ import { matchSearchArray } from '../actions';
 import CoinList from './CoinList';
 
 
-//Bug: User deletes input and the populated list doesn't disappear. List should dissapear once user completely erases input field
+
 
 class SearchBar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {text: ''};
-    }
 
     findMatches(wordToMatch, coins) {
+        if(wordToMatch === '') return [];
         return coins.filter(coin => {
-            const regex = new RegExp(wordToMatch, 'gi');
+            const regex = new RegExp(`(${wordToMatch})+`, 'gi');
             return coin.coinName.match(regex) || coin.symbol.match(regex);
         })
     }
 
     renderCoins = (text) => {
-        this.setState({text: text});
-        const searchArray = this.findMatches(this.state.text, coins);
-        this.props.matchSearchArray(searchArray)
+        const { matchSearchArray } = this.props;
+        const searchArray = this.findMatches(text, coins);
+        matchSearchArray(searchArray)
     }
     render() {
         return(

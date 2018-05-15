@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import SearchBar from '../components/SearchBar';
-import CoinList from '../components/CoinList'
 import { coins } from '../App';
+import SearchCoinsScreen from './SearchCoinsScreen';
 
 
 class PortfolioScreen extends Component {
     render() {
-        const { searchArray } = this.props;
-        if(!searchArray === null) return <ActivityIndicator />
         return(
             <View style={styles.container}>
-                <SearchBar />
-                <CoinList coins={searchArray} />
+                <SearchCoinsScreen />
             </View>    
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {searchArray: state.search.searchArray}
-}
+
 
 const styles = StyleSheet.create({
     container: {
@@ -32,4 +26,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(mapStateToProps)(PortfolioScreen);
+export default connect(null)(PortfolioScreen);

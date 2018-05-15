@@ -13,7 +13,7 @@ class CoinList extends Component {
                         data={coins}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({item}) => {
-                            console.log(item.coinName);
+                            console.log(item.length);
                             return <ListItem key={item.coinName} title={item.coinName} subtitle={item.symbol} styles={styles.listItemStyles} />
                         }
                         }
