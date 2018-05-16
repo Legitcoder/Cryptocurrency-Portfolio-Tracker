@@ -12,9 +12,9 @@ class CoinList extends Component {
         const height = Dimensions.get('window').height;
         return(
             //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
-            <List styles={styles.container}>
-                <KeyboardAwareScrollView>
-                    <FlatList
+            <List styles={styles.container}  keyboardShouldPersistTaps='handled'>
+                <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+                    <FlatList keyboardShouldPersistTaps='handled'
                         data={coins}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({item}) => {
