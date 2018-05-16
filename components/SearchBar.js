@@ -50,9 +50,10 @@ const styles =  StyleSheet.create({
     },
     searchContainer: {
         width: `${100}%`,
-        height: `${15}%`,
+        height: `${10}%`,
         justifyContent: 'center',
         backgroundColor: '#52575B',
+        marginBottom: -20,
         zIndex: 5,
     },
 })

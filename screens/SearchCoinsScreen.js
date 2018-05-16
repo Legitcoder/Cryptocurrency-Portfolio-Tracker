@@ -10,10 +10,10 @@ class SearchCoinsScreen extends Component {
         const { searchArray } = this.props;
         if(!searchArray) return <ActivityIndicator />;
         return(
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <View style={styles.container}>
                 <SearchBar />
                 <CoinList onPress={(coin) => {console.log(coin); this.props.navigation.navigate('portfolio'); }} coins={searchArray} />
-            </KeyboardAvoidingView>    
+            </View>    
         );
     }
 }
