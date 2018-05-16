@@ -14,7 +14,12 @@ class CoinList extends Component {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({item}) => {
                             console.log(item.length);
-                            return <ListItem key={item.coinName} title={item.coinName} subtitle={item.symbol} styles={styles.listItemStyles} />
+                            return <ListItem 
+                                        key={item.coinName} 
+                                        title={item.coinName} 
+                                        subtitle={item.symbol} 
+                                        styles={styles.listItemStyles} 
+                                    />
                         }
                         }
                     />  

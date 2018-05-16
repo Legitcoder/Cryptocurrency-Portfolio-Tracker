@@ -7,11 +7,16 @@ import PortfolioAddButton from '../common/PortfolioAddButton';
 
 
 class PortfolioScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
     render() {
+        const { navigation } = this.props;
+        console.log(navigation);
         return(
             <View style={styles.container}>
                 {/* <SearchCoinsScreen /> */}
-                <PortfolioAddButton />
+                <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio'); console.log("Being Pressed")}} />
             </View>    
         );
     }
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      //marginTop: 30
+      backgroundColor: '#282E33',
     },
   });
 

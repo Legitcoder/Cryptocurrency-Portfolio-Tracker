@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
-import { createBottomTabNavigator, StackNavigator } from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
 import cryptocurrencies from 'cryptocurrencies';
@@ -10,6 +11,7 @@ import _ from 'lodash';
 import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
+import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
 
 console.ignoredYellowBox = ['Remote debugger'];
 
@@ -24,10 +26,30 @@ coins.pop();
 export default class App extends React.Component {
   render() {
     const MainNavigator = createBottomTabNavigator({
-      portfolio: { screen: PorfolioScreen },
+      portfolio: {
+        screen: createStackNavigator( {
+          portfolio: { screen: PorfolioScreen },
+          addtoporfolio: { screen: AddToPortfolioScreen }
+        },
+        {
+          transitionConfig: () => ({
+            screenInterpolator: sceneProps => {
+              return CardStackStyleInterpolator.forHorizontal(sceneProps);
+            }
+          }),
+        }
+      )
+      },
       watchlist: { screen: WatchlistScreen},
       settings: { screen: SettingsScreen }
-    })
+    },
+      {
+        swipeEnabled: false,
+        tabBarOptions: {
+          labelStyle: { fontSize: 20 }
+        }
+      }
+  )
 
 
 

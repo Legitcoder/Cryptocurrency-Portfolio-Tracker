@@ -3,10 +3,14 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
 class PortfolioAddButton extends Component {
+
     render() {
+        const { onPress } = this.props;    
         return(
         <TouchableOpacity
             style={styles.buttonStyles}
+            onPress={onPress}
+            activeOpacity={1}
         >
             <Text style={styles.buttonTextStyles}>+</Text>
         </TouchableOpacity>  
