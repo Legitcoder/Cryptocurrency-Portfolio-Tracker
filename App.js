@@ -97,6 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#282E33',
-    marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
+    //marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
   },
 });

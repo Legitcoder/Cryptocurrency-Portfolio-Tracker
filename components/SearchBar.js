@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, Platform } from 'react-native';
 import axios from 'axios';
 import { coins } from '../App';
 import { matchSearchArray } from '../actions';
@@ -44,15 +44,16 @@ const styles =  StyleSheet.create({
         backgroundColor: "#fff",
         alignSelf: 'center',
         width: `${60}%`,
-        height: `${60}%`,
+        height:`${60}%`,
         borderRadius: 100,
         padding: 10,
     },
     searchContainer: {
         width: `${100}%`,
-        height: `${10}%`,
+        height: `${15}%`,
         justifyContent: 'center',
         backgroundColor: '#52575B',
+        zIndex: 5,
     },
 })
 

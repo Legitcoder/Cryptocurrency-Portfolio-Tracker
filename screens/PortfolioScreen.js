@@ -16,7 +16,6 @@ class PortfolioScreen extends Component {
     }
     render() {
         const { navigation } = this.props;
-        console.log(navigation);
         return(
             <View style={styles.container}>
                 <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio'); console.log("Being Pressed")}} />

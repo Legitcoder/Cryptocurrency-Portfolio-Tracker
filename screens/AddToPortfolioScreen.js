@@ -8,7 +8,7 @@ class AddToPortfolioScreen extends Component {
     render() {
         return(
             <View style={styles.container}>
-                <SearchCoinsScreen />
+                <SearchCoinsScreen navigation={this.props.navigation} />
             </View>
         );
     }
@@ -19,6 +19,7 @@ class AddToPortfolioScreen extends Component {
      container: {
          flex: 1,
          backgroundColor: '#282E33',
+         justifyContent: 'flex-start'
      }
  })
 

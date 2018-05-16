@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform, Dimensions } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import CoinList from '../components/CoinList'
 
@@ -10,10 +10,10 @@ class SearchCoinsScreen extends Component {
         const { searchArray } = this.props;
         if(!searchArray) return <ActivityIndicator />;
         return(
-            <View style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <SearchBar />
-                <CoinList coins={searchArray} />
-            </View>    
+                <CoinList onPress={(coin) => {console.log(coin); this.props.navigation.navigate('portfolio'); }} coins={searchArray} />
+            </KeyboardAvoidingView>    
         );
     }
 }
@@ -24,8 +24,8 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'flex-start',
+        flex: 1,
+        //backgroundColor: '#fff'
     },
   });
 
