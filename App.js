@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+import CardStackStyleInterpolator from "react-navigation/src/views/StackView/StackViewStyleInterpolator";
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
 import cryptocurrencies from 'cryptocurrencies';
 import _ from 'lodash';
 
-//import TransactionButton from './common/TransactionButton';
 import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
@@ -32,9 +31,24 @@ export default class App extends React.Component {
           addtoporfolio: { screen: AddToPortfolioScreen }
         },
         {
+          //TransitionConfig Changes Stack Navigation from Right to Left in Android Version
+          //to be consistent with IOS Transition
           transitionConfig: () => ({
             screenInterpolator: sceneProps => {
-              return CardStackStyleInterpolator.forHorizontal(sceneProps);
+              const { layout, position, scene } = sceneProps;
+              const { index } = scene;
+  
+              const translateX = position.interpolate({
+                  inputRange: [index - 1, index, index + 1],
+                  outputRange: [layout.initWidth, 0, 0]
+              });
+  
+              const opacity = position.interpolate({
+                  inputRange: [index - 1, index - 0.99, index, index + 0.99, index + 1],
+                  outputRange: [0, 1, 1, 0.3, 0]
+              });
+  
+              return { opacity, transform: [{ translateX }] }
             }
           }),
         }
