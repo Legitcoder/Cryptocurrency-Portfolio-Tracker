@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet } from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 import TransactionButton from '../common/TransactionButton';
 
 class WatchlistScreen extends Component {

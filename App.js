@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import CardStackStyleInterpolator from "react-navigation/src/views/StackView/StackViewStyleInterpolator";
+import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -31,7 +32,7 @@ export default class App extends React.Component {
           addtoporfolio: { screen: AddToPortfolioScreen }
         },
         {
-          //TransitionConfig Changes Stack Navigation from Right to Left in Android Version
+          //TransitionConfig Changes Stack Navigation from Right to Left in Android
           //to be consistent with IOS Transition
           transitionConfig: () => ({
             screenInterpolator: sceneProps => {
@@ -58,9 +59,24 @@ export default class App extends React.Component {
       settings: { screen: SettingsScreen }
     },
       {
+        navigationOptions: ({ navigation }) => ({
+          tabBarIcon: ({tintColor }) => {
+            const { routeName } = navigation.state;
+            let iconName;
+            let size = 30;
+            if (routeName === 'portfolio') {
+              return <Entypo name='wallet' size={size} color={tintColor} />;
+            } else if (routeName === 'settings') {
+              return <MaterialIcons name='settings' size={size} color={tintColor} />;
+            }
+              else if (routeName === 'watchlist') {
+              return <FontAwesome name='binoculars' size={size} color={tintColor} />;
+            }
+          },
+        }),
         swipeEnabled: false,
         tabBarOptions: {
-          labelStyle: { fontSize: 20 }
+          showLabel: false
         }
       }
   )

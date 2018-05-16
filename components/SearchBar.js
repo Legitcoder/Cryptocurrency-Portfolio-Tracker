@@ -28,7 +28,7 @@ class SearchBar extends Component {
     render() {
         return(
                 <View style={styles.searchContainer}>
-                    <TextInput onChangeText={this.renderCoins} style={styles.textInputStyles} placeholder="Search Coin" />
+                    <TextInput underlineColorAndroid='rgba(0,0,0,0)' autoCorrect={false} onChangeText={this.renderCoins} style={styles.textInputStyles} placeholder="Search Coin" />
                 </View>
   
         );
@@ -44,15 +44,15 @@ const styles =  StyleSheet.create({
         backgroundColor: "#fff",
         alignSelf: 'center',
         width: `${60}%`,
-        height: `${50}%`,
-        borderRadius: 10,
-        padding: 10
+        height: `${60}%`,
+        borderRadius: 100,
+        padding: 10,
     },
     searchContainer: {
         width: `${100}%`,
         height: `${10}%`,
         justifyContent: 'center',
-        backgroundColor: '#778899',
+        backgroundColor: '#52575B',
     },
 })
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';
@@ -7,15 +8,17 @@ import PortfolioAddButton from '../common/PortfolioAddButton';
 
 
 class PortfolioScreen extends Component {
-    static navigationOptions = {
-        header: null
+    static navigationOptions =  {
+        header: null,
+        tabBarIcon: ({ tintColor }) => {
+            return <Ionicons name="md-checkmark-circle" size={32} color={tintColor} />
+        }
     }
     render() {
         const { navigation } = this.props;
         console.log(navigation);
         return(
             <View style={styles.container}>
-                {/* <SearchCoinsScreen /> */}
                 <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio'); console.log("Being Pressed")}} />
             </View>    
         );
