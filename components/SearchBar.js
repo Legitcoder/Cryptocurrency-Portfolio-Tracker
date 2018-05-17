@@ -4,6 +4,7 @@ import { View, Text, TextInput, StyleSheet, FlatList, Platform, Keyboard } from 
 import axios from 'axios';
 import { coins } from '../App';
 import { matchSearchArray } from '../actions';
+import { getCoinHash } from '../actions';
 
 import CoinList from './CoinList';
 
@@ -11,7 +12,7 @@ import CoinList from './CoinList';
 
 
 class SearchBar extends Component {
-    
+
     findMatches(wordToMatch, coins) {
         if(wordToMatch === '') return [];
         return coins.filter(coin => {

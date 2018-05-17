@@ -1,96 +1,88 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, FlatList, ScrollView, Platform, Keyboard, Dimensions, Animated } from 'react-native';
+import { connect } from 'react-redux';
+import {View, Text, StyleSheet, FlatList, ScrollView, KeyboardAvoidingView, Platform, Dimensions, ActivityIndicator } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CryptoCompareApi from 'cryptocompare';
+import { BASE_URL } from '../App';
+import { getCoinHash } from '../actions';
 
+//<ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
 
 class CoinList extends Component {
-
-    constructor(props) {
+    constructor(props){
         super(props);
-
-        let LIST_HEIGHT = 100;
-        this.keyboardHeight = new Animated.Value(0);
-        this.listHeight = new Animated.Value(LIST_HEIGHT)
+        this.state = {coinHash : null } 
     }
+
     componentWillMount() {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+        this.props.getCoinHash();
+        const {coinHash} = this.props;
+        console.log(coinHash);
+        if(coinHash) this.setState({coinHash: coinHash});
     }
 
-    componentWillUnmount () {
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
-      }
+    componentWillUpdate() {
+        const {coinHash} = this.props;
+        console.log(coinHash);
+        if(coinHash) this.setState({coinHash: coinHash});
+    }
 
-      _keyboardDidShow = (event) => {
-          console.log(event);
-        Animated.parallel([
-          Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: event.endCoordinates.height,
-          }),
-          Animated.timing(this.listHeight, {
-            duration: event.duration,
-            toValue: event.endCoordinates.screenY - 100,
-          }),
-        ]).start();
-      };
-    
-      _keyboardDidHide = (event) => {
-        Animated.parallel([
-          Animated.timing(this.keyboardHeight, {
-            duration: event.duration,
-            toValue: 0,
-          }),
-          Animated.timing(this.listHeight, {
-            duration: event.duration,
-            toValue: 100,
-          }),
-        ]).start();
-      };
+    renderList() {
+        const { coinHash, coins, onPress } = this.props;
+        if(!this.state.coinHash) {return <Text style={styles.textStyles}>Search for Cryptocurrencies</Text>}
+        else if(this.state.coinHash){
+        return(
+                //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
+                <List style={{flex: 1}}  keyboardShouldPersistTaps='handled'>
 
+                        <FlatList style={{flex: 1}} keyboardShouldPersistTaps='handled'
+                            data={coins}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({item}) => {
+                                return <ListItem 
+                                            onPress={() => onPress(item)}
+                                            avatar={{ uri: this.state.coinHash[item.symbol] ? `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` :
+                                                           `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` }}
+                                            key={item.coinName} 
+                                            title={item.coinName} 
+                                            subtitle={item.symbol} 
+                                            style={styles.listItemStyles} 
+
+                                        />
+                            }
+                            }
+                        /> 
+ 
+                </List>   
+            );
+        }
+    }
 
     render() {
-        const { coins, onPress } = this.props;
-        return(
-            //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
-            <Animated.View style={[styles.listContainer, {height: this.listHeight}]}>
-            <List  keyboardShouldPersistTaps='handled'>
-                {/* <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'> */}
-                    <FlatList keyboardShouldPersistTaps='handled'
-                        data={coins}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({item}) => {
-                            return <ListItem 
-                                        onPress={() => onPress(item)}
-                                        key={item.coinName} 
-                                        title={item.coinName} 
-                                        subtitle={item.symbol} 
-                                        style={styles.listItemStyles} 
-
-                                    />
-                        }
-                        }
-                    />
-                {/* </KeyboardAwareScrollView>     */}
-            </List>
-            </Animated.View>      
-        );
+        
+        return <View>{this.renderList()}</View>
     }
 }
 
+const mapStateToProps = (state) => {
+    return {coinHash: state.coins.coinHash }
+}
+
 const styles = StyleSheet.create({
-    listItemStyles: {
-        backgroundColor: "#fff"
+    textStyles: {
+        flex: 1, 
+        color: '#fff',
+        fontSize: 20
     },
-    container: {
+    listItemStyles: {
         flex: 1
     },
-    listContainer: {
-
-    }
+    container: {
+        flex: 1,
+        justifyContent: 'center'
+    },
   });
 
 
-export default CoinList;
+export default connect(mapStateToProps, { getCoinHash })(CoinList);

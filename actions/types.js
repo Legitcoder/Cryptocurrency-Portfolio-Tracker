@@ -1,1 +1,2 @@
 export const MATCH_SEARCH_ARRAY = 'MATCH_SEARCH_ARRAY';
+export const GET_COIN_HASH = 'GET_COIN_HASH';

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform, Dimensions, Keyboard } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import CoinList from '../components/CoinList'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 class SearchCoinsScreen extends Component {
@@ -12,7 +13,9 @@ class SearchCoinsScreen extends Component {
         return(
             <View style={styles.container}>
                 <SearchBar />
-                <CoinList onPress={(coin) => {console.log(coin); this.props.navigation.navigate('portfolio'); }} coins={searchArray} />
+                <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+                    <CoinList onPress={(coin) => {console.log(coin); this.props.navigation.navigate('portfolio'); }} coins={searchArray} />
+                </KeyboardAwareScrollView>    
             </View>    
         );
     }
@@ -25,7 +28,8 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //backgroundColor: '#fff'
+        justifyContent: 'flex-start',
+        alignItems: 'stretch'
     },
   });
 

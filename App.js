@@ -6,25 +6,27 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import { Provider } from 'react-redux';
 import store from './store';
 import cryptocurrencies from 'cryptocurrencies';
+import cryptoCompareApi from 'cryptocompare';
 import _ from 'lodash';
-
 import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
-
+global.fetch = require('node-fetch');
 console.ignoredYellowBox = ['Remote debugger'];
-
 var cryptos = _.invert(cryptocurrencies);
+
+export const BASE_URL = 'https://www.cryptocompare.com';
 export const coins = Object.entries(cryptos).map(([coinName, symbol]) => ({coinName,symbol}));
 coins.pop();
 
+//store.dispatch(getCoinHash());
 
 
+class App extends React.Component {
 
-
-export default class App extends React.Component {
   render() {
+
     const MainNavigator = createBottomTabNavigator({
       portfolio: {
         screen: createStackNavigator( {
@@ -100,3 +102,5 @@ const styles = StyleSheet.create({
     //marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
   },
 });
+
+export default App;
