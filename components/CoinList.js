@@ -1,19 +1,63 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, FlatList, ScrollView, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
+import {View, Text, StyleSheet, FlatList, ScrollView, Platform, Keyboard, Dimensions, Animated } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 class CoinList extends Component {
-    render() {
 
+    constructor(props) {
+        super(props);
+
+        let LIST_HEIGHT = 100;
+        this.keyboardHeight = new Animated.Value(0);
+        this.listHeight = new Animated.Value(LIST_HEIGHT)
+    }
+    componentWillMount() {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+      }
+
+      _keyboardDidShow = (event) => {
+          console.log(event);
+        Animated.parallel([
+          Animated.timing(this.keyboardHeight, {
+            duration: event.duration,
+            toValue: event.endCoordinates.height,
+          }),
+          Animated.timing(this.listHeight, {
+            duration: event.duration,
+            toValue: event.endCoordinates.screenY - 100,
+          }),
+        ]).start();
+      };
+    
+      _keyboardDidHide = (event) => {
+        Animated.parallel([
+          Animated.timing(this.keyboardHeight, {
+            duration: event.duration,
+            toValue: 0,
+          }),
+          Animated.timing(this.listHeight, {
+            duration: event.duration,
+            toValue: 100,
+          }),
+        ]).start();
+      };
+
+
+    render() {
         const { coins, onPress } = this.props;
-        console.log(height);
-        const height = Dimensions.get('window').height;
         return(
             //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
-            <List styles={styles.container}  keyboardShouldPersistTaps='handled'>
-                <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+            <Animated.View style={[styles.listContainer, {height: this.listHeight}]}>
+            <List  keyboardShouldPersistTaps='handled'>
+                {/* <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'> */}
                     <FlatList keyboardShouldPersistTaps='handled'
                         data={coins}
                         keyExtractor={(item, index) => index.toString()}
@@ -29,17 +73,23 @@ class CoinList extends Component {
                         }
                         }
                     />
-                </KeyboardAwareScrollView>   
-            </List>      
+                {/* </KeyboardAwareScrollView>     */}
+            </List>
+            </Animated.View>      
         );
     }
 }
 
 const styles = StyleSheet.create({
     listItemStyles: {
+        backgroundColor: "#fff"
     },
     container: {
+        flex: 1
     },
+    listContainer: {
+
+    }
   });
 
 
