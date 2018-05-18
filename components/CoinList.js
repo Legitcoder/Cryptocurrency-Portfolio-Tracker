@@ -18,31 +18,30 @@ class CoinList extends Component {
     componentWillMount() {
         this.props.getCoinHash();
         const {coinHash} = this.props;
-        console.log(coinHash);
-        if(coinHash) this.setState({coinHash: coinHash});
+        if(coinHash && this.state.coinHash === null) this.setState({coinHash: coinHash});
     }
 
     componentWillUpdate() {
         const {coinHash} = this.props;
-        console.log(coinHash);
-        if(coinHash) this.setState({coinHash: coinHash});
+        if(coinHash && this.state.coinHash === null) this.setState({coinHash: coinHash});
     }
 
     renderList() {
         const { coinHash, coins, onPress } = this.props;
-        if(!this.state.coinHash) {return <Text style={styles.textStyles}>Search for Cryptocurrencies</Text>}
+        if(!this.state.coinHash) {return <View style={styles.textContainer}><Text style={styles.textStyles}>Search for Cryptocurrencies</Text></View>; }
         else if(this.state.coinHash){
         return(
                 //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
-                <List style={{flex: 1}}  keyboardShouldPersistTaps='handled'>
+                <List  keyboardShouldPersistTaps='handled'>
 
-                        <FlatList style={{flex: 1}} keyboardShouldPersistTaps='handled'
+                        <FlatList keyboardShouldPersistTaps='handled'
                             data={coins}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({item}) => {
                                 return <ListItem 
                                             onPress={() => onPress(item)}
-                                            avatar={{ uri: this.state.coinHash[item.symbol] ? `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` :
+                                            avatar={{ uri: this.state.coinHash[item.symbol] ? 
+                                                           `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` :
                                                            `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` }}
                                             key={item.coinName} 
                                             title={item.coinName} 
@@ -59,9 +58,8 @@ class CoinList extends Component {
         }
     }
 
-    render() {
-        
-        return <View>{this.renderList()}</View>
+    render() {     
+        return <View style={styles.container}>{this.renderList()}</View>
     }
 }
 
@@ -82,6 +80,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center'
     },
+    textContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0
+    }
   });
 
 

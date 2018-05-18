@@ -12,18 +12,14 @@ import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
-global.fetch = require('node-fetch');
 console.ignoredYellowBox = ['Remote debugger'];
 var cryptos = _.invert(cryptocurrencies);
-
 export const BASE_URL = 'https://www.cryptocompare.com';
 export const coins = Object.entries(cryptos).map(([coinName, symbol]) => ({coinName,symbol}));
 coins.pop();
 
-//store.dispatch(getCoinHash());
 
-
-class App extends React.Component {
+export default class App extends React.Component {
 
   render() {
 
@@ -65,7 +61,7 @@ class App extends React.Component {
           tabBarIcon: ({tintColor }) => {
             const { routeName } = navigation.state;
             let iconName;
-            let size = 30;
+            let size = 25;
             if (routeName === 'portfolio') {
               return <Entypo name='wallet' size={size} color={tintColor} />;
             } else if (routeName === 'settings') {
@@ -99,8 +95,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#282E33',
-    //marginTop: Platform.OS === 'android' ? Expo.Constants.statusBarHeight : 0
   },
 });
 
-export default App;
