@@ -4,7 +4,10 @@ import { TouchableOpacity, TextInput, View, Text, StyleSheet } from 'react-nativ
 
 class TransactionButton extends Component {
     render() {
-        const { text, buttonColor, onPress } = this.props;
+        const { text, onPress } = this.props;
+        let { buttonColor } = this.props;
+        //console.log(buttonColor);
+       // buttonColor = buttonColor.substring(0, buttonColor.length-2)
         const { buttonStyle, textStyle } = styles;
         return (
             <TouchableOpacity onPress={onPress} style={[buttonStyle, {backgroundColor: buttonColor || '#6495ED'}]}>
@@ -21,7 +24,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#fff'
     },
-    buttonStyle: {
+    buttonStyle: { 
       padding: 20,
       alignItems: 'center',
       justifyContent: 'center',

@@ -13,6 +13,7 @@ class PortfolioScreen extends Component {
         const { navigation } = this.props;
         return(
             <View style={styles.container}>
+                <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>
                 <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio'); console.log("Being Pressed")}} />
             </View>    
         );
@@ -41,6 +42,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#282E33',
     },
+    welcomeTextStyles: {
+        fontSize: 25,
+        color: '#fff',
+        padding: 20
+    }
   });
 
 

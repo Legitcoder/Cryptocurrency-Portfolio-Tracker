@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 
 
 class TransactionScreen extends Component {
+    static navigationOptions = ({navigation}) => {
+        const { coinName, symbol, ImageUrl } = navigation.state.params.coin;
+        return{
+            headerTitle:  <Image style={{width: 40, height: 40}} source={{ uri: ImageUrl}} />,
+            title: `${coinName} - ${symbol}`,
+            headerStyle: {
+                backgroundColor: '#282E33',
+                borderBottomWidth: 0
+            },
+            headerTintColor: '#fff',
+        };
+    }
 
     constructor(props){
         super(props);
-        this.state = {buttonbackgroundColor: null, activeState: null, buyButtonColor: 'transparent', sellButtonColor: 'transparent' }
+        this.state = {buttonbackgroundColor: null, activeState: "Buy", buyButtonColor: '#00800080', sellButtonColor: 'transparent' }
     }
     renderBuyButton() {
         return(
@@ -23,7 +35,7 @@ class TransactionScreen extends Component {
         return(
             <View style={[styles.buttonContainer]}>
                 <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.sellButtonColor}]} onPress={() => this.setState({sellButtonColor: '#FF000080', buyButtonColor: 'transparent', activeState: 'Sell'})} >
-                    <Text style={[styles.textStyles]} >Sell</Text>
+                    <Text style={[styles.textStyles]}>Sell</Text>
                 </TouchableOpacity>
             </View> 
         );   
@@ -32,7 +44,7 @@ class TransactionScreen extends Component {
     renderHeader() {
         const {coinName, symbol, ImageUrl} = this.props.navigation.state.params.coin;
         return(
-            <View>
+            <View style={styles.headerContainerStyles}>
                 <Text style={styles.headerTextStyles}>{coinName} - {symbol}</Text>
             </View>    
         );
@@ -49,7 +61,7 @@ class TransactionScreen extends Component {
                     {this.renderSellButton()}
                 </View>
                 <View style={styles.formContainer}/>
-                <TransactionButton text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.buyButtonColor != 'transparent' ? this.state.buyButtonColor : this.state.sellButtonColor} />
+                <TransactionButton style={{flex: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
             </View>
         );
     }
@@ -57,14 +69,21 @@ class TransactionScreen extends Component {
 
 
  const styles = StyleSheet.create({
+     headerContainerStyles: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 10
+     },
      buttonContainer: {
          flex: 1,
          justifyContent: 'center',
          alignItems: 'stretch',
-         marginTop: 10,
      },
      headerTextStyles: {
-        color: '#fff'
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold'
      },
      textStyles: {
         alignSelf: 'center',
@@ -85,14 +104,18 @@ class TransactionScreen extends Component {
      container: {
         flex: 1,
         backgroundColor: '#282E33',
+        justifyContent: 'space-between'
      },
      buttonsContainer: {
          flex: 1,
          flexDirection: 'row',
          justifyContent: 'space-around',
+         //backgroundColor: "#fff",
+         marginTop: -30
      },
      formContainer: {
-         flex: 8
+         flex: 6,
+         backgroundColor: '#fff'
      }
  })
 
