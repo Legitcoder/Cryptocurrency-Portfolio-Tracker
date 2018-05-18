@@ -10,6 +10,16 @@ export const matchSearchArray = (searchArray) => dispatch => {
 }
 
 export const getCoinHash = () => dispatch => {
+    cryptoCompareApi.priceFull(['LSK'], ['BTC'], {exchanges: ['Binance']})
+.then(prices => {
+  console.log(prices)
+})
+//Filter out all the exchanges that have LSK in an array and then
+//FIlter out all the trading Pairs of LSK
+    cryptoCompareApi.exchangeList()
+.then(exchangeList => {
+  console.log(exchangeList["BitTrex"]["LSK"])
+})
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COIN_HASH, payload: coinList.Data});

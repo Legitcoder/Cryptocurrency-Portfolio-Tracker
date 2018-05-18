@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
-
+import TransactionForm from '../components/TransactionForm';
 
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
@@ -60,7 +60,7 @@ class TransactionScreen extends Component {
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
-                <View style={styles.formContainer}/>
+                <TransactionForm/>
                 <TransactionButton style={{flex: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
             </View>
         );
@@ -113,10 +113,6 @@ class TransactionScreen extends Component {
          //backgroundColor: "#fff",
          marginTop: -30
      },
-     formContainer: {
-         flex: 6,
-         backgroundColor: '#fff'
-     }
  })
 
 
