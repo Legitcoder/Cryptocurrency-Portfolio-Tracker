@@ -23,7 +23,6 @@ coins.pop();
 export default class App extends React.Component {
 
   render() {
-
     const MainNavigator = createBottomTabNavigator({
       portfolio: {
         screen: createStackNavigator( {
@@ -85,9 +84,9 @@ export default class App extends React.Component {
 
     return (
     <Provider store={store}>   
-      <View style={styles.container}>
+
         <MainNavigator />
-      </View>
+
       </Provider>
     );
   }

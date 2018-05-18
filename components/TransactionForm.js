@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Text, View, StyleSheet } from 'react-native';
-import { Transaction } from 'apollo-cache';
 
 class TransactionForm extends Component {
     render() {

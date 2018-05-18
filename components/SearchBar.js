@@ -72,7 +72,7 @@ const styles =  StyleSheet.create({
         height: `${10}%`,
         justifyContent: 'center',
         backgroundColor: '#35383a',
-        marginBottom: -20,
+        marginBottom: -25,
         zIndex: 5,
     },
 })
