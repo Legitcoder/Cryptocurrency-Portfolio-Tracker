@@ -32,14 +32,16 @@ class CoinList extends Component {
         else if(this.state.coinHash){
         return(
                 //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
-                <List  keyboardShouldPersistTaps='handled'>
+                <List style={styles.listStyles}  keyboardShouldPersistTaps='handled'>
 
                         <FlatList keyboardShouldPersistTaps='handled'
                             data={coins}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({item}) => {
                                 return <ListItem 
-                                            onPress={() => onPress(item)}
+                                            onPress={() => onPress({...item, ImageUrl: `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` 
+                                                                                        || 
+                                                                                        `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` })}
                                             avatar={{ uri: this.state.coinHash[item.symbol] ? 
                                                            `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` :
                                                            `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` }}
@@ -68,13 +70,16 @@ const mapStateToProps = (state) => {
 }
 
 const styles = StyleSheet.create({
+    listStyles: {
+        // flexGrow: 1
+    },
     textStyles: {
         flex: 1, 
         color: '#fff',
         fontSize: 20
     },
     listItemStyles: {
-        flex: 1
+        //flex: 1
     },
     container: {
         flex: 1,

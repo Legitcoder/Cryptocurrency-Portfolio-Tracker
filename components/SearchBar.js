@@ -31,7 +31,7 @@ class SearchBar extends Component {
                 <View style={styles.container}>
                     <View style={styles.searchContainer}>
                         <FontAwesome style={styles.searchIconStyles} name="search" size={15} />
-                        <TextInput underlineColorAndroid='rgba(0,0,0,0)' color="#fff" placeholderTextColor="#fff" autoCorrect={false} onChangeText={this.renderCoins} placeholder="Search Coin">
+                        <TextInput style={styles.textInputStyles} underlineColorAndroid='rgba(0,0,0,0)' placeholderTextColor="#fff" autoCorrect={false} onChangeText={this.renderCoins} placeholder="Search Coin">
                         </TextInput> 
                     </View>    
                     {/* <TouchableOpacity>
@@ -52,6 +52,11 @@ const styles =  StyleSheet.create({
        color: '#fff', 
        alignSelf: 'center',
        marginRight: 5
+    },
+
+    textInputStyles: {
+        flex: 1,
+        color: "#fff"
     },
     searchContainer: {
         flexDirection: 'row',

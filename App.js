@@ -12,6 +12,7 @@ import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
+import TransactionScreen from './screens/TranscationScreen';
 console.ignoredYellowBox = ['Remote debugger'];
 var cryptos = _.invert(cryptocurrencies);
 export const BASE_URL = 'https://www.cryptocompare.com';
@@ -27,7 +28,8 @@ export default class App extends React.Component {
       portfolio: {
         screen: createStackNavigator( {
           portfolio: { screen: PorfolioScreen },
-          addtoporfolio: { screen: AddToPortfolioScreen }
+          addtoporfolio: { screen: AddToPortfolioScreen },
+          transaction: {screen: TransactionScreen}
         },
         {
           //TransitionConfig Changes Stack Navigation from Right to Left in Android

@@ -14,7 +14,7 @@ class SearchCoinsScreen extends Component {
             <View style={styles.container}>
                 <SearchBar />
                 <KeyboardAwareScrollView style={{flex: 1}} keyboardShouldPersistTaps='handled'>
-                    <CoinList onPress={(coin) => {this.props.navigation.navigate('portfolio'); }} coins={searchArray} />
+                    <CoinList onPress={(coin) => {console.log(this.props); this.props.navigation.navigate('transaction'); }} coins={searchArray} />
                 </KeyboardAwareScrollView>    
             </View>    
         );
