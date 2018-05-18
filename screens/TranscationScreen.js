@@ -13,7 +13,7 @@ class TransactionScreen extends Component {
         return(
             <View style={[styles.buttonContainer]}>
                 <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.buyButtonColor}]} onPress={() => this.setState({buyButtonColor: '#00800080', sellButtonColor: 'transparent', activeState: 'Buy'})} >
-                    <Text style={[styles.textStyles]} >Buy</Text>
+                    <Text style={[styles.textStyles]}>Buy</Text>
                 </TouchableOpacity>
             </View> 
         );   
@@ -28,9 +28,22 @@ class TransactionScreen extends Component {
             </View> 
         );   
     }
+
+    renderHeader() {
+        const {coinName, symbol, ImageUrl} = this.props.navigation.state.params.coin;
+        return(
+            <View>
+                <Text style={styles.headerTextStyles}>{coinName} - {symbol}</Text>
+            </View>    
+        );
+    }
+
+
     render() {
+        console.log(this.props.navigation.state.params)
         return(
             <View style={styles.container}>
+                    {this.renderHeader()}
                 <View style={styles.buttonsContainer}>
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
@@ -47,7 +60,11 @@ class TransactionScreen extends Component {
      buttonContainer: {
          flex: 1,
          justifyContent: 'center',
-         alignItems: 'stretch'
+         alignItems: 'stretch',
+         marginTop: 10,
+     },
+     headerTextStyles: {
+        color: '#fff'
      },
      textStyles: {
         alignSelf: 'center',

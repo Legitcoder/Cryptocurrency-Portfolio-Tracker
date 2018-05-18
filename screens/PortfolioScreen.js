@@ -8,12 +8,7 @@ import PortfolioAddButton from '../common/PortfolioAddButton';
 
 
 class PortfolioScreen extends Component {
-    static navigationOptions =  {
-        header: null,
-        tabBarIcon: ({ tintColor }) => {
-            return <Ionicons name="md-checkmark-circle" size={32} color={tintColor} />
-        }
-    }
+
     render() {
         const { navigation } = this.props;
         return(
