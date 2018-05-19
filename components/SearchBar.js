@@ -11,19 +11,18 @@ import CoinList from './CoinList';
 
 
 class SearchBar extends Component {
-
     constructor(props) {
         super(props);
         this.state = {coins: null}
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.props.getCoins();
         const {coins} = this.props;
         if(coins && this.state.coins === null) this.setState({coins: coins});
     }
 
-    componentWillUpdate() {
+    componentDidUpdate() {
         const {coins} = this.props;
         if(coins && this.state.coins === null) this.setState({coins: coins});
     }
@@ -39,7 +38,6 @@ class SearchBar extends Component {
     renderCoins = (text) => {
         const { matchSearchArray } = this.props;
         const searchArray = this.findMatches(text, this.state.coins);
-        console.log(searchArray)
         matchSearchArray(searchArray)
     }
     render() {

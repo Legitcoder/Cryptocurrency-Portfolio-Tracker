@@ -24,7 +24,7 @@ class TransactionScreen extends Component {
     renderBuyButton() {
         return(
             <View style={[styles.buttonContainer]}>
-                <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.buyButtonColor}]} onPress={() => this.setState({buyButtonColor: '#00800080', sellButtonColor: 'transparent', activeState: 'Buy'})} >
+                <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.buyButtonColor}]} onPress={() => this.setState({buyButtonColor: '#00800060', sellButtonColor: 'transparent', activeState: 'Buy'})} >
                     <Text style={[styles.textStyles]}>Buy</Text>
                 </TouchableOpacity>
             </View> 
@@ -34,7 +34,7 @@ class TransactionScreen extends Component {
     renderSellButton() {
         return(
             <View style={[styles.buttonContainer]}>
-                <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.sellButtonColor}]} onPress={() => this.setState({sellButtonColor: '#FF000080', buyButtonColor: 'transparent', activeState: 'Sell'})} >
+                <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: this.state.sellButtonColor}]} onPress={() => this.setState({sellButtonColor: '#FF000060', buyButtonColor: 'transparent', activeState: 'Sell'})} >
                     <Text style={[styles.textStyles]}>Sell</Text>
                 </TouchableOpacity>
             </View> 
@@ -87,7 +87,7 @@ class TransactionScreen extends Component {
      textStyles: {
         alignSelf: 'center',
         opacity: 1,
-        color: 'lightgray',
+        color: '#fff',
         fontWeight: 'bold'
      },
 
@@ -97,7 +97,7 @@ class TransactionScreen extends Component {
         padding: 20,
         borderRadius: 10,
         width: '60%',
-        borderColor: 'lightgray',
+        borderColor: '#fff',
         borderWidth: 2
      },
      container: {
