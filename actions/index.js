@@ -2,7 +2,7 @@ import axios from 'axios';
 import cryptoCompareApi from 'cryptocompare';
 import {
     MATCH_SEARCH_ARRAY, 
-    GET_COIN_HASH
+    GET_COINS
 } from './types';
 
 
@@ -18,7 +18,7 @@ export const matchSearchArray = (searchArray) => dispatch => {
     dispatch({ type: MATCH_SEARCH_ARRAY, payload: searchArray })
 }
 
-export const getCoinHash = () => dispatch => {
+export const getCoins = () => dispatch => {
 //     cryptoCompareApi.priceFull(['LSK'], ['BTC'], {exchanges: ['Binance']})
 // .then(prices => {
 //   console.log(prices)
@@ -31,7 +31,6 @@ export const getCoinHash = () => dispatch => {
 // })
     cryptoCompareApi.coinList()
     .then(coinList => {
-        filterCoins(coinList.Data);
-        dispatch({ type: GET_COIN_HASH, payload: coinList.Data});
+        dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
     })
 }

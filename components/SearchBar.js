@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { View, Text, TextInput, StyleSheet, FlatList, Platform, Keyboard, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import { coins } from '../App';
-import { matchSearchArray } from '../actions';
-import { getCoinHash } from '../actions';
+
+import { matchSearchArray, getCoins } from '../actions';
 import CoinList from './CoinList';
 
 
@@ -13,17 +12,34 @@ import CoinList from './CoinList';
 
 class SearchBar extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {coins: null}
+    }
+
+    componentWillMount(){
+        this.props.getCoins();
+        const {coins} = this.props;
+        if(coins && this.state.coins === null) this.setState({coins: coins});
+    }
+
+    componentWillUpdate() {
+        const {coins} = this.props;
+        if(coins && this.state.coins === null) this.setState({coins: coins});
+    }
+
     findMatches(wordToMatch, coins) {
-        if(wordToMatch === '') return [];
+        if(wordToMatch === '' || coins === null) return [];
         return coins.filter(coin => {
             const regex = new RegExp(`(${wordToMatch})+`, 'gi');
-            return coin.coinName.match(regex) || coin.symbol.match(regex);
+            return coin.CoinName.match(regex) || coin.Symbol.match(regex);
         })
     }
 
     renderCoins = (text) => {
         const { matchSearchArray } = this.props;
-        const searchArray = this.findMatches(text, coins);
+        const searchArray = this.findMatches(text, this.state.coins);
+        console.log(searchArray)
         matchSearchArray(searchArray)
     }
     render() {
@@ -44,7 +60,10 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {searchArray: state.search.searchArray}
+    return {
+        searchArray: state.search.searchArray,
+        coins: state.coins.coins
+    }
 }
 
 const styles =  StyleSheet.create({
@@ -77,4 +96,4 @@ const styles =  StyleSheet.create({
     },
 })
 
-export default connect(mapStateToProps, { matchSearchArray } )(SearchBar);
+export default connect(mapStateToProps, { matchSearchArray, getCoins } )(SearchBar);

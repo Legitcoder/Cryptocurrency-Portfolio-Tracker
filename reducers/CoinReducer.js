@@ -1,13 +1,13 @@
 import {
-    GET_COIN_HASH
+    GET_COINS
 } from '../actions/types';
 
 const INITIAL_STATE = {}
 
 export default( state = INITIAL_STATE, action ) => {
     switch(action.type) {
-        case GET_COIN_HASH:
-            return {...INITIAL_STATE, coinHash: action.payload}
+        case GET_COINS:
+            return {...INITIAL_STATE, coins: action.payload}
         default: 
             return INITIAL_STATE
     }

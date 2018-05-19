@@ -5,7 +5,7 @@ import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './store';
-import cryptocurrencies from 'cryptocurrencies';
+
 import cryptoCompareApi from 'cryptocompare';
 import _ from 'lodash';
 import PorfolioScreen from './screens/PortfolioScreen';
@@ -14,10 +14,7 @@ import WatchlistScreen from './screens/WatchlistScreen';
 import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
 import TransactionScreen from './screens/TranscationScreen';
 console.ignoredYellowBox = ['Remote debugger'];
-var cryptos = _.invert(cryptocurrencies);
 export const BASE_URL = 'https://www.cryptocompare.com';
-export const coins = Object.entries(cryptos).map(([coinName, symbol]) => ({coinName,symbol}));
-coins.pop();
 
 
 export default class App extends React.Component {

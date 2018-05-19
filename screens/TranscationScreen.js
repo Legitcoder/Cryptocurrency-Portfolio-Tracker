@@ -5,13 +5,13 @@ import TransactionForm from '../components/TransactionForm';
 
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        const { coinName, symbol, ImageUrl } = navigation.state.params.coin;
+        const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
-            headerTitle:  <Image style={{width: 40, height: 40}} source={{ uri: ImageUrl}} />,
-            title: `${coinName} - ${symbol}`,
+            headerTitle:  <Image style={{width: 50, height: 50}} source={{ uri: ImageUrl}} />,
+            title: `${CoinName} - ${Symbol}`,
             headerStyle: {
                 backgroundColor: '#282E33',
-                borderBottomWidth: 0
+                borderBottomWidth: 0,
             },
             headerTintColor: '#fff',
         };
@@ -42,10 +42,10 @@ class TransactionScreen extends Component {
     }
 
     renderHeader() {
-        const {coinName, symbol, ImageUrl} = this.props.navigation.state.params.coin;
+        const {CoinName, Symbol, ImageUrl} = this.props.navigation.state.params.coin;
         return(
             <View style={styles.headerContainerStyles}>
-                <Text style={styles.headerTextStyles}>{coinName} - {symbol}</Text>
+                <Text style={styles.headerTextStyles}>{CoinName} - {Symbol}</Text>
             </View>    
         );
     }
@@ -71,9 +71,8 @@ class TransactionScreen extends Component {
  const styles = StyleSheet.create({
      headerContainerStyles: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
      },
      buttonContainer: {
          flex: 1,
@@ -82,7 +81,7 @@ class TransactionScreen extends Component {
      },
      headerTextStyles: {
         color: '#fff',
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold'
      },
      textStyles: {
@@ -111,7 +110,7 @@ class TransactionScreen extends Component {
          flexDirection: 'row',
          justifyContent: 'space-around',
          //backgroundColor: "#fff",
-         marginTop: -30
+         //marginTop: -30
      },
  })
 

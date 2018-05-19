@@ -1,35 +1,16 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {View, Text, StyleSheet, FlatList, ScrollView, KeyboardAvoidingView, Platform, Dimensions, ActivityIndicator } from 'react-native';
+import {View, Text, StyleSheet, FlatList } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import CryptoCompareApi from 'cryptocompare';
 import { BASE_URL } from '../App';
-import { getCoinHash } from '../actions';
+
 
 //<ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
 
 class CoinList extends Component {
-    constructor(props){
-        super(props);
-        this.state = {coinHash : null } 
-    }
-
-    componentWillMount() {
-        this.props.getCoinHash();
-        const {coinHash} = this.props;
-        if(coinHash && this.state.coinHash === null) this.setState({coinHash: coinHash});
-    }
-
-    componentWillUpdate() {
-        const {coinHash} = this.props;
-        if(coinHash && this.state.coinHash === null) this.setState({coinHash: coinHash});
-    }
-
     renderList() {
-        const { coinHash, coins, onPress } = this.props;
-        if(!this.state.coinHash) {return <View style={styles.textContainer}><Text style={styles.textStyles}>Search for Cryptocurrencies</Text></View>; }
-        else if(this.state.coinHash){
+        const { coins, onPress } = this.props;
+        if(!coins) {return <View style={styles.textContainer}><Text style={styles.textStyles}>Search for Cryptocurrencies</Text></View>; }
+        else if(coins){
         return(
                 //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
                 <List style={styles.listStyles}  keyboardShouldPersistTaps='handled'>
@@ -39,15 +20,11 @@ class CoinList extends Component {
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({item}) => {
                                 return <ListItem 
-                                            onPress={() => onPress({...item, ImageUrl: `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` 
-                                                                                        || 
-                                                                                        `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` })}
-                                            avatar={{ uri: this.state.coinHash[item.symbol] ? 
-                                                           `${BASE_URL}${this.state.coinHash[item.symbol].ImageUrl}` :
-                                                           `${BASE_URL}${this.state.coinHash['BTC'].ImageUrl}` }}
-                                            key={item.coinName} 
-                                            title={item.coinName} 
-                                            subtitle={item.symbol} 
+                                            onPress={() => onPress({...item, ImageUrl: `${BASE_URL}${item.ImageUrl}` })}
+                                            avatar={{ uri: `${BASE_URL}${item.ImageUrl}` }}
+                                            key={item.CoinName} 
+                                            title={item.CoinName} 
+                                            subtitle={item.Symbol} 
                                             style={styles.listItemStyles} 
 
                                         />
@@ -65,9 +42,7 @@ class CoinList extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {coinHash: state.coins.coinHash }
-}
+
 
 const styles = StyleSheet.create({
     listStyles: {
@@ -94,4 +69,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(mapStateToProps, { getCoinHash })(CoinList);
+export default CoinList;
