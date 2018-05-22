@@ -9,7 +9,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 class SearchCoinsScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {scrollHeight: 0}
+        this.state = {scrollHeight: -50}
     }
     render() {
         const { searchArray } = this.props;
@@ -20,7 +20,8 @@ class SearchCoinsScreen extends Component {
                 <KeyboardAwareScrollView style={{flex: 1}} 
                     onKeyboardWillShow={ (e) => this.setState({scrollHeight: -50})} 
                     onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
-                    extraScrollHeight={this.state.scrollHeight}  
+                    extraScrollHeight={this.state.scrollHeight}
+                    enableOnAndroid={true}  
                     keyboardShouldPersistTaps='handled'>
                     <CoinList onPress={(coin) => {console.log(this.props); this.props.navigation.navigate('transaction', {coin: coin}); }} coins={searchArray} />
                 </KeyboardAwareScrollView>    
