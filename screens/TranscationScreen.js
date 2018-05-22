@@ -7,14 +7,13 @@ class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
-            headerTitle:  <View style={{}}><Image style={{width: 50, height: 50, flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} /></View>,
+            headerTitle:  <Image style={{width: 50, height: 50, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
             title: `${CoinName} - ${Symbol}`,
             headerStyle: {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
             },
-            headerTitleStyle: {
-            }
+            headerRight: <View /> //For Android the Image doesn't center and veers off to the right so adding an empty View centers it
         };
     }
 
