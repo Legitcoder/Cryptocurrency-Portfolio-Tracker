@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { View, Text, TextInput, StyleSheet, FlatList, Platform, Keyboard, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import regexSort from 'regex-sort';
 
 import { matchSearchArray, getCoins } from '../actions';
 import CoinList from './CoinList';
@@ -29,10 +29,11 @@ class SearchBar extends Component {
 
     findMatches(wordToMatch, coins) {
         if(wordToMatch === '' || coins === null) return [];
-        return coins.filter(coin => {
-            const regex = new RegExp(`(${wordToMatch})+`, 'gi');
+        const regex = new RegExp(`(${wordToMatch})+`, 'gi');
+        const filteredCoins = coins.filter(coin => {
             return coin.CoinName.match(regex) || coin.Symbol.match(regex);
-        })
+        });
+        return regexSort(filteredCoins, new RegExp(`^(${wordToMatch})$`, 'gi'));
     }
 
     renderCoins = (text) => {
