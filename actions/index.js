@@ -1,8 +1,10 @@
 import axios from 'axios';
 import cryptoCompareApi from 'cryptocompare';
 import {
-    MATCH_SEARCH_ARRAY, 
-    GET_COINS
+    MATCH_SEARCH_ARRAY,
+    SELECT_COIN, 
+    GET_COIN_EXCHANGES_AND_TRADING_PAIRS,
+    GET_COINS,
 } from './types';
 
 
@@ -12,6 +14,21 @@ const filterCoins = (coinHash) => {
         coins.push(coinHash[symbol]);
     }
     return coins
+}
+
+export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
+    cryptoCompareApi.exchangeList()
+    .then(exchangeHash => {
+        const exchangesCoinBelongsTo = [];
+        for(exchange in exchangeHash) {
+            if(exchangeHash[exchange][coinSymbol]) exchangesCoinBelongsTo.push({exchange: exchange, pairs: exchangeHash[exchange][coinSymbol]});
+        }
+        dispatch({ type: GET_COIN_EXCHANGES_AND_TRADING_PAIRS, payload: coin })
+    })
+}
+
+export const selectCoin = (coin) => dispatch => {
+    dispatch({ type: SELECT_COIN, payload: coin })
 }
 
 export const matchSearchArray = (searchArray) => dispatch => {
@@ -25,10 +42,6 @@ export const getCoins = () => dispatch => {
 // })
 // //Filter out all the exchanges that have LSK in an array and then
 // //FIlter out all the trading Pairs of LSK
-//     cryptoCompareApi.exchangeList()
-// .then(exchangeList => {
-//   console.log(exchangeList["BitTrex"]["LSK"])
-// })
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});

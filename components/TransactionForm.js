@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import {Text, View, StyleSheet } from 'react-native';
 
 class TransactionForm extends Component {
     render() {
         return(
             <View style={styles.formContainer}>
-                <Text>This is the transaction form</Text>
+                <Text>{this.props.coin.CoinName}</Text>
             </View>   
         );
+    }
+}
+
+const mapStateToProps = (state) => {
+    return{
+        coin: state.coins.coin
     }
 }
 
@@ -18,4 +25,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TransactionForm;
+export default connect(mapStateToProps)(TransactionForm);

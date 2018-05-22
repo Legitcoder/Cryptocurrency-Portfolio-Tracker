@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {View, Text, StyleSheet, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform, Dimensions, Keyboard } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import CoinList from '../components/CoinList'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { selectCoin, getExchangesCoinBelongsTo } from '../actions';
 
 
 class SearchCoinsScreen extends Component {
@@ -11,6 +12,14 @@ class SearchCoinsScreen extends Component {
         super(props);
         this.state = {scrollHeight: -50}
     }
+
+    handleSelectedCoin = (coin) => {
+        const {selectCoin, navigation} = this.props;
+        navigation.navigate('transaction', {coin: coin}); 
+        selectCoin(coin);
+        getExchangesCoinBelongsTo(coin.Symbol);
+    }
+
     render() {
         const { searchArray } = this.props;
         if(!searchArray) return <ActivityIndicator />;
@@ -23,7 +32,8 @@ class SearchCoinsScreen extends Component {
                     extraScrollHeight={this.state.scrollHeight}
                     enableOnAndroid={true}  
                     keyboardShouldPersistTaps='handled'>
-                    <CoinList onPress={(coin) => {console.log(this.props); this.props.navigation.navigate('transaction', {coin: coin}); }} coins={searchArray} />
+                    <CoinList onPress={this.handleSelectedCoin} 
+                        coins={searchArray} />
                 </KeyboardAwareScrollView>    
             </View>    
         );
@@ -43,4 +53,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(mapStateToProps)(SearchCoinsScreen);
+export default connect(mapStateToProps, { selectCoin })(SearchCoinsScreen);

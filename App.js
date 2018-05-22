@@ -11,9 +11,6 @@ export const BASE_URL = 'https://www.cryptocompare.com';
 export default class App extends React.Component {
 
   render() {
-   
-
-
     return (
     <Provider store={store}>   
         <MainNavigator />

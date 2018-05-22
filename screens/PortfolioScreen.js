@@ -14,7 +14,7 @@ class PortfolioScreen extends Component {
         return(
             <View style={styles.container}>
                 <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>
-                <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio'); console.log("Being Pressed")}} />
+                <PortfolioAddButton onPress={() => {navigation.navigate('addtoporfolio');}} />
             </View>    
         );
     }
