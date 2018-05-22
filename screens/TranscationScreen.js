@@ -7,11 +7,16 @@ class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
-            headerTitle:  <Image style={{width: 50, height: 50}} source={{ uri: ImageUrl}} />,
+            headerTitle:  <View style={{alignSelf: 'center', flex: 1}}><Image style={{width: 50, height: 50, flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} /></View>,
             title: `${CoinName} - ${Symbol}`,
             headerStyle: {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
+            },
+            headerTitleStyle: {
+                // flexDirection: 'row',
+                // alignSelf: 'center',
+                // justifyContent: 'center'
             },
             headerTintColor: '#fff',
         };
