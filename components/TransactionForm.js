@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {Text, TextInput, View, ScrollView, StyleSheet } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-native-elements'
 import { nextTick } from 'async';
 
 class TransactionForm extends Component {
@@ -33,41 +33,39 @@ class TransactionForm extends Component {
 
     renderForm() {
         return(
-            <View style={styles.formItemContainer}>
-                <FormLabel>Exchange</FormLabel>
-                <Text>{this.state.activeExchange}</Text>
-                <FormLabel>Trading Pair</FormLabel>
-                <Text>{this.state.activeTradingPair}</Text>
-                <FormLabel>{this.props.activeOrderState} in Price in {this.state.activeTradingPair}</FormLabel>
-                <TextInput />
-            </View>  
+            <ScrollView contentContainerStyle={styles.formContainer}>
+                <View style={styles.formItemContainer}>
+                    <Text>Exchange</Text>  
+                    <Text>{this.state.activeExchange}</Text>
+                </View>
+                <Divider style={{ backgroundColor: 'blue' }} />
+                <View style={styles.formItemContainer}>                                      
+                    <Text>Trading Pair</Text>
+                    <Text>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                </View>
+                <Divider style={{ backgroundColor: 'blue' }} />
+                <View style={styles.formItemContainer}>                     
+                    <Text>{this.props.activeOrderState} in Price in {this.state.activeTradingPair}</Text>
+                    <TextInput />
+                </View>  
+                <Divider style={{ backgroundColor: 'blue' }} />
+                <View style={styles.formItemContainer}>                     
+                    <TextInput placeholder="Amount Bought" />
+                </View> 
+                <Divider style={{ backgroundColor: 'blue' }} />
+                <View style={styles.formItemContainer}>                     
+                    <Text>Date & Time</Text>
+                    <TextInput />
+                </View>                  
+            </ScrollView> 
         );
     }
 
     render() {
         return(
-            <ScrollView style={styles.formContainer}>
-                <View style={styles.formItemContainer}>
-                    <FormLabel>Exchange</FormLabel>  
-                    <Text>{this.state.activeExchange}</Text>
-                </View>
-                <View style={styles.formItemContainer}>                                      
-                    <FormLabel>Trading Pair</FormLabel>
-                    <Text>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
-                </View>
-                <View style={styles.formItemContainer}>                     
-                    <FormLabel>{this.props.activeOrderState} in Price in {this.state.activeTradingPair}</FormLabel>
-                    <TextInput />
-                </View>  
-                <View style={styles.formItemContainer}>                     
-                    <TextInput placeholder="Amount Bought" />
-                </View> 
-                <View style={styles.formItemContainer}>                     
-                    <FormLabel>Date & Time</FormLabel>
-                    <TextInput />
-                </View>                  
-            </ScrollView>
-                 
+            <View style={{flex: 6}}>
+            {this.renderForm()}
+            </View>
         );
     }
 }
@@ -82,14 +80,15 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     formContainer: {
-        flex: 10,
+        flexGrow: 1,
+        justifyContent: 'space-between',
         backgroundColor: '#fff',
-        padding: 20,
-        marginBottom: 80
+        marginBottom: 80,
     },
     formItemContainer: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignSelf: 'stretch',
         backgroundColor: '#35383a',
     }
 });
