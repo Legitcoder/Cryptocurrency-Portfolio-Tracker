@@ -23,7 +23,7 @@ export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
         for(exchange in exchangeHash) {
             if(exchangeHash[exchange][coinSymbol]) exchangesCoinBelongsTo.push({exchange: exchange, pairs: exchangeHash[exchange][coinSymbol]});
         }
-        dispatch({ type: GET_COIN_EXCHANGES_AND_TRADING_PAIRS, payload: coin })
+        dispatch({ type: GET_COIN_EXCHANGES_AND_TRADING_PAIRS, payload: exchangesCoinBelongsTo })
     })
 }
 

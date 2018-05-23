@@ -14,7 +14,7 @@ class SearchCoinsScreen extends Component {
     }
 
     handleSelectedCoin = (coin) => {
-        const {selectCoin, navigation} = this.props;
+        const {getExchangesCoinBelongsTo,selectCoin, navigation} = this.props;
         navigation.navigate('transaction', {coin: coin}); 
         selectCoin(coin);
         getExchangesCoinBelongsTo(coin.Symbol);
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(mapStateToProps, { selectCoin })(SearchCoinsScreen);
+export default connect(mapStateToProps, { selectCoin, getExchangesCoinBelongsTo })(SearchCoinsScreen);

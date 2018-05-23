@@ -52,7 +52,7 @@ class TransactionScreen extends Component {
 
 
     render() {
-        console.log(this.props.navigation.state.params)
+        const { coin } = this.props.navigation.state.params;
         return(
             <View style={styles.container}>
                     {this.renderHeader()}
@@ -60,7 +60,7 @@ class TransactionScreen extends Component {
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
-                <TransactionForm/>
+                <TransactionForm activeOrderState={this.state.activeState} coin={coin}/>
                 <TransactionButton style={{flex: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
             </View>
         );
