@@ -4,6 +4,7 @@ import {Text, TextInput, View, ScrollView, StyleSheet } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 class TransactionForm extends Component {
@@ -51,14 +52,16 @@ class TransactionForm extends Component {
     renderForm() {
         return(
             <View style={styles.formContainer}>
-                <View style={styles.formItemContainer}>
+                <View style={[styles.formItemContainer]}>
                     <Text style={styles.labelTextStyle}>Exchange</Text>  
                     <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
+                    <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
                 </View>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                                      
                     <Text style={styles.labelTextStyle}>Trading Pair</Text>
                     <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                    <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
                 </View>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
@@ -110,6 +113,11 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: '#282E33',
         marginBottom: 80,
+    },
+    navigateNextIconStyle: {
+        position: 'absolute',
+        right: 0,
+        color: "#fff"
     },
     formItemContainer: {
         flex: 1,
