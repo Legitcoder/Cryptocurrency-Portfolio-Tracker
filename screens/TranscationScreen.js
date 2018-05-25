@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
-            headerTitle:  <Image style={{width: 50, height: 50, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
+            headerTitle:  <Image style={{width: 40, height: 40, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
             title: `${CoinName} - ${Symbol}`,
             headerStyle: {
                 backgroundColor: '#282E33',
@@ -19,7 +21,7 @@ class TransactionScreen extends Component {
 
     constructor(props){
         super(props);
-        this.state = {buttonbackgroundColor: null, activeState: "Buy", buyButtonColor: '#00800080', sellButtonColor: 'transparent' }
+        this.state = {buttonbackgroundColor: null, activeState: "Buy", buyButtonColor: '#00800080', sellButtonColor: 'transparent', scrollHeight: -60 }
     }
     renderBuyButton() {
         return(
@@ -54,7 +56,14 @@ class TransactionScreen extends Component {
     render() {
         const { coin } = this.props.navigation.state.params;
         return(
-            <View style={styles.container}>
+           <View style={styles.container}> 
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}
+            onKeyboardWillShow={ (e) => this.setState({scrollHeight: -60})} 
+            onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
+            extraScrollHeight={this.state.scrollHeight}
+            enableOnAndroid={true}  
+            keyboardShouldPersistTaps='handled'
+            >
                     {this.renderHeader()}
                 <View style={styles.buttonsContainer}>
                     {this.renderBuyButton()}
@@ -62,7 +71,8 @@ class TransactionScreen extends Component {
                 </View>
                 <TransactionForm activeOrderState={this.state.activeState} coin={coin}/>
                 <TransactionButton style={{flex: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
-            </View>
+            </KeyboardAwareScrollView>
+           </View> 
         );
     }
  }
@@ -102,7 +112,7 @@ class TransactionScreen extends Component {
      },
      container: {
         flex: 1,
-        backgroundColor: '#282E33',
+        backgroundColor: '#202428',
         justifyContent: 'space-between'
      },
      buttonsContainer: {

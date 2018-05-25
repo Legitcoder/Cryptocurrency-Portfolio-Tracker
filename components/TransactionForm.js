@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {Text, TextInput, View, ScrollView, StyleSheet } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-native-elements'
-import { nextTick } from 'async';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class TransactionForm extends Component {
 
@@ -35,27 +35,26 @@ class TransactionForm extends Component {
         return(
             <ScrollView contentContainerStyle={styles.formContainer}>
                 <View style={styles.formItemContainer}>
-                    <Text>Exchange</Text>  
-                    <Text>{this.state.activeExchange}</Text>
+                    <Text style={styles.labelTextStyle}>Exchange</Text>  
+                    <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
                 </View>
-                <Divider style={{ backgroundColor: 'blue' }} />
+                <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                                      
-                    <Text>Trading Pair</Text>
-                    <Text>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                    <Text style={styles.labelTextStyle}>Trading Pair</Text>
+                    <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
                 </View>
-                <Divider style={{ backgroundColor: 'blue' }} />
+                <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
-                    <Text>{this.props.activeOrderState} in Price in {this.state.activeTradingPair}</Text>
-                    <TextInput />
+                    <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
+                    <TextInput style={styles.selectionTextStyles} placeholder="Price" placeholderTextColor="#80808050"/>
                 </View>  
-                <Divider style={{ backgroundColor: 'blue' }} />
+                <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
-                    <TextInput placeholder="Amount Bought" />
+                    <TextInput style={styles.selectionTextStyles} placeholder="Amount Bought" placeholderTextColor="#80808050" />
                 </View> 
-                <Divider style={{ backgroundColor: 'blue' }} />
+                <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
-                    <Text>Date & Time</Text>
-                    <TextInput />
+                    <Text style={styles.selectionTextStyles}>Date & Time</Text>
                 </View>                  
             </ScrollView> 
         );
@@ -64,7 +63,7 @@ class TransactionForm extends Component {
     render() {
         return(
             <View style={{flex: 6}}>
-            {this.renderForm()}
+             {this.renderForm()}
             </View>
         );
     }
@@ -82,14 +81,26 @@ const styles = StyleSheet.create({
     formContainer: {
         flexGrow: 1,
         justifyContent: 'space-between',
-        backgroundColor: '#fff',
+        backgroundColor: '#282E33',
         marginBottom: 80,
     },
     formItemContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignSelf: 'stretch',
-        backgroundColor: '#35383a',
+        alignItems: 'flex-start',
+        backgroundColor: '#282E33',
+    },
+    selectionTextStyles: {
+        color: "#fff",
+        fontSize: 18,
+        margin: 2.5,
+        marginLeft: 10
+    },
+    labelTextStyle: {
+        color: "gray",
+        fontSize: 14,
+        margin: 2.5,
+        marginLeft: 10
     }
 });
 

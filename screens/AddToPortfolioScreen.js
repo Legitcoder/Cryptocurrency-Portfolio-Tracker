@@ -18,7 +18,7 @@ class AddToPortfolioScreen extends Component {
  const styles = StyleSheet.create({
      container: {
          flex: 1,
-         backgroundColor: '#282E33',
+         backgroundColor: '#202428',
          justifyContent: 'flex-start'
      }
  })

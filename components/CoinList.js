@@ -12,7 +12,6 @@ class CoinList extends Component {
         if(!coins) {return <View style={styles.textContainer}><Text style={styles.textStyles}>Search for Cryptocurrencies</Text></View>; }
         else if(coins){
         return(
-                //Keyboard and Scrolling through the List aren't playing well together even with KeyboardAvoidingView
                 <List style={styles.listStyles}  keyboardShouldPersistTaps='handled'>
 
                         <FlatList keyboardShouldPersistTaps='handled'
@@ -28,8 +27,7 @@ class CoinList extends Component {
                                             style={styles.listItemStyles} 
 
                                         />
-                            }
-                            }
+                            }}
                         /> 
  
                 </List>   

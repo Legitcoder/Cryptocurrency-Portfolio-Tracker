@@ -3,13 +3,11 @@ import { StyleSheet} from 'react-native';
 import { Provider } from 'react-redux';
 import store from './store';
 import { MainNavigator } from './navigation';
-
 console.ignoredYellowBox = ['Remote debugger'];
 export const BASE_URL = 'https://www.cryptocompare.com';
 
 
 export default class App extends React.Component {
-
   render() {
     return (
     <Provider store={store}>   

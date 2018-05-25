@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { View, Text, TextInput, StyleSheet, FlatList, Platform, Keyboard, TouchableOpacity } from 'react-native';
 import regexSort from 'regex-sort';
-
 import { matchSearchArray, getCoins } from '../actions';
 import CoinList from './CoinList';
-
-
-
 
 class SearchBar extends Component {
     constructor(props) {
@@ -33,7 +29,7 @@ class SearchBar extends Component {
         const filteredCoins = coins.filter(coin => {
             return coin.CoinName.match(regex) || coin.Symbol.match(regex);
         });
-        return regexSort(filteredCoins, new RegExp(`^(${wordToMatch})$`, 'gi'));
+        return regexSort(filteredCoins, new RegExp(`^(${wordToMatch})`, 'gi'));
     }
 
     renderCoins = (text) => {
@@ -78,7 +74,7 @@ const styles =  StyleSheet.create({
     },
     searchContainer: {
         flexDirection: 'row',
-        backgroundColor: "#525659",
+        backgroundColor: "#3e4850",
         alignSelf: 'center',
         width: `${60}%`,
         height:`${60}%`,
@@ -89,7 +85,7 @@ const styles =  StyleSheet.create({
         width: `${100}%`,
         height: `${10}%`,
         justifyContent: 'center',
-        backgroundColor: '#35383a',
+        backgroundColor: '#282E33',
         marginBottom: -25,
         zIndex: 5,
     },
