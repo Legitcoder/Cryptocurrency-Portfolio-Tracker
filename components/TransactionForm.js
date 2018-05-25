@@ -14,7 +14,7 @@ class TransactionForm extends Component {
              activeExchange: '', 
              activeTradingPair: '', 
              isDateTimePickerVisible: false,
-             date: null}
+             date: new Date().toString().slice(0 , -18)}
     }
 
     componentDidMount() {
@@ -48,12 +48,7 @@ class TransactionForm extends Component {
         this._hideDateTimePicker();
       };
 
-      renderDate() {
-        return `${today.date.getFullYear()}`
-      }
-
     renderForm() {
-        var today = new Date().toString().slice(0 , -18);
         return(
             <View style={styles.formContainer}>
                 <View style={styles.formItemContainer}>
@@ -77,7 +72,7 @@ class TransactionForm extends Component {
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>
                     <Text style={styles.labelTextStyle}>Date & Time</Text>                       
-                    <Text style={styles.selectionTextStyles} onPress={this._showDateTimePicker}>{this.state.date ? this.state.date : today}</Text>
+                    <Text style={styles.selectionTextStyles} onPress={this._showDateTimePicker}>{this.state.date}</Text>
                 </View>
 
                 <DateTimePicker
