@@ -8,6 +8,12 @@ import PortfolioAddButton from '../common/PortfolioAddButton';
 
 
 class PortfolioScreen extends Component {
+    static navigationOptions = {
+        headerStyle: {
+            backgroundColor: '#202428',
+            borderBottomWidth: 0
+        }
+    }
 
     render() {
         const { navigation } = this.props;

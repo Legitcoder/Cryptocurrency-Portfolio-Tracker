@@ -8,6 +8,13 @@ import { selectCoin, getExchangesCoinBelongsTo } from '../actions';
 
 
 class SearchCoinsScreen extends Component {
+    static navigationOptions = {
+        headerStyle: {
+            backgroundColor: '#202428',
+            borderBottomWidth: 0
+        }
+    }
+
     constructor(props) {
         super(props);
         this.state = {scrollHeight: -50}

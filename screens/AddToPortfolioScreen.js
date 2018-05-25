@@ -4,6 +4,12 @@ import SearchCoinsScreen from './SearchCoinsScreen';
 
 
 class AddToPortfolioScreen extends Component {
+    static navigationOptions = {
+        headerStyle: {
+            backgroundColor: '#202428',
+            borderBottomWidth: 0
+        }
+    }
     
     render() {
         return(
