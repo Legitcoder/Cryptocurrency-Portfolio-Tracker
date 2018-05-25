@@ -28,7 +28,9 @@ class TransactionForm extends Component {
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
         const { exchanges } = nextProps;
-        this.setState({exchanges: exchanges, activeExchange: exchanges[0].exchange, activeTradingPair: exchanges[0].pairs[0]})
+        this.setState({exchanges: exchanges,
+                       activeExchange: exchanges.length > 0 ? exchanges[0].exchange : "None", 
+                       activeTradingPair: exchanges.length > 0 ? exchanges[0].pairs[0] : "None"})
     }
 
     renderForm() {
@@ -36,12 +38,12 @@ class TransactionForm extends Component {
             <View style={styles.formContainer}>
                 <View style={styles.formItemContainer}>
                     <Text style={styles.labelTextStyle}>Exchange</Text>  
-                    <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
+                    <Text style={styles.selectionTextStyles}>{this.state.activeExchange || "None"}</Text>
                 </View>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                                      
                     <Text style={styles.labelTextStyle}>Trading Pair</Text>
-                    <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                    <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair || "None"}</Text>
                 </View>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
