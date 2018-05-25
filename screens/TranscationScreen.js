@@ -57,20 +57,25 @@ class TransactionScreen extends Component {
         const { coin } = this.props.navigation.state.params;
         return(
            <View style={styles.container}> 
-            <KeyboardAwareScrollView contentContainerStyle={styles.container}
+            <KeyboardAwareScrollView
+            scrollEnabled={true}
+            enableOnAndroid={true}
+            resetScrollToCoords={{ x: 0, y: 0 }}   
+            contentContainerStyle={styles.container}
             onKeyboardWillShow={ (e) => this.setState({scrollHeight: -60})} 
             onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
             extraScrollHeight={this.state.scrollHeight}
-            enableOnAndroid={true}  
             keyboardShouldPersistTaps='handled'
             >
+            <View style={styles.container}>
                     {this.renderHeader()}
                 <View style={styles.buttonsContainer}>
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
                 <TransactionForm activeOrderState={this.state.activeState} coin={coin}/>
-                <TransactionButton style={{flex: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
+                <TransactionButton style={{flexGrow: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
+             </View>   
             </KeyboardAwareScrollView>
            </View> 
         );
@@ -111,7 +116,7 @@ class TransactionScreen extends Component {
         borderWidth: 2
      },
      container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: '#202428',
         justifyContent: 'space-between'
      },

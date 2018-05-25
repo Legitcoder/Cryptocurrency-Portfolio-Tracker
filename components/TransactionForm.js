@@ -33,7 +33,7 @@ class TransactionForm extends Component {
 
     renderForm() {
         return(
-            <ScrollView contentContainerStyle={styles.formContainer}>
+            <View style={styles.formContainer}>
                 <View style={styles.formItemContainer}>
                     <Text style={styles.labelTextStyle}>Exchange</Text>  
                     <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
@@ -56,7 +56,7 @@ class TransactionForm extends Component {
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>Date & Time</Text>
                 </View>                  
-            </ScrollView> 
+            </View> 
         );
     }
 
