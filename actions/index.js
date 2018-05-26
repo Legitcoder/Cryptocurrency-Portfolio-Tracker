@@ -7,16 +7,9 @@ import {
     GET_COINS,
 } from './types';
 
-
-const filterCoins = (coinHash) => {
-    const coins = [];
-    for(symbol in coinHash) {
-        coins.push(coinHash[symbol]);
-    }
-    return coins;
-}
-
-
+//To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
+// a coin in searchArray that has no exchanges being traded on. filtercoins and getCoins returns all coins instead of filtering only the
+//ones with at least one exchange being traded on. 
 
 export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
     const exchangesCoinBelongsTo = [];
@@ -38,14 +31,19 @@ export const matchSearchArray = (searchArray) => dispatch => {
 }
 
 export const getCoins = () => dispatch => {
-//     cryptoCompareApi.priceFull(['LSK'], ['BTC'], {exchanges: ['Binance']})
-// .then(prices => {
-//   console.log(prices)
-// })
-// //Filter out all the exchanges that have LSK in an array and then
-// //FIlter out all the trading Pairs of LSK
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
     })
+}
+
+
+//// Helper Methods
+
+const filterCoins = (coinHash) => {
+    const coins = [];
+    for(symbol in coinHash) {
+        coins.push(coinHash[symbol]);
+    }
+    return coins;
 }

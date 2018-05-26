@@ -6,6 +6,8 @@ import regexSort from 'regex-sort';
 import { matchSearchArray, getCoins } from '../actions';
 import CoinList from './CoinList';
 
+//To be Fixed: After going to Transaction Screen and then going back, Search List is empty. Search List should be populated with previous searches
+
 class SearchBar extends Component {
     constructor(props) {
         super(props);

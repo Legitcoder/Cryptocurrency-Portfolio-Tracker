@@ -7,7 +7,9 @@ class AddToPortfolioScreen extends Component {
     static navigationOptions = {
         headerStyle: {
             backgroundColor: '#202428',
-            borderBottomWidth: 0
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0
         }
     }
     
