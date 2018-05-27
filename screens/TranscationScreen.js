@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Feather } from '@expo/vector-icons';
 
 
 class TransactionScreen extends Component {
@@ -10,6 +11,7 @@ class TransactionScreen extends Component {
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
             headerTitle:  <Image style={{width: 40, height: 40, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
+            headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => navigation.goBack()} />,
             title: `${CoinName} - ${Symbol}`,
             headerStyle: {
                 backgroundColor: '#282E33',

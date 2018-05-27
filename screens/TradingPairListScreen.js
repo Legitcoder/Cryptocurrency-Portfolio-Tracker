@@ -10,7 +10,7 @@ class TradingPairListScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Change Trading Pair',
-            headerLeft: <Feather name="arrow-left" size={30} color='#fff' onPress={() => navigation.goBack()} />,
+            headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => navigation.goBack()} />,
             headerStyle: {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
