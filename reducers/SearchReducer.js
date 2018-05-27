@@ -11,6 +11,6 @@ export default( state = INITIAL_STATE, action ) => {
         case MATCH_SEARCH_ARRAY:
             return {...INITIAL_STATE, searchArray: action.payload}
         default: 
-            return INITIAL_STATE
+            return state
     }
 }

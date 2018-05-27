@@ -5,6 +5,7 @@ import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-nati
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
+import { getTradingPairsPriceHash } from '../actions';
 
 
 class TransactionForm extends Component {
@@ -16,30 +17,54 @@ class TransactionForm extends Component {
              activeExchange: '', 
              activeTradingPair: '', 
              isDateTimePickerVisible: false,
-             date: new Date().toString().slice(0 , -18)}
+             date: new Date().toString().slice(0 , -18),
+             tradingPairsPrices: ''
+             //coin: null
+            }
     }
 
     componentDidMount() {
-        const {coin, exchanges } = this.props;
+        console.log(this.props);
+        const {coin, exchanges, getTradingPairsPriceHash } = this.props;
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
-        console.log(this.state.exchanges);
+        console.log(exchanges);
     }
 
     componentDidUpdate() {
+        console.log(this.props);
         const {coin, exchanges } = this.props;
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
         console.log(this.state.exchanges);
     }
 
+    extractExchangeIndex(exchangeObjArray, activeExchange) {
+        const exchanges = [];
+        exchangeObjArray.forEach(exchangeObj => {
+            exchanges.push(exchangeObj.exchange);
+        });
+        return exchanges.indexOf(activeExchange);
+    }
+
+
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        const { exchanges } = nextProps;
-        this.setState({exchanges: exchanges,
-                       tradingPairs: exchanges[0].pairs,
-                       activeExchange: exchanges.length > 0 ? exchanges[0].exchange : "N/A", 
-                       activeTradingPair: exchanges.length > 0 ? exchanges[0].pairs[0] : "None"});           
+        const {getTradingPairsPriceHash, coin, tradingPairsPrices } = nextProps;
+        let { exchanges } = nextProps;
+        if(!exchanges) {exchanges = this.state.exchanges};
+        let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
+        debugger;
+            this.setState({exchanges: exchanges,
+                tradingPairs: exchanges.length === 0 ? [] : this.state.activeExchange === '' ? exchanges[0].pairs : exchanges[activeExchangeIndex].pairs ,
+                activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
+                activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair
+            }, () => {
+                if(!tradingPairsPrices) {
+                    getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
+                    this.setState({tradingPairsPrices: tradingPairsPrices});
+                }
+            
+            });
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -63,6 +88,7 @@ class TransactionForm extends Component {
 
 
     renderForm() {
+        console.log(this.state);
         return(
             <View style={styles.formContainer}>
                 <TouchableWithoutFeedback 
@@ -78,14 +104,14 @@ class TransactionForm extends Component {
                 onPress={ () => this.props.navigation.navigate('tradingPairs', {tradingPairs: this.state.tradingPairs, onPressTradingPairs: this.onPressTradingPairs})} >
                     <View style={styles.formItemContainer}>                                      
                         <Text style={styles.labelTextStyle}>Trading Pair</Text>
-                        <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                        <Text style={styles.selectionTextStyles}>{`${this.props.coin.CoinName}/${this.state.activeTradingPair}`}</Text>
                         <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
                     </View>
                 </TouchableWithoutFeedback>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
-                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"/>
+                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050" value={this.state.activeTradingPair[this.state.activeTradingPair]}/>
                 </View>  
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
@@ -118,8 +144,9 @@ class TransactionForm extends Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return{
-        // coin: state.coins.coin,
+        tradingPairsPrices: state.coins.tradingPairsPrices,
         exchanges: state.coins.exchanges,
+        //coin: state.coins.coin,
     }
 }
 
@@ -157,4 +184,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(TransactionForm);
+export default connect(mapStateToProps, {getTradingPairsPriceHash})(TransactionForm);

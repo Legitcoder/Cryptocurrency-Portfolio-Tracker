@@ -31,7 +31,7 @@ export const matchSearchArray = (searchArray) => dispatch => {
     dispatch({ type: MATCH_SEARCH_ARRAY, payload: searchArray })
 }
 
-export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExchange) => {
+export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExchange) => dispatch => {
     cryptoCompareApi.price(selectedCoin, tradingPairs, { exchanges: [selectedExchange] })
     .then(prices => {
         dispatch({ type: GET_TRADING_PAIRS_PRICE_HASH, payload: prices });

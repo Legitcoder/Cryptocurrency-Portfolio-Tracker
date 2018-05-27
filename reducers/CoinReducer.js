@@ -18,6 +18,6 @@ export default( state = INITIAL_STATE, action ) => {
         case GET_TRADING_PAIRS_PRICE_HASH:
             return {...INITIAL_STATE, tradingPairsPrices: action.payload}
         default: 
-            return INITIAL_STATE
+            return state
     }
 }
