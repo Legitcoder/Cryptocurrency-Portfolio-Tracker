@@ -12,6 +12,7 @@ class TransactionForm extends Component {
         super(props);
         this.state = {
              exchanges: [],
+             tradingPairs: [],
              activeExchange: '', 
              activeTradingPair: '', 
              isDateTimePickerVisible: false,
@@ -36,8 +37,9 @@ class TransactionForm extends Component {
         console.log(nextProps);
         const { exchanges } = nextProps;
         this.setState({exchanges: exchanges,
+                       tradingPairs: exchanges[0].pairs,
                        activeExchange: exchanges.length > 0 ? exchanges[0].exchange : "N/A", 
-                       activeTradingPair: exchanges.length > 0 ? exchanges[0].pairs[0] : "None"})
+                       activeTradingPair: exchanges.length > 0 ? exchanges[0].pairs[0] : "None"});           
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -47,12 +49,24 @@ class TransactionForm extends Component {
     _handleDatePicked = (date) => {
         this.setState({date: date.toString().slice(0 , -18)})
         this._hideDateTimePicker();
-      };
+    };
+
+
+    onPressExchanges = (selectedExchange, tradingPairs) => {
+        this.setState({ activeExchange: selectedExchange, activeTradingPair: tradingPairs[0]});
+    }
+
+    onPressTradingPairs = (selectedTradingPair) => {
+        this.setState({ activeTradingPair: selectedTradingPair});
+    }
+
+
 
     renderForm() {
         return(
             <View style={styles.formContainer}>
-                <TouchableWithoutFeedback onPress={ () => this.props.navigation.navigate('exchanges')} >
+                <TouchableWithoutFeedback 
+                onPress={ () => this.props.navigation.navigate('exchanges', {exchanges: this.state.exchanges, onPressExchanges: this.onPressExchanges})} >
                     <View style={[styles.formItemContainer]}>
                         <Text style={styles.labelTextStyle}>Exchange</Text>  
                         <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
@@ -60,7 +74,8 @@ class TransactionForm extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <Divider style={{ backgroundColor: '#000' }} />
-                <TouchableWithoutFeedback onPress={ () => this.props.navigation.navigate('tradingPairs')} >
+                <TouchableWithoutFeedback 
+                onPress={ () => this.props.navigation.navigate('tradingPairs', {tradingPairs: this.state.tradingPairs, onPressTradingPairs: this.onPressTradingPairs})} >
                     <View style={styles.formItemContainer}>                                      
                         <Text style={styles.labelTextStyle}>Trading Pair</Text>
                         <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
