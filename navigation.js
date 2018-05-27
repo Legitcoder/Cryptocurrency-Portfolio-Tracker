@@ -7,13 +7,17 @@ import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
 import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
 import TransactionScreen from './screens/TranscationScreen';
+import ExchangeListScreen from './screens/ExchangeListScreen';
+import TradingPairListScreen from './screens/TradingPairListScreen';
 
 export const MainNavigator = createBottomTabNavigator({
     portfolio: {
       screen: createStackNavigator( {
         portfolio: { screen: PorfolioScreen },
         addtoporfolio: { screen: AddToPortfolioScreen },
-        transaction: {screen: TransactionScreen}
+        transaction: {screen: TransactionScreen},
+        exchanges: {screen: ExchangeListScreen},
+        tradingPairs: {screen: TradingPairListScreen}
       },
       {
         //TransitionConfig Changes Stack Navigation from Right to Left in Android

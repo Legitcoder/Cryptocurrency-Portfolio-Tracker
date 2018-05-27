@@ -42,8 +42,6 @@ export const getCoins = () => dispatch => {
 
 const filterCoins = (coinHash) => {
     const coins = [];
-    for(symbol in coinHash) {
-        coins.push(coinHash[symbol]);
-    }
+    for(symbol in coinHash) coins.push(coinHash[symbol]);
     return coins;
 }

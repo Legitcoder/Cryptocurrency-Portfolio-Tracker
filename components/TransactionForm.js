@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import {Text, TextInput, View, ScrollView, StyleSheet } from 'react-native';
+import {Text, TextInput, View, ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
@@ -52,17 +52,21 @@ class TransactionForm extends Component {
     renderForm() {
         return(
             <View style={styles.formContainer}>
-                <View style={[styles.formItemContainer]}>
-                    <Text style={styles.labelTextStyle}>Exchange</Text>  
-                    <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
-                    <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
-                </View>
+                <TouchableWithoutFeedback onPress={ () => this.props.navigation.navigate('exchanges')} >
+                    <View style={[styles.formItemContainer]}>
+                        <Text style={styles.labelTextStyle}>Exchange</Text>  
+                        <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
+                        <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
+                    </View>
+                </TouchableWithoutFeedback>
                 <Divider style={{ backgroundColor: '#000' }} />
-                <View style={styles.formItemContainer}>                                      
-                    <Text style={styles.labelTextStyle}>Trading Pair</Text>
-                    <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
-                    <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
-                </View>
+                <TouchableWithoutFeedback onPress={ () => this.props.navigation.navigate('tradingPairs')} >
+                    <View style={styles.formItemContainer}>                                      
+                        <Text style={styles.labelTextStyle}>Trading Pair</Text>
+                        <Text style={styles.selectionTextStyles}>{this.props.coin.CoinName}/{this.state.activeTradingPair}</Text>
+                        <MaterialIcons style={styles.navigateNextIconStyle} name="navigate-next" size={40} />
+                    </View>
+                </TouchableWithoutFeedback>
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
@@ -77,7 +81,6 @@ class TransactionForm extends Component {
                     <Text style={styles.labelTextStyle}>Date & Time</Text>                       
                     <Text style={styles.selectionTextStyles} onPress={this._showDateTimePicker}>{this.state.date}</Text>
                 </View>
-
                 <DateTimePicker
                     mode="datetime"
                     isVisible={this.state.isDateTimePickerVisible}

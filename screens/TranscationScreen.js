@@ -73,7 +73,7 @@ class TransactionScreen extends Component {
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
-                <TransactionForm activeOrderState={this.state.activeState} coin={coin}/>
+                <TransactionForm navigation={this.props.navigation} activeOrderState={this.state.activeState} coin={coin}/>
                 <TransactionButton style={{flexGrow: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
              </View>   
             </KeyboardAwareScrollView>
