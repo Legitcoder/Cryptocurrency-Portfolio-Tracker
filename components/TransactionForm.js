@@ -28,7 +28,6 @@ class TransactionForm extends Component {
         const {coin, exchanges, getTradingPairsPriceHash } = this.props;
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
-        console.log(exchanges);
     }
 
     componentDidUpdate() {
@@ -36,7 +35,6 @@ class TransactionForm extends Component {
         const {coin, exchanges } = this.props;
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
-        console.log(this.state.exchanges);
     }
 
     extractExchangeIndex(exchangeObjArray, activeExchange) {
@@ -53,17 +51,17 @@ class TransactionForm extends Component {
         let { exchanges } = nextProps;
         if(!exchanges) {exchanges = this.state.exchanges};
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
-        debugger;
+        if(activeExchangeIndex === -1) activeExchangeIndex = 0;
             this.setState({exchanges: exchanges,
-                tradingPairs: exchanges.length === 0 ? [] : this.state.activeExchange === '' ? exchanges[0].pairs : exchanges[activeExchangeIndex].pairs ,
+                tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
                 activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
                 activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair
             }, () => {
+                if(activeExchangeIndex !== -1) this.setState({tradingPairs: exchanges[activeExchangeIndex].pairs})
                 if(!tradingPairsPrices) {
                     getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
                     this.setState({tradingPairsPrices: tradingPairsPrices});
                 }
-            
             });
     }
 
@@ -78,16 +76,20 @@ class TransactionForm extends Component {
 
 
     onPressExchanges = (selectedExchange, tradingPairs) => {
-        this.setState({ activeExchange: selectedExchange, activeTradingPair: tradingPairs[0]});
+        this.setState({ activeExchange: selectedExchange, activeTradingPair: tradingPairs[0], tradingPairs: tradingPairs});
     }
 
     onPressTradingPairs = (selectedTradingPair) => {
         this.setState({ activeTradingPair: selectedTradingPair});
     }
 
+    renderSelectTradingPair = () => {
+
+    }
 
 
-    renderForm() {
+
+    renderForm = () => {
         console.log(this.state);
         return(
             <View style={styles.formContainer}>
