@@ -40,7 +40,7 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 
 export const getCoins = () => dispatch => {
     //Testing Getting Price
-    // cryptoCompareApi.price("LSK", ["BTC", "ETH"], { exchanges: ["Binance"] })
+    // cryptoCompareApi.price("LSK", ["EURO"], { exchanges: ["Abucoins"] })
     // .then(prices => console.log(prices))
 
     cryptoCompareApi.coinList()

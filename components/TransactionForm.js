@@ -25,14 +25,16 @@ class TransactionForm extends Component {
 
     componentDidMount() {
         console.log(this.props);
-        const {coin, exchanges, getTradingPairsPriceHash } = this.props;
+        const {coin, exchanges} = this.props;
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
     }
 
     componentDidUpdate() {
-        console.log(this.props);
-        const {coin, exchanges } = this.props;
+        console.log(this.state);
+        const {coin, exchanges, tradingPairsPrices } = this.props;
+        //debugger;
+        if(tradingPairsPrices && tradingPairsPrices === '') this.setState({tradingPairsPrices: tradingPairsPrices});
         if(coin && coin === null) this.setState({coin: coin});
         if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
     }
@@ -45,8 +47,8 @@ class TransactionForm extends Component {
         return exchanges.indexOf(activeExchange);
     }
 
-
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
         const {getTradingPairsPriceHash, coin, tradingPairsPrices } = nextProps;
         let { exchanges } = nextProps;
         if(!exchanges) {exchanges = this.state.exchanges};
@@ -55,9 +57,9 @@ class TransactionForm extends Component {
             this.setState({exchanges: exchanges,
                 tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
                 activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
-                activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair
+                activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
+                tradingPairsPrices: tradingPairsPrices
             }, () => {
-                if(activeExchangeIndex !== -1) this.setState({tradingPairs: exchanges[activeExchangeIndex].pairs})
                 if(!tradingPairsPrices) {
                     getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
                     this.setState({tradingPairsPrices: tradingPairsPrices});
@@ -74,27 +76,21 @@ class TransactionForm extends Component {
         this._hideDateTimePicker();
     };
 
-
     onPressExchanges = (selectedExchange, tradingPairs) => {
-        this.setState({ activeExchange: selectedExchange, activeTradingPair: tradingPairs[0], tradingPairs: tradingPairs});
+        this.props.getTradingPairsPriceHash(this.props.coin.Symbol, tradingPairs, selectedExchange);
+        this.setState((prevState, props) => {return { activeExchange: selectedExchange, activeTradingPair: tradingPairs[0], tradingPairs: tradingPairs}});
     }
 
     onPressTradingPairs = (selectedTradingPair) => {
         this.setState({ activeTradingPair: selectedTradingPair});
     }
 
-    renderSelectTradingPair = () => {
-
-    }
-
-
-
     renderForm = () => {
-        console.log(this.state);
+        console.log(this.state, this.props);
         return(
             <View style={styles.formContainer}>
                 <TouchableWithoutFeedback 
-                onPress={ () => this.props.navigation.navigate('exchanges', {exchanges: this.state.exchanges, onPressExchanges: this.onPressExchanges})} >
+                onPress={ () => this.props.navigation.navigate('exchanges', { exchanges: this.state.exchanges, onPressExchanges: this.onPressExchanges})} >
                     <View style={[styles.formItemContainer]}>
                         <Text style={styles.labelTextStyle}>Exchange</Text>  
                         <Text style={styles.selectionTextStyles}>{this.state.activeExchange}</Text>
@@ -113,7 +109,7 @@ class TransactionForm extends Component {
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
-                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050" value={this.state.activeTradingPair[this.state.activeTradingPair]}/>
+                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"  value={this.state.tradingPairsPrices ? (this.state.tradingPairsPrices[this.state.activeTradingPair]) ? (this.state.tradingPairsPrices[this.state.activeTradingPair]).toString() : "" : ""} />
                 </View>  
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
