@@ -5,7 +5,8 @@ import {
     SELECT_COIN, 
     GET_COIN_EXCHANGES_AND_TRADING_PAIRS,
     GET_COINS,
-    GET_TRADING_PAIRS_PRICE_HASH
+    GET_TRADING_PAIRS_PRICE_HASH,
+    GET_HOLDINGS
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -42,7 +43,6 @@ export const getCoins = () => dispatch => {
     //Testing Getting Price
     // cryptoCompareApi.price("LSK", ["EURO"], { exchanges: ["Abucoins"] })
     // .then(prices => console.log(prices))
-
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
@@ -50,24 +50,19 @@ export const getCoins = () => dispatch => {
 }
 
 export const getHoldings =  () => dispatch => {
-    try {
-        let existingHoldings;
-        AsyncStorage.getItem('holdings').then( holdings => existingHoldings = holdings)
-        existingHoldings = JSON.parse(user);
-        return existingHoldings;
-    }
-
-    catch(error) {
-        alert(error);
-    }
+        AsyncStorage.getItem('holdings').then( existingHoldings => {
+            dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
+        })
 }
 
 export const saveHolding = (holding) => dispatch => {
-        let existingHoldings;
-        AsyncStorage.getItem('holdings').then( holdings => existingHoldings = holdings)
-        existingHoldings ? JSON.parse(existingHoldings) : existingHoldings = null;
-        existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(existingHoldings.push(holding))) : AsyncStorage.setItem('holdings', JSON.stringify(holding));
-        debugger;
+        AsyncStorage.getItem('holdings').then( existingHoldings => {
+            let holdings;
+            existingHoldings ? holdings  = JSON.parse(existingHoldings) : holdings = [];
+            holdings.push(holding);
+            console.log(holdings);
+            existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([holding]));
+        })
 }
 
 

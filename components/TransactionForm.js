@@ -30,7 +30,6 @@ class TransactionForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges } = nextProps;
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
@@ -67,7 +66,6 @@ class TransactionForm extends Component {
     }
 
     renderForm = () => {
-        console.log(this.state, this.props);
         return(
             <View style={styles.formContainer}>
                 <TouchableWithoutFeedback 

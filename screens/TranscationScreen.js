@@ -5,11 +5,17 @@ import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
 import { saveHolding } from '../actions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
+
+        handleTrash = () => {
+            alert("Clicking Trash");
+            navigation.navigate('portfolio');
+        }
+
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
             headerTitle:  <Image style={{width: 40, height: 40, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
@@ -19,7 +25,7 @@ class TransactionScreen extends Component {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
             },
-            headerRight: <View /> //For Android the Image doesn't center and veers off to the right so adding an empty View centers it
+            headerRight: <Ionicons name="md-trash" size={20} color="#fff" style={{marginRight: 10}} onPress={this.handleTrash} /> //For Android the Image doesn't center and veers off to the right so adding an empty View centers it
         };
     }
 
@@ -57,10 +63,12 @@ class TransactionScreen extends Component {
     }
 
     handleTransaction = (formState) => {
+        const { coin } = this.props.navigation.state.params;
         const { navigation } = this.props;
-        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair};
+        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, coin: coin};
         const { saveHolding } = this.props;
-        saveHolding(holdings).then( () => navigation.navigate('portfolio'));
+        saveHolding(holdings);
+        navigation.navigate('portfolio')
     } 
 
 

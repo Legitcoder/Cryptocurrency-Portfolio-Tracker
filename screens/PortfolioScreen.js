@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';
 import PortfolioAddButton from '../common/PortfolioAddButton';
+import {  } from '../actions';
 
 
 class PortfolioScreen extends Component {
