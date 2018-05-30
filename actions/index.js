@@ -50,19 +50,18 @@ export const getCoins = () => dispatch => {
 }
 
 export const getHoldings =  () => dispatch => {
-        AsyncStorage.getItem('holdings').then( existingHoldings => {
-            dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
-        })
+    AsyncStorage.getItem('holdings').then( existingHoldings => {
+        dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
+    })
 }
 
 export const saveHolding = (holding) => dispatch => {
-        AsyncStorage.getItem('holdings').then( existingHoldings => {
-            let holdings;
-            existingHoldings ? holdings  = JSON.parse(existingHoldings) : holdings = [];
-            holdings.push(holding);
-            console.log(holdings);
-            existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([holding]));
-        })
+    AsyncStorage.getItem('holdings').then( existingHoldings => {
+        let holdings;
+        existingHoldings ? holdings  = JSON.parse(existingHoldings) : holdings = [];
+        holdings.push(holding);
+        existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([holding]));
+    })
 }
 
 

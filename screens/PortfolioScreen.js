@@ -4,8 +4,8 @@ import {Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';
-import PortfolioAddButton from '../common/PortfolioAddButton';
-import {  } from '../actions';
+import AddButton from '../common/PortfolioAddButton';
+import { getHoldings } from '../actions';
 
 
 class PortfolioScreen extends Component {
@@ -18,14 +18,38 @@ class PortfolioScreen extends Component {
         }
     }
 
-    render() {
-        const { navigation } = this.props;
+    componentDidMount() {
+        const { getHoldings } = this.props;
+        getHoldings();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+    }
+
+    renderWithoutHoldings = () => {
         return(
             <View style={styles.container}>
                 <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>
-                <PortfolioAddButton onPress={() => navigation.navigate('addtoporfolio')} />
+                <AddButton onPress={() => navigation.navigate('addtoporfolio')} />
+            </View>
+        );
+    }
+
+    render() {
+        const { navigation, holdings } = this.props;
+        if(!holdings) return this.renderWithoutHoldings();
+        return(
+            <View style={styles.container}>
+                <Text>Where it goes</Text>
             </View>    
         );
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        holdings: state.holdings.holdings
     }
 }
 
@@ -45,6 +69,7 @@ const styles = StyleSheet.create({
         color: "#000",
         fontSize: 40
     },
+
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -59,4 +84,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(null)(PortfolioScreen);
+export default connect(mapStateToProps, { getHoldings })(PortfolioScreen);
