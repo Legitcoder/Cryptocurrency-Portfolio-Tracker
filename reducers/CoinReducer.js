@@ -5,18 +5,17 @@ import {
     GET_TRADING_PAIRS_PRICE_HASH
 } from '../actions/types';
 
-const INITIAL_STATE = {}
 
-export default( state = INITIAL_STATE, action ) => {
+export default( state = {}, action ) => {
     switch(action.type) {
         case GET_COINS:
-            return {...INITIAL_STATE, coins: action.payload}
+            return {...state, coins: action.payload}
         case SELECT_COIN:
-            return {...INITIAL_STATE, coin: action.payload}
+            return {...state, coin: action.payload}
         case GET_COIN_EXCHANGES_AND_TRADING_PAIRS:
-            return {...INITIAL_STATE, exchanges: action.payload}
+            return {...state, exchanges: action.payload}
         case GET_TRADING_PAIRS_PRICE_HASH:
-            return {...INITIAL_STATE, tradingPairsPrices: action.payload}
+            return {...state, tradingPairsPrices: action.payload}
         default: 
             return state
     }

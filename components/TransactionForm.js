@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { getTradingPairsPriceHash } from '../actions';
+import TransactionButton from '../common/TransactionButton';
 
 
 class TransactionForm extends Component {
@@ -18,53 +19,33 @@ class TransactionForm extends Component {
              activeTradingPair: '', 
              isDateTimePickerVisible: false,
              date: new Date().toString().slice(0 , -18),
-             tradingPairsPrices: ''
-             //coin: null
+             tradingPairsPrices: '',
+             amount: "0",
+             priceBought: "0"
             }
     }
 
-    componentDidMount() {
-        console.log(this.props);
-        const {coin, exchanges} = this.props;
-        if(coin && coin === null) this.setState({coin: coin});
-        if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
-    }
-
-    componentDidUpdate() {
-        console.log(this.state);
-        const {coin, exchanges, tradingPairsPrices } = this.props;
-        //debugger;
-        if(tradingPairsPrices && tradingPairsPrices === '') this.setState({tradingPairsPrices: tradingPairsPrices});
-        if(coin && coin === null) this.setState({coin: coin});
-        if(exchanges && exchanges === []) this.setState({exchanges: exchanges});
-    }
-
     extractExchangeIndex(exchangeObjArray, activeExchange) {
-        const exchanges = [];
-        exchangeObjArray.forEach(exchangeObj => {
-            exchanges.push(exchangeObj.exchange);
-        });
-        return exchanges.indexOf(activeExchange);
+        return exchangeObjArray.map(exchangeObj => exchangeObj.exchange).indexOf(activeExchange);
     }
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
-        const {getTradingPairsPriceHash, coin, tradingPairsPrices } = nextProps;
-        let { exchanges } = nextProps;
-        if(!exchanges) {exchanges = this.state.exchanges};
+        const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges } = nextProps;
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
-            this.setState({exchanges: exchanges,
-                tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
-                activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
-                activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
-                tradingPairsPrices: tradingPairsPrices
-            }, () => {
+        let newState = {
+            exchanges: exchanges,
+            tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
+            activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
+            activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
+            tradingPairsPrices: tradingPairsPrices,
+            priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0
+        }
+            this.setState(newState, () => {
                 if(!tradingPairsPrices) {
                     getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
-                    this.setState({tradingPairsPrices: tradingPairsPrices});
-                }
-            });
+                }});
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -109,11 +90,11 @@ class TransactionForm extends Component {
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
-                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"  value={this.state.tradingPairsPrices ? (this.state.tradingPairsPrices[this.state.activeTradingPair]) ? (this.state.tradingPairsPrices[this.state.activeTradingPair]).toString() : "" : ""} />
+                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"  value={this.state.tradingPairsPrices ? (this.state.tradingPairsPrices[this.state.activeTradingPair]) ? (this.state.tradingPairsPrices[this.state.activeTradingPair]).toString() : "" : ""} onChangeText={ (text) => this.setState({priceBought: text})} />
                 </View>  
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
-                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Amount Bought" placeholderTextColor="#80808050" />
+                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Amount Bought" placeholderTextColor="#80808050" onChangeText={(text) => this.setState({amount: text}) } />
                 </View> 
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>
@@ -125,26 +106,31 @@ class TransactionForm extends Component {
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this._handleDatePicked}
                     onCancel={this._hideDateTimePicker}
-                    />                  
+                    />              
             </View> 
         );
     }
 
     render() {
+        const { onPress } = this.props;
         return(
             <View style={{flex: 6}}>
              {this.renderForm()}
+             <TransactionButton 
+                text={this.props.activeOrderState ? 'Add Transaction' : ''} 
+                buttonColor={this.props.activeOrderState === "Buy" ? '#008000' : '#FF0000'}
+                onPress={ () => onPress(this.state) } 
+              />    
             </View>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return{
         tradingPairsPrices: state.coins.tradingPairsPrices,
         exchanges: state.coins.exchanges,
-        //coin: state.coins.coin,
+        coin: state.coins.coin,
     }
 }
 

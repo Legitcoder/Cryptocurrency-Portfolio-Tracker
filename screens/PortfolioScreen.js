@@ -33,8 +33,8 @@ class PortfolioScreen extends Component {
 const styles = StyleSheet.create({
     buttonStyles: {
         backgroundColor: '#fff',
-        width: 80,
-        height: 75,
+        width: 70,
+        height: 65,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,

@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 export default( state = INITIAL_STATE, action ) => {
     switch(action.type) {
         case MATCH_SEARCH_ARRAY:
-            return {...INITIAL_STATE, searchArray: action.payload}
+            return {...state, searchArray: action.payload}
         default: 
             return state
     }

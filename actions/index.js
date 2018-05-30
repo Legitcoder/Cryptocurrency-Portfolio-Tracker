@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 import cryptoCompareApi from 'cryptocompare';
 import {
     MATCH_SEARCH_ARRAY,
@@ -47,6 +47,27 @@ export const getCoins = () => dispatch => {
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
     })
+}
+
+export const getHoldings =  () => dispatch => {
+    try {
+        let existingHoldings;
+        AsyncStorage.getItem('holdings').then( holdings => existingHoldings = holdings)
+        existingHoldings = JSON.parse(user);
+        return existingHoldings;
+    }
+
+    catch(error) {
+        alert(error);
+    }
+}
+
+export const saveHolding = (holding) => dispatch => {
+        let existingHoldings;
+        AsyncStorage.getItem('holdings').then( holdings => existingHoldings = holdings)
+        existingHoldings ? JSON.parse(existingHoldings) : existingHoldings = null;
+        existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(existingHoldings.push(holding))) : AsyncStorage.setItem('holdings', JSON.stringify(holding));
+        debugger;
 }
 
 

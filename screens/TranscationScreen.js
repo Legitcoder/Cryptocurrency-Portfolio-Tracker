@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
+import { saveHolding } from '../actions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Feather } from '@expo/vector-icons';
 
@@ -54,6 +56,13 @@ class TransactionScreen extends Component {
         );
     }
 
+    handleTransaction = (formState) => {
+        const { navigation } = this.props;
+        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair};
+        const { saveHolding } = this.props;
+        saveHolding(holdings).then( () => navigation.navigate('portfolio'));
+    } 
+
 
     render() {
         const { coin } = this.props.navigation.state.params;
@@ -75,8 +84,7 @@ class TransactionScreen extends Component {
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
-                <TransactionForm navigation={this.props.navigation} activeOrderState={this.state.activeState} coin={coin}/>
-                <TransactionButton style={{flexGrow: 1}} text={this.state.activeState ? 'Add Transaction' : ''} buttonColor={this.state.activeState === "Buy" ? '#008000' : '#FF0000'} />
+                <TransactionForm navigation={this.props.navigation} activeOrderState={this.state.activeState} onPress={ this.handleTransaction} />
              </View>   
             </KeyboardAwareScrollView>
            </View> 
@@ -132,4 +140,4 @@ class TransactionScreen extends Component {
  })
 
 
- export default TransactionScreen;
+ export default connect(null, { saveHolding })(TransactionScreen);
