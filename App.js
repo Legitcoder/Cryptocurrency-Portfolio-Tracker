@@ -7,7 +7,7 @@ console.ignoredYellowBox = ['Remote debugger'];
 export const BASE_URL = 'https://www.cryptocompare.com';
 
 //Temporary testing purposes
-//AsyncStorage.removeItem('holdings');
+AsyncStorage.removeItem('holdings');
 
 export default class App extends React.Component {
   render() {

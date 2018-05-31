@@ -2,20 +2,17 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
-class PortfolioAddButton extends Component {
-
-    render() {
-        const { onPress } = this.props;    
+const AddButton = ({ onPress }) => {
         return(
-        <TouchableOpacity
-            style={styles.buttonStyles}
-            onPress={onPress}
-            activeOpacity={1}
-        >
-            <Text style={styles.buttonTextStyles}>+</Text>
-        </TouchableOpacity>  
+            <TouchableOpacity
+                style={styles.buttonStyles}
+                onPress={onPress}
+                activeOpacity={1}
+            >
+                <Text style={styles.buttonTextStyles}>+</Text>
+            </TouchableOpacity>  
         );
-    }
+
 }
 
 
@@ -37,4 +34,4 @@ const styles = StyleSheet.create({
 
 
 
-export default PortfolioAddButton;
+export default AddButton;

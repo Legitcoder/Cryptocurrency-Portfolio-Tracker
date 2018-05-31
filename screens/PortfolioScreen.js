@@ -4,7 +4,7 @@ import {Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';
-import AddButton from '../common/PortfolioAddButton';
+import AddButton from '../common/AddButton';
 import { getHoldings } from '../actions';
 
 
@@ -22,12 +22,22 @@ class PortfolioScreen extends Component {
         const { getHoldings } = this.props;
         getHoldings();
     }
+    
+    componentDidFocus(){
+        const { getHoldings } = this.props;
+        getHoldings();
+    }
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
     }
 
+    componentWillUnmount() {
+        console.log("unmounting");
+    }
+
     renderWithoutHoldings = () => {
+        const { navigation } = this.props;
         return(
             <View style={styles.container}>
                 <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>

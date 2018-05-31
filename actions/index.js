@@ -41,7 +41,7 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 
 export const getCoins = () => dispatch => {
     //Testing Getting Price
-    // cryptoCompareApi.price("LSK", ["EURO"], { exchanges: ["Abucoins"] })
+    // cryptoCompareApi.price("DLISK", ["USD"])
     // .then(prices => console.log(prices))
     cryptoCompareApi.coinList()
     .then(coinList => {
@@ -52,7 +52,7 @@ export const getCoins = () => dispatch => {
 export const getHoldings =  () => dispatch => {
     AsyncStorage.getItem('holdings').then( existingHoldings => {
         dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
-    })
+    });
 }
 
 export const saveHolding = (holding) => dispatch => {

@@ -64,7 +64,11 @@ export const MainNavigator = createBottomTabNavigator({
       }),
       swipeEnabled: false,
       tabBarOptions: {
-        showLabel: false
+        showLabel: false,
+        activeTintColor: '#fff',
+        style: {
+          backgroundColor: '#282e33'
+        }
       }
     }
 )

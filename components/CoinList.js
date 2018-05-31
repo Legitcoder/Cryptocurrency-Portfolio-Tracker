@@ -9,8 +9,6 @@ import { BASE_URL } from '../App';
 class CoinList extends Component {
     renderList() {
         const { coins, onPress } = this.props;
-        if(!coins) {return <View style={styles.textContainer}><Text style={styles.textStyles}>Search for Cryptocurrencies</Text></View>; }
-        else if(coins){
         return(
                 <List style={styles.listStyles}  keyboardShouldPersistTaps='handled'>
 
@@ -32,7 +30,6 @@ class CoinList extends Component {
  
                 </List>   
             );
-        }
     }
 
     render() {     

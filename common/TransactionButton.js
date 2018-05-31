@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { TouchableOpacity, TextInput, View, Text, StyleSheet } from 'react-native';
 
 
-class TransactionButton extends Component {
-    render() {
-        const { text, onPress, buttonColor } = this.props;
+const TransactionButton = ({ text, onPress, buttonColor }) => {
         const { buttonStyle, textStyle } = styles;
         return (
             <TouchableOpacity onPress={onPress} style={[buttonStyle, {backgroundColor: buttonColor || '#6495ED'}]}>
                 <Text style={textStyle}>{text}</Text>
             </TouchableOpacity>    
         );
-    }
 }
 
 
