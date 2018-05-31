@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';
 import AddButton from '../common/AddButton';
+import HoldingList from '../components/HoldingList';
 import { getHoldings } from '../actions';
 
 
@@ -22,18 +23,9 @@ class PortfolioScreen extends Component {
         const { getHoldings } = this.props;
         getHoldings();
     }
-    
-    componentDidFocus(){
-        const { getHoldings } = this.props;
-        getHoldings();
-    }
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
-    }
-
-    componentWillUnmount() {
-        console.log("unmounting");
     }
 
     renderWithoutHoldings = () => {
@@ -46,12 +38,21 @@ class PortfolioScreen extends Component {
         );
     }
 
+    renderPortfolioValue = () => {
+        return(
+            <View styles={{flex: 3}}>
+                <Text>1 Billion Dollars Lol</Text>
+            </View>
+        );
+    }
+
     render() {
         const { navigation, holdings } = this.props;
         if(!holdings) return this.renderWithoutHoldings();
         return(
             <View style={styles.container}>
-                <Text>Where it goes</Text>
+                {this.renderPortfolioValue()}
+                <HoldingList holdings={holdings} />
             </View>    
         );
     }

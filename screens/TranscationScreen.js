@@ -65,10 +65,10 @@ class TransactionScreen extends Component {
     handleTransaction = (formState) => {
         const { coin } = this.props.navigation.state.params;
         const { navigation } = this.props;
-        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, coin: coin};
+        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin};
         const { saveHolding } = this.props;
         saveHolding(holdings, navigation);
-        setTimeout(() => navigation.navigate('portfolio'), 500);
+        navigation.navigate('portfolio');
     } 
 
 

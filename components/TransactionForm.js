@@ -110,14 +110,14 @@ class TransactionForm extends Component {
     }
 
     render() {
-        const { onPress } = this.props;
+        const { onPress, activeOrderState } = this.props;
         return(
             <View style={{flex: 6}}>
              {this.renderForm()}
              <TransactionButton 
                 text={this.props.activeOrderState ? 'Add Transaction' : ''} 
                 buttonColor={this.props.activeOrderState === "Buy" ? '#008000' : '#FF0000'}
-                onPress={ () => onPress(this.state) } 
+                onPress={ () => onPress({...this.state, activeOrderState: activeOrderState }) } 
               />    
             </View>
         );
