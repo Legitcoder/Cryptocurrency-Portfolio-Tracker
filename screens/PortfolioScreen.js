@@ -52,7 +52,7 @@ class PortfolioScreen extends Component {
         return(
             <View style={styles.container}>
                 {this.renderPortfolioValue()}
-                <HoldingList holdings={holdings} />
+                <HoldingList navigation={navigation} holdings={holdings} />
             </View>    
         );
     }
