@@ -21,8 +21,14 @@ class TransactionForm extends Component {
              date: new Date().toString().slice(0 , -18),
              tradingPairsPrices: '',
              amount: "0",
-             priceBought: "0"
+             priceBought: "0",
+             usdPrice: null
             }
+    }
+
+    componentDidMount() {
+        const { getCoinUSDPrice, coin } = this.props;
+        getCoinUSDPrice(coin.Symbol);
     }
 
     extractExchangeIndex(exchangeObjArray, activeExchange) {
@@ -30,7 +36,7 @@ class TransactionForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges } = nextProps;
+        const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges, usdPrice } = nextProps;
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
         let newState = {
@@ -39,12 +45,14 @@ class TransactionForm extends Component {
             activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
             activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
             tradingPairsPrices: tradingPairsPrices,
-            priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0
+            priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
+            usdPrice: usdPrice ? usdPrice["USD"] : null
         }
             this.setState(newState, () => {
                 if(!tradingPairsPrices) {
                     getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
-                }});
+                }
+            });
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -129,6 +137,7 @@ const mapStateToProps = (state) => {
         tradingPairsPrices: state.coins.tradingPairsPrices,
         exchanges: state.coins.exchanges,
         coin: state.coins.coin,
+        usdPrice: state.coins.usdPrice
     }
 }
 

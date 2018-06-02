@@ -34,6 +34,7 @@ class Holding extends Component {
 
     render() {
         const { holding } = this.props;
+        debugger;
         return(
             <View style={styles.container}>
                 {this.renderLogoAndQuantity()}
