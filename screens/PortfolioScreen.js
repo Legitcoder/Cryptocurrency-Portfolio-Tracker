@@ -41,9 +41,17 @@ class PortfolioScreen extends Component {
     renderPortfolioValue = () => {
         return(
             <View styles={styles.portfolioValueStyles}>
-                <Text style={styles.portfolioValueTextStyles}>$153,670</Text>
+                <Text style={styles.portfolioValueTextStyles}>{this.calculatePortfolioValue()}</Text>
             </View>
         );
+    }
+
+    calculatePortfolioValue = () => {
+        const {holdings} = this.props;
+        const totalPrices = []
+        holdings.forEach(holding => totalPrices.push(parseFloat((holding.usdPrice * holding.amount))));
+        return `$${totalPrices.reduce((accumulator, currentValue) => accumulator + currentValue).toFixed(2)}`;
+
     }
 
     render() {

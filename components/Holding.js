@@ -25,7 +25,7 @@ class Holding extends Component {
         return(
             <View style={styles.rightStyle}>
                 <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
-                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${holding.priceBought}</Text>
+                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPrice * holding.amount).toFixed(2)}</Text>
             </View>      
         );
 
@@ -34,7 +34,6 @@ class Holding extends Component {
 
     render() {
         const { holding } = this.props;
-        debugger;
         return(
             <View style={styles.container}>
                 {this.renderLogoAndQuantity()}
