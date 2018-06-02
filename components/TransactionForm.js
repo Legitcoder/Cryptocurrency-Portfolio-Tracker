@@ -5,7 +5,7 @@ import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-nati
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
-import { getTradingPairsPriceHash } from '../actions';
+import { getTradingPairsPriceHash, getCoinUSDPrice } from '../actions';
 import TransactionButton from '../common/TransactionButton';
 
 
@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, {getTradingPairsPriceHash})(TransactionForm);
+export default connect(mapStateToProps, {getTradingPairsPriceHash, getCoinUSDPrice})(TransactionForm);

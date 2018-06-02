@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
-const AddButton = ({ onPress, propsButtonStyle }) => {
+const AddButton = ({ onPress, propsButtonStyle, activeOpacity }) => {
         return(
             <TouchableOpacity
                 style={[styles.buttonStyles, propsButtonStyle ]}
                 onPress={onPress}
-                activeOpacity={1}
+                activeOpacity={activeOpacity ?  activeOpacity : 1}
             >
                 <Text style={styles.buttonTextStyles}>+</Text>
             </TouchableOpacity>  

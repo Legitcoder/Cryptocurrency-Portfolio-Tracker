@@ -5,29 +5,27 @@ import {Text, View, StyleSheet, Image } from 'react-native';
 
 class Holding extends Component {
 
-    renderLeft = () => {
-        const { holdings } = this.props;
-        let holding = holdings[0];
+    renderLogoAndQuantity = () => {
+        const { holding } = this.props;
         console.log(holding);
         return(
             <View style={styles.leftStyle}>
                 <View style={styles.iconSymbolContainer}> 
-                    <Image source={{uri: holding.coin.ImageUrl}} style={{width: 40, height: 40, alignSelf: 'center', resizeMode: 'contain'}} />
-                    <Text>{holding.coin.Symbol}</Text>
+                    <Image source={{uri: holding.coin.ImageUrl}} style={{width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain', marginRight: 5}} />
+                    <Text style={{marginLeft: 5, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>{holding.coin.Symbol}</Text>
                 </View>
-                <Text>{holding.amount} {holding.coin.Symbol}</Text> 
+                <Text style={{marginTop: 5, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>{holding.amount} {holding.coin.Symbol}</Text> 
             </View>   
         );
 
     }
 
-    renderRight = () => {
-        const { holdings } = this.props;
-        let holding = holdings[0];
+    renderGains = () => {
+        const { holding } = this.props;
         return(
             <View style={styles.rightStyle}>
-                <Text>Percentage Gain</Text>
-                <Text>{holding.priceBought}</Text>
+                <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
+                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${holding.priceBought}</Text>
             </View>      
         );
 
@@ -35,12 +33,11 @@ class Holding extends Component {
     }
 
     render() {
-        const { holdings } = this.props;
-        let holding = holdings[0];
+        const { holding } = this.props;
         return(
             <View style={styles.container}>
-                {this.renderLeft()}
-                {this.renderRight()}
+                {this.renderLogoAndQuantity()}
+                {this.renderGains()}
             </View>
         );
     }
@@ -52,9 +49,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+        backgroundColor: '#2b3136',
         margin: 15,
-        borderRadius: 5
+        borderRadius: 5,
+        height: '20%',
     },
     leftStyle: {
         justifyContent: 'center',
@@ -66,9 +64,11 @@ const styles = StyleSheet.create({
     },
     iconSymbolContainer: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 5
     }
 })
+
 
 
 export default Holding;

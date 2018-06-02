@@ -31,7 +31,7 @@ class PortfolioScreen extends Component {
     renderWithoutHoldings = () => {
         const { navigation } = this.props;
         return(
-            <View style={styles.container}>
+            <View style={[styles.container, {justifyContent: 'center'}]}>
                 <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>
                 <AddButton onPress={() => navigation.navigate('addtoporfolio')} />
             </View>
@@ -40,8 +40,8 @@ class PortfolioScreen extends Component {
 
     renderPortfolioValue = () => {
         return(
-            <View styles={{flex: 3}}>
-                <Text>1 Billion Dollars Lol</Text>
+            <View styles={styles.portfolioValueStyles}>
+                <Text style={styles.portfolioValueTextStyles}>$153,670</Text>
             </View>
         );
     }
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       backgroundColor: '#202428',
     },
@@ -91,6 +91,13 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: '#fff',
         padding: 20
+    },
+    portfolioValueStyles: {
+        flex: 1
+    },
+    portfolioValueTextStyles: {
+        fontSize: 40,
+        color: "#fff"
     }
   });
 

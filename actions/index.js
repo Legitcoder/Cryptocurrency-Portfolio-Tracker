@@ -6,7 +6,8 @@ import {
     GET_COIN_EXCHANGES_AND_TRADING_PAIRS,
     GET_COINS,
     GET_TRADING_PAIRS_PRICE_HASH,
-    GET_HOLDINGS
+    GET_HOLDINGS,
+    GET_COIN_USD_PRICE
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -30,6 +31,13 @@ export const selectCoin = (coin) => dispatch => {
 
 export const matchSearchArray = (searchArray) => dispatch => {
     dispatch({ type: MATCH_SEARCH_ARRAY, payload: searchArray })
+}
+
+export const getCoinUSDPrice = (selectedCoin) => dispatch => {
+    cryptoCompareApi.price(selectedCoin, ["USD"])
+    .then(prices => {
+        dispatch({ type: GET_COIN_USD_PRICE, payload: prices });
+    })    
 }
 
 export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExchange) => dispatch => {

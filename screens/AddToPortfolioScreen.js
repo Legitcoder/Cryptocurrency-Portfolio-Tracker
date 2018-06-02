@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import SearchCoinsScreen from './SearchCoinsScreen';
+import { Feather } from '@expo/vector-icons';
 
 
 class AddToPortfolioScreen extends Component {
-    static navigationOptions = {
-        headerStyle: {
-            backgroundColor: '#202428',
-            borderBottomWidth: 0,
-            elevation: 0,
-            shadowOpacity: 0
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Search Cryptocurrencies',
+            headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => navigation.goBack()} />,
+            headerStyle: {
+                backgroundColor: '#282E33',
+                borderBottomWidth: 0,
+                elevation: 0,
+                shadowOpacity: 0
+            },
+            headerTitleStyle: {
+                color: "#fff"
+            }
         }
-    }
+    }   
     
     render() {
         return(

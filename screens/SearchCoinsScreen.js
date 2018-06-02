@@ -7,16 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { selectCoin, getExchangesCoinBelongsTo } from '../actions';
 
 
-class SearchCoinsScreen extends Component {
-    static navigationOptions = {
-        headerStyle: {
-            backgroundColor: '#202428',
-            borderBottomWidth: 0,
-            elevation: 0,
-            shadowOpacity: 0
-        }
-    }
-
+class SearchCoinsScreen extends Component { 
     constructor(props) {
         super(props);
         this.state = {scrollHeight: -50}
