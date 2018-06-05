@@ -64,9 +64,8 @@ class TransactionScreen extends Component {
 
     handleTransaction = (formState) => {
         const { coin } = this.props.navigation.state.params;
-        const { navigation } = this.props;
+        const { navigation, saveHolding } = this.props;
         const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPrice: formState.usdPrice};
-        const { saveHolding } = this.props;
         saveHolding(holdings);
         navigation.navigate('portfolio');
     } 
@@ -74,25 +73,27 @@ class TransactionScreen extends Component {
 
     render() {
         const { coin } = this.props.navigation.state.params;
+        const { scrollHeight, activeState } = this.state;
+        const { container, buttonsContainer} = styles;
         return(
-           <View style={styles.container}> 
+           <View style={container}> 
             <KeyboardAwareScrollView
             scrollEnabled={true}
             enableOnAndroid={true}
             resetScrollToCoords={{ x: 0, y: 0 }}   
-            contentContainerStyle={styles.container}
+            contentContainerStyle={container}
             onKeyboardWillShow={ (e) => this.setState({scrollHeight: -60})} 
             onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
-            extraScrollHeight={this.state.scrollHeight}
+            extraScrollHeight={scrollHeight}
             keyboardShouldPersistTaps='handled'
             >
-            <View style={styles.container}>
+            <View style={container}>
                     {this.renderHeader()}
-                <View style={styles.buttonsContainer}>
+                <View style={buttonsContainer}>
                     {this.renderBuyButton()}
                     {this.renderSellButton()}
                 </View>
-                <TransactionForm navigation={this.props.navigation} activeOrderState={this.state.activeState} onPress={ this.handleTransaction} />
+                <TransactionForm navigation={this.props.navigation} activeOrderState={activeState} onPress={ this.handleTransaction} />
              </View>   
             </KeyboardAwareScrollView>
            </View> 

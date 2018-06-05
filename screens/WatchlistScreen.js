@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet } from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import TransactionButton from '../common/TransactionButton';
+import AddButton from '../common/AddButton';
 
 class WatchlistScreen extends Component {
+    renderWithoutWatchlist = () => {
+        const { navigation } = this.props;
+        return(
+            <View style={[styles.container, {justifyContent: 'center'}]}>
+                <Text style={styles.welcomeTextStyles}>Nothing in your Watch List!</Text>
+                <AddButton onPress={() => navigation.navigate('addtoporfolio')} />
+            </View>
+        );
+    }
+
+
     render() {
         return(
             <View style={styles.container}>
-                <Text>SOme Text Here</Text>
-                <TransactionButton onPress={() => {console.log("Do something")}} text={'Add Transaction'} buttonColor={'#228B22'} />
+                {this.renderWithoutWatchlist()}
             </View>  
         );
     }
@@ -16,10 +25,22 @@ class WatchlistScreen extends Component {
 
 
 const styles = StyleSheet.create({
+    buttonTextStyles: {
+        color: "#000",
+        fontSize: 40
+    },
     container: {
       flex: 1,
+      justifyContent: 'flex-start',
       alignItems: 'center',
-      justifyContent: 'space-between',
+      backgroundColor: '#202428',
+    },
+    welcomeTextStyles: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 25,
+        color: '#fff',
+        padding: 20
     },
   });
 

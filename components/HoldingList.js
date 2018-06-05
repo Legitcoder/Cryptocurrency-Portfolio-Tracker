@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {Text, View, ScrollView, StyleSheet, Image, RefreshControl, FlatList } from 'react-native';
 import Holding from './Holding';
 import AddButton from '../common/AddButton';
+import { getCoinUSDPrice } from '../actions';
 
 
 
@@ -22,9 +23,7 @@ class HoldingList extends Component {
     }
 
     _onRefresh = () => {
-        // this.setState({ refreshing: true })
-        // console.log("refreshing");
-        // this.setState({ refreshing: false })
+        // this.setState({ refreshing: true }, () => this.setState({ refreshing: false }))
     }
 
     _renderItem = ({ item }) => <Holding holding={item} />
@@ -64,4 +63,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(null, {})(HoldingList);
+export default connect(null, { getCoinUSDPrice })(HoldingList);

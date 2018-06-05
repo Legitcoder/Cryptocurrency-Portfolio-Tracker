@@ -13,6 +13,7 @@
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-navigation": "^2.0.1",
     "react-redux": "^5.0.7",
+    "react-stockcharts": "^0.7.6",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "regex-sort": "^1.0.6"

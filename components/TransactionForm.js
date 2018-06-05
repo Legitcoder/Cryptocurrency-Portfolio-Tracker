@@ -65,6 +65,7 @@ class TransactionForm extends Component {
     };
 
     onPressExchanges = (selectedExchange, tradingPairs) => {
+        const { getTradingPairsPriceHash } = this.props;
         this.props.getTradingPairsPriceHash(this.props.coin.Symbol, tradingPairs, selectedExchange);
         this.setState((prevState, props) => {return { activeExchange: selectedExchange, activeTradingPair: tradingPairs[0], tradingPairs: tradingPairs}});
     }

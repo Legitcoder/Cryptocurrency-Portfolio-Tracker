@@ -1,13 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {Text, View, StyleSheet, Image } from 'react-native';
+import { getCoinUSDPrice } from '../actions';
 
 
 
 class Holding extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {currentUsdPrice: props.holding.usdPrice}
+    }
+
+    componentWillMount() {
+        const { getCoinUSDPrice, holding } = this.props;
+        getCoinUSDPrice(holding.coin.Symbol);
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ currentUsdPrice: nextProps.holding.usdPrice});
+    }
 
     renderLogoAndQuantity = () => {
         const { holding } = this.props;
-        console.log(holding);
         return(
             <View style={styles.leftStyle}>
                 <View style={styles.iconSymbolContainer}> 
@@ -25,7 +40,7 @@ class Holding extends Component {
         return(
             <View style={styles.rightStyle}>
                 <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
-                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPrice * holding.amount).toFixed(2)}</Text>
+                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(this.state.currentUsdPrice * holding.amount).toFixed(2)}</Text>
             </View>      
         );
 
@@ -43,6 +58,12 @@ class Holding extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return{
+        usdPrice: state.coins.usdPrice
+    };
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -53,6 +74,7 @@ const styles = StyleSheet.create({
         margin: 15,
         borderRadius: 5,
         height: '20%',
+        padding: 15
     },
     leftStyle: {
         justifyContent: 'center',
@@ -71,4 +93,4 @@ const styles = StyleSheet.create({
 
 
 
-export default Holding;
+export default connect(mapStateToProps, { getCoinUSDPrice })(Holding);

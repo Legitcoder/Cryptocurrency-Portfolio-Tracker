@@ -49,7 +49,7 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 
 export const getCoins = () => dispatch => {
     //Testing Getting Price
-    // cryptoCompareApi.price("DLISK", ["USD"])
+    // cryptoCompareApi.price("ETH", ["USD"])
     // .then(prices => console.log(prices))
     cryptoCompareApi.coinList()
     .then(coinList => {
