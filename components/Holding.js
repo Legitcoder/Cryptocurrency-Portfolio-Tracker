@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import {Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { getCoinUSDPrice, getHoldings } from '../actions';
 
-
+//You might have to add currentUSDPrice and currentBTCPrice in redux application state
+//as apposed to doing it on the component level especially if you're going actively
+//refresh the entire list
 
 class Holding extends Component {
     constructor(props) {
         super(props);
-        this.state = {currentUsdPrice: props.holding.usdPrice}
+        this.state = {currentUsdPrice: props.holding.usdPriceBought}
     }
 
     componentWillMount() {
@@ -18,7 +20,8 @@ class Holding extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ currentUsdPrice: nextProps.holding.usdPrice});
+        console.log(nextProps);
+        this.setState({ currentUsdPrice: nextProps.usdPrice["USD"]});
     }
 
     renderLogoAndQuantity = () => {

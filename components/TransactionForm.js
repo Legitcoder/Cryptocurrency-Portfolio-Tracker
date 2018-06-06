@@ -5,7 +5,7 @@ import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-nati
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
-import { getTradingPairsPriceHash, getCoinUSDPrice } from '../actions';
+import { getTradingPairsPriceHash, getCoinUSDPrice, getCoinBTCPrice } from '../actions';
 import TransactionButton from '../common/TransactionButton';
 
 
@@ -29,6 +29,7 @@ class TransactionForm extends Component {
     componentDidMount() {
         const { getCoinUSDPrice, coin } = this.props;
         getCoinUSDPrice(coin.Symbol);
+        getCoinBTCPrice(coin.Symbol);
     }
 
     extractExchangeIndex(exchangeObjArray, activeExchange) {
@@ -37,7 +38,7 @@ class TransactionForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges, usdPrice } = nextProps;
+        const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges, usdPrice, btcPrice } = nextProps;
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
         if(exchanges) {
@@ -48,7 +49,8 @@ class TransactionForm extends Component {
                 activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
                 tradingPairsPrices: tradingPairsPrices,
                 priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
-                usdPriceBought: usdPrice ? usdPrice["USD"] : null
+                usdPriceBought: usdPrice ? usdPrice["USD"] : null,
+                btcPriceBought: btcPrice ? btcPrice["BTC"] : null
             }
                 this.setState(newState, () => {
                     if(!tradingPairsPrices) {
@@ -141,7 +143,8 @@ const mapStateToProps = (state) => {
         tradingPairsPrices: state.coins.tradingPairsPrices,
         exchanges: state.coins.exchanges,
         coin: state.coins.coin,
-        usdPrice: state.coins.usdPrice
+        usdPrice: state.coins.usdPrice,
+        btcPrice: state.coins.btcPrice
     }
 }
 

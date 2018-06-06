@@ -50,7 +50,7 @@ class PortfolioScreen extends Component {
     calculatePortfolioValue = () => {
         const {holdings} = this.props;
         const totalPrices = [];
-        holdings.forEach(holding => totalPrices.push(parseFloat((holding.usdPrice * holding.amount))));
+        holdings.forEach(holding => totalPrices.push(parseFloat((holding.usdPriceBought * holding.amount))));
         return `$${totalPrices.reduce((accumulator, currentValue) => accumulator + currentValue).toFixed(2)}`;
 
     }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
-import { saveHolding, getHoldings } from '../actions';
+import { saveTransaction, getHoldings } from '../actions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Feather, Ionicons } from '@expo/vector-icons';
 
@@ -64,9 +64,9 @@ class TransactionScreen extends Component {
 
     handleTransaction = (formState) => {
         const { coin } = this.props.navigation.state.params;
-        const { navigation, saveHolding } = this.props;
-        const holdings = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPrice: formState.usdPrice};
-        saveHolding(holdings);
+        const { navigation, saveTransaction } = this.props;
+        const transaction= { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPriceBought: formState.usdPriceBought, btcPriceBought: formState.btcPriceBought};
+        saveTransaction(transaction);
         navigation.navigate('managecoin', { refresh: () => {
             const { getHoldings } = this.props;
             getHoldings();
@@ -152,4 +152,4 @@ class TransactionScreen extends Component {
  })
 
 
- export default connect(null, { saveHolding, getHoldings })(TransactionScreen);
+ export default connect(null, { saveTransaction, getHoldings })(TransactionScreen);

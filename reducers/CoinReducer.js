@@ -3,7 +3,8 @@ import {
     SELECT_COIN,
     GET_COIN_EXCHANGES_AND_TRADING_PAIRS,
     GET_TRADING_PAIRS_PRICE_HASH,
-    GET_COIN_USD_PRICE
+    GET_COIN_USD_PRICE,
+    GET_COIN_BTC_PRICE
 } from '../actions/types';
 
 
@@ -19,6 +20,8 @@ export default( state = {}, action ) => {
             return {...state, tradingPairsPrices: action.payload}
         case GET_COIN_USD_PRICE: 
             return {...state, usdPrice: action.payload}
+        case GET_COIN_BTC_PRICE:
+            return {...state, btcPrice: action.payload}
         default: 
             return state
     }

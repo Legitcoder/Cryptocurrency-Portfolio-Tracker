@@ -71,24 +71,37 @@ export const getHoldings =  () => dispatch => {
     });
 }
 
-export const saveHolding = (holding) => dispatch => {
-    AsyncStorage.getItem('holdings').then( existingHoldings => {
-        let holdings;
-        existingHoldings ? holdings  = JSON.parse(existingHoldings) : holdings = [];
-        if(holdings !== []) consolidateHoldings(holdings, holding);
-        holdings.push(holding);
-        existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([holding]));
+export const saveTransaction = (transaction) => dispatch => {
+    AsyncStorage.getItem('transactions').then( existingTransactions => {
+        let transactions;
+        existingTransactions ? transactions  = JSON.parse(existingTransactions) : transactions = [];
+        if(transactions.length !== 0) saveHolding(transaction);
+        transactions.push(transaction);
+        existingTransactions ? AsyncStorage.setItem('transactions', JSON.stringify(transactions)) : AsyncStorage.setItem('transactions', JSON.stringify([transaction]));
     })
 }
 
 
 //// Helper Methods
 
-const consolidateHoldings = (holdings, newHolding) => {
-    holdings.forEach(holding => {
-        if( holding.coin.Symbol === newHolding.coin.Symbol ) {
-            let newAmount = Number(holding.amount) + Number(newHolding.amount);
-            let usdPriceBought = Number(holding.usdPriceBought) + Number(newHolding.usdPriceBought);
+const saveHolding = (transaction) => {
+    AsyncStorage.getItem('holdings').then( existingholdings => {
+        let holdings, holding;
+        existingholdings ? holdings  = JSON.parse(existingholdings) : holdings = [];
+        if(holdings.length !== 0) consolidateHoldings(holdings, transaction);
+        existingholdings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([transaction]));
+    })
+}
+
+const consolidateHoldings = (holdings, transaction) => {
+    let existingHolding = holdings.filter((holding) => holding.coin.Symbol === transaction.coin.Symbol)
+    console.log(existingHolding);
+    if(existingHolding.length === 0) {
+        holdings.push(transaction);
+    }
+    existingHolding.forEach(holding => {
+        if( holding.coin.Symbol === transaction.coin.Symbol ) {
+            holding.amount = (Number(holding.amount) + Number(transaction.amount)).toString();
         }
     })
 }
