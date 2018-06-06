@@ -7,7 +7,8 @@ import {
     GET_COINS,
     GET_TRADING_PAIRS_PRICE_HASH,
     GET_HOLDINGS,
-    GET_COIN_USD_PRICE
+    GET_COIN_USD_PRICE,
+    GET_COIN_BTC_PRICE
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -40,6 +41,13 @@ export const getCoinUSDPrice = (selectedCoin) => dispatch => {
     })    
 }
 
+export const getCoinBTCPrice = (selectedCoin) => dispatch => {
+    cryptoCompareApi.price(selectedCoin, ["BTC"])
+    .then(prices => {
+        dispatch({ type: GET_COIN_USD_PRICE, payload: prices });
+    })    
+}
+
 export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExchange) => dispatch => {
     cryptoCompareApi.price(selectedCoin, tradingPairs, { exchanges: [selectedExchange] })
     .then(prices => {
@@ -67,6 +75,7 @@ export const saveHolding = (holding) => dispatch => {
     AsyncStorage.getItem('holdings').then( existingHoldings => {
         let holdings;
         existingHoldings ? holdings  = JSON.parse(existingHoldings) : holdings = [];
+        if(holdings !== []) consolidateHoldings(holdings, holding);
         holdings.push(holding);
         existingHoldings ? AsyncStorage.setItem('holdings', JSON.stringify(holdings)) : AsyncStorage.setItem('holdings', JSON.stringify([holding]));
     })
@@ -74,6 +83,15 @@ export const saveHolding = (holding) => dispatch => {
 
 
 //// Helper Methods
+
+const consolidateHoldings = (holdings, newHolding) => {
+    holdings.forEach(holding => {
+        if( holding.coin.Symbol === newHolding.coin.Symbol ) {
+            let newAmount = Number(holding.amount) + Number(newHolding.amount);
+            let usdPriceBought = Number(holding.usdPriceBought) + Number(newHolding.usdPriceBought);
+        }
+    })
+}
 
 const filterCoins = (coinHash) => {
     const coins = [];

@@ -32,6 +32,7 @@ class TransactionForm extends Component {
     }
 
     extractExchangeIndex(exchangeObjArray, activeExchange) {
+        if(!exchangeObjArray) return 0;
         return exchangeObjArray.map(exchangeObj => exchangeObj.exchange).indexOf(activeExchange);
     }
 
@@ -39,20 +40,22 @@ class TransactionForm extends Component {
         const {getTradingPairsPriceHash, coin, tradingPairsPrices, exchanges, usdPrice } = nextProps;
         let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
-        let newState = {
-            exchanges: exchanges,
-            tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
-            activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
-            activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
-            tradingPairsPrices: tradingPairsPrices,
-            priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
-            usdPrice: usdPrice ? usdPrice["USD"] : null
+        if(exchanges) {
+            let newState = {
+                exchanges: exchanges,
+                tradingPairs: exchanges.length === 0 ? [] : exchanges[activeExchangeIndex].pairs ,
+                activeExchange: exchanges.length === 0 ? "N/A" : this.state.activeExchange === '' ? exchanges[0].exchange : this.state.activeExchange, 
+                activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
+                tradingPairsPrices: tradingPairsPrices,
+                priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
+                usdPriceBought: usdPrice ? usdPrice["USD"] : null
+            }
+                this.setState(newState, () => {
+                    if(!tradingPairsPrices) {
+                        getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
+                    }
+                });
         }
-            this.setState(newState, () => {
-                if(!tradingPairsPrices) {
-                    getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
-                }
-            });
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });

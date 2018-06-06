@@ -7,6 +7,7 @@ import SearchCoinsScreen from './SearchCoinsScreen';
 import AddButton from '../common/AddButton';
 import HoldingList from '../components/HoldingList';
 import { getHoldings } from '../actions';
+import _ from 'lodash';
 
 
 class PortfolioScreen extends Component {
