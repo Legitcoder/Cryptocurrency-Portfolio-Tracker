@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator, createTopTabNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from "react-navigation/src/views/StackView/StackViewStyleInterpolator";
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import PorfolioScreen from './screens/PortfolioScreen';
@@ -9,12 +9,14 @@ import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
 import TransactionScreen from './screens/TranscationScreen';
 import ExchangeListScreen from './screens/ExchangeListScreen';
 import TradingPairListScreen from './screens/TradingPairListScreen';
+import ManageCoinScreen from './screens/ManageCoinScreen';
 
 export const MainNavigator = createBottomTabNavigator({
     portfolio: {
       screen: createStackNavigator( {
         portfolio: { screen: PorfolioScreen },
         addtoporfolio: { screen: AddToPortfolioScreen },
+        managecoin: { screen: ManageCoinScreen },
         transaction: {screen: TransactionScreen},
         exchanges: {screen: ExchangeListScreen},
         tradingPairs: {screen: TradingPairListScreen}

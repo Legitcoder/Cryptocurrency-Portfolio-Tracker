@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Text, View, StyleSheet, Image } from 'react-native';
-import { getCoinUSDPrice } from '../actions';
+import {Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { getCoinUSDPrice, getHoldings } from '../actions';
 
 
 
@@ -43,17 +43,17 @@ class Holding extends Component {
                 <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(this.state.currentUsdPrice * holding.amount).toFixed(2)}</Text>
             </View>      
         );
-
-   
     }
-
     render() {
-        const { holding } = this.props;
+        const { holding, navigation } = this.props;
         return(
-            <View style={styles.container}>
+            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { refresh: () => {
+                const { getHoldings } = this.props;
+                getHoldings();
+            }})}>
                 {this.renderLogoAndQuantity()}
                 {this.renderGains()}
-            </View>
+            </TouchableOpacity>
         );
     }
 }
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
 
 
 
-export default connect(mapStateToProps, { getCoinUSDPrice })(Holding);
+export default connect(mapStateToProps, { getCoinUSDPrice, getHoldings })(Holding);

@@ -5,8 +5,6 @@ import Holding from './Holding';
 import AddButton from '../common/AddButton';
 import { getCoinUSDPrice } from '../actions';
 
-
-
 class HoldingList extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +24,10 @@ class HoldingList extends Component {
         // this.setState({ refreshing: true }, () => this.setState({ refreshing: false }))
     }
 
-    _renderItem = ({ item }) => <Holding holding={item} />
+    _renderItem = ({ item }) => {
+        const { navigation, refreshHoldings } = this.props;
+        return <Holding holding={item} navigation={navigation} />
+    }
 
     render() {
         const {holdings, navigation} = this.props;
