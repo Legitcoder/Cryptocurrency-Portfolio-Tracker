@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Text, View, ScrollView, StyleSheet, Image, RefreshControl, FlatList } from 'react-native';
+import {Text, View, ScrollView, StyleSheet, Image, RefreshControl, FlatList, AsyncStorage } from 'react-native';
 import Holding from './Holding';
 import AddButton from '../common/AddButton';
-import { getCoinUSDPrice } from '../actions';
+import  { updateCoinsCurrentUsdPrices } from '../actions';
 
 class HoldingList extends Component {
     constructor(props) {
         super(props);
         this.state = { refreshing: false };
+    }
+
+    componentDidMount() {
+        const { updateCoinsCurrentUsdPrices } = this.props;
+        updateCoinsCurrentUsdPrices();
     }
 
     renderaddButton() {
@@ -21,11 +26,13 @@ class HoldingList extends Component {
     }
 
     _onRefresh = () => {
-        // this.setState({ refreshing: true }, () => this.setState({ refreshing: false }))
+        const { updateCoinsCurrentUsdPrices } = this.props;
+        this.setState({ refreshing: true}, () => updateCoinsCurrentUsdPrices() );
+        this.setState({ refreshing: false});
     }
 
     _renderItem = ({ item }) => {
-        const { navigation, refreshHoldings } = this.props;
+        const { navigation } = this.props;
         return <Holding holding={item} navigation={navigation} />
     }
 
@@ -41,7 +48,7 @@ class HoldingList extends Component {
                 refreshControl={
                     <RefreshControl 
                         refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh()}
+                        onRefresh={() => this._onRefresh()}
                     />
                 }
             />
@@ -64,4 +71,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(null, { getCoinUSDPrice })(HoldingList);
+export default connect(null,  { updateCoinsCurrentUsdPrices })(HoldingList);

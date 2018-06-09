@@ -44,9 +44,6 @@ class SearchBar extends Component {
                         <TextInput style={styles.textInputStyles} underlineColorAndroid='rgba(0,0,0,0)' placeholderTextColor="#fff" autoCorrect={false} onChangeText={this.renderCoins} placeholder="Search Coin">
                         </TextInput> 
                     </View>    
-                    {/* <TouchableOpacity>
-                        <Text>Cancel</Text>
-                    </TouchableOpacity>     */}
                 </View>
   
         );
@@ -75,14 +72,14 @@ const styles =  StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: "#3e4850",
         alignSelf: 'center',
-        width: `${60}%`,
-        height:`${60}%`,
+        width: `60%`,
+        height:`60%`,
         borderRadius: 100,
         padding: 10, 
     },
     container: {
-        width: `${100}%`,
-        height: `${10}%`,
+        width: `100%`,
+        height: `10%`,
         justifyContent: 'center',
         backgroundColor: '#282E33',
         marginBottom: -25,

@@ -26,6 +26,20 @@ export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
     })
 }
 
+export const updateCoinsCurrentUsdPrices = () => dispatch => {
+    AsyncStorage.getItem('holdings').then( existingHoldings => {
+        const holdings = JSON.parse(existingHoldings);
+        const coins = holdings.map( holding => holding.coin);
+        const coinSymbols = coins.map( coin => coin.Symbol);
+        cryptoCompareApi.priceMulti(coinSymbols, ["USD"])
+        .then(priceHash => {
+            holdings.forEach( holding => holding.currentUSDPrice = priceHash[holding.coin.Symbol]["USD"]);
+            AsyncStorage.setItem('holdings', JSON.stringify(holdings));
+            dispatch({ type: GET_HOLDINGS, payload: holdings });  
+        })
+    });
+}
+
 export const selectCoin = (coin) => dispatch => {
     dispatch({ type: SELECT_COIN, payload: coin })
 }
@@ -57,7 +71,7 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 
 export const getCoins = () => dispatch => {
     //Testing Getting Price
-    // cryptoCompareApi.price("ETH", ["USD"])
+    // cryptoCompareApi.priceMulti(["ETH", "BTC", "LSK", "BTCP"], ["USD"])
     // .then(prices => console.log(prices))
     cryptoCompareApi.coinList()
     .then(coinList => {
@@ -95,7 +109,6 @@ const saveHolding = (transaction) => {
 
 const consolidateHoldings = (holdings, transaction) => {
     let existingHolding = holdings.filter((holding) => holding.coin.Symbol === transaction.coin.Symbol)
-    console.log(existingHolding);
     if(existingHolding.length === 0) {
         holdings.push(transaction);
     }

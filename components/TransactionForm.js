@@ -8,24 +8,30 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { getTradingPairsPriceHash, getCoinUSDPrice, getCoinBTCPrice } from '../actions';
 import TransactionButton from '../common/TransactionButton';
 
+//React Native's Stack Navigator doesn't allow state to be reseted 
+//so if user searches for another coin the previous coins
+// autofilled credentials will appear. Come back and fix or 
+// worst case scenario, no default active exchange or trading pair is selected
 
 class TransactionForm extends Component {
     constructor(props){
         super(props);
-        this.state = {
-             exchanges: [],
-             tradingPairs: [],
-             activeExchange: '', 
-             activeTradingPair: '', 
-             isDateTimePickerVisible: false,
-             date: new Date().toString().slice(0 , -18),
-             tradingPairsPrices: '',
-             amount: "0",
-             priceBought: "0",
-             usdPrice: null
-            }
-    }
 
+        this.initialState = {
+            exchanges: [],
+            tradingPairs: [],
+            activeExchange: '', 
+            activeTradingPair: '', 
+            isDateTimePickerVisible: false,
+            date: new Date().toString().slice(0 , -18),
+            tradingPairsPrices: '',
+            amount: "0",
+            priceBought: "0",
+            usdPrice: null                
+        }
+
+        this.state = this.initialState;
+    }
     componentDidMount() {
         const { getCoinUSDPrice, coin } = this.props;
         getCoinUSDPrice(coin.Symbol);
@@ -50,7 +56,9 @@ class TransactionForm extends Component {
                 tradingPairsPrices: tradingPairsPrices,
                 priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
                 usdPriceBought: usdPrice ? usdPrice["USD"] : null,
-                btcPriceBought: btcPrice ? btcPrice["BTC"] : null
+                btcPriceBought: btcPrice ? btcPrice["BTC"] : null,
+                currentUSDPrice: usdPrice ? usdPrice["USD"] : null,
+                currentBTCPrice: btcPrice ? btcPrice["BTC"] : null,
             }
                 this.setState(newState, () => {
                     if(!tradingPairsPrices) {

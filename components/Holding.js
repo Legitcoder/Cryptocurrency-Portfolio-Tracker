@@ -1,28 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { getCoinUSDPrice, getHoldings } from '../actions';
-
-//You might have to add currentUSDPrice and currentBTCPrice in redux application state
-//as apposed to doing it on the component level especially if you're going actively
-//refresh the entire list
+import {getHoldings } from '../actions';
 
 class Holding extends Component {
     constructor(props) {
         super(props);
-        this.state = {currentUsdPrice: props.holding.usdPriceBought}
     }
 
-    componentWillMount() {
-        const { getCoinUSDPrice, holding } = this.props;
-        getCoinUSDPrice(holding.coin.Symbol);
-    }
-
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        this.setState({ currentUsdPrice: nextProps.usdPrice["USD"]});
-    }
 
     renderLogoAndQuantity = () => {
         const { holding } = this.props;
@@ -40,10 +25,12 @@ class Holding extends Component {
 
     renderGains = () => {
         const { holding } = this.props;
+        console.log(holding);
         return(
             <View style={styles.rightStyle}>
                 <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
-                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(this.state.currentUsdPrice * holding.amount).toFixed(2)}</Text>
+                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.currentUSDPrice * holding.amount).toFixed(2)}</Text>
+                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text>
             </View>      
         );
     }
@@ -96,4 +83,4 @@ const styles = StyleSheet.create({
 
 
 
-export default connect(mapStateToProps, { getCoinUSDPrice, getHoldings })(Holding);
+export default connect(mapStateToProps, {getHoldings })(Holding);

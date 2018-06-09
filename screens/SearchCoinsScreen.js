@@ -20,6 +20,10 @@ class SearchCoinsScreen extends Component {
         selectCoin(coin);
     }
 
+      _onBlur = () => {
+          console.log("is this working!?!?!");
+      }
+
     render() {
         const { searchArray } = this.props;
         if(!searchArray) return <ActivityIndicator />;
