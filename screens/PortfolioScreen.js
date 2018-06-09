@@ -20,13 +20,19 @@ class PortfolioScreen extends Component {
         }
     }
 
+    constructor(props){
+        super(props);
+        this.state = { totalcurrentUSDPrices: [] }
+    }
+
     componentDidMount() {
         const { getHoldings } = this.props;
         getHoldings();
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
+        const { holdings } = nextProps;
+        this.setState({ totalcurrentUSDPrices: holdings.map(holding => holding.currentUSDPrice * holding.amount)});
     }
 
     renderWithoutHoldings = () => {
@@ -48,6 +54,7 @@ class PortfolioScreen extends Component {
     }
 
     calculatePortfolioValue = () => {
+        if(this.state.totalcurrentUSDPrices !== []) return `$${this.state.totalcurrentUSDPrices.reduce((accumulator, currentValue) => accumulator + currentValue).toFixed(2)}`;
         const {holdings} = this.props;
         const totalPrices = [];
         holdings.forEach(holding => totalPrices.push(parseFloat((holding.currentUSDPrice * holding.amount))));
