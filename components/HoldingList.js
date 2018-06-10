@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Text, View, ScrollView, StyleSheet, Image, RefreshControl, FlatList, AsyncStorage } from 'react-native';
+import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Holding from './Holding';
 import AddButton from '../common/AddButton';
-import  { updateCoinsCurrentUsdPrices } from '../actions';
+import { updateCoinsCurrentUsdPrices } from '../actions';
 
 class HoldingList extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class HoldingList extends Component {
         updateCoinsCurrentUsdPrices();
     }
 
-    renderaddButton() {
+    renderaddButton = () => {
         const { navigation } = this.props;
         return(
             <View style={styles.addButtonViewStyles}>

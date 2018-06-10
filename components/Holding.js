@@ -30,14 +30,14 @@ class Holding extends Component {
             <View style={styles.rightStyle}>
                 <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
                 <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.currentUSDPrice * holding.amount).toFixed(2)}</Text>
-                <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text>
+                {/* <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text> */}
             </View>      
         );
     }
     render() {
         const { holding, navigation } = this.props;
         return(
-            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { refresh: () => {
+            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { coin: holding.coin, refresh: () => {
                 const { getHoldings } = this.props;
                 getHoldings();
             }})}>

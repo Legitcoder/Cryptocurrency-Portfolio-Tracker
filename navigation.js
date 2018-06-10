@@ -46,7 +46,7 @@ export const MainNavigator = createBottomTabNavigator({
     )
     },
     watchlist: { screen: WatchlistScreen},
-    settings: { screen: SettingsScreen },
+    // settings: { screen: SettingsScreen },
     
   },
     {
