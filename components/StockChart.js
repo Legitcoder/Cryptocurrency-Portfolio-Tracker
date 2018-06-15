@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { getHistoricalBTCPrices } from '../actions';
+import { VictoryCandlestick } from 'victory-native';
 
 class StockChart extends Component {
     constructor(props) {
@@ -22,10 +23,14 @@ class StockChart extends Component {
 
     render() {
         const { allBtcPrices } = this.state;
+        console.log(allBtcPrices);
         if(allBtcPrices.length !== 0) {
             return(
                 <View style={styles.container}>
-                    <Text>{allBtcPrices[0].high}</Text>
+                   <VictoryCandlestick
+                    candleColors={{ positive: "#5f5c5b", negative: "#c43a31" }}
+                    data={allBtcPrices.slice(10,-1)}
+                   />
                 </View>    
             );
         }

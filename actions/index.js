@@ -37,7 +37,7 @@ export const getHistoricalUSDPrices = (symbol) => dispatch => {
 }
 
 export const getHistoricalBTCPrices = (symbol) =>  dispatch => {
-    cryptoCompareApi.histoDay(symbol, 'BTC', {limit: 'none'})
+    cryptoCompareApi.histoDay(symbol, symbol === 'BTC' ? 'USD': 'BTC', {limit: 'none'})
     .then(stockData =>{
         setDate(stockData);
         dispatch({ type: GET_COIN_ALL_BTC_PRICES, payload: stockData })
@@ -88,14 +88,10 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 }
 
 export const getCoins = () => dispatch => {
-    // cryptoCompareApi.histoDay('LSK', 'USD', {limit: 'none'})
-    // .then(data => {
-    // console.log(data)
-    // })
     // //Testing Getting Price
     // cryptoCompareApi.priceFull(["LSK"], ["USD"])
     // .then(prices => console.log(prices))
-    getHistoricalBTCPrices("LSK");
+    //getHistoricalBTCPrices("LSK");
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
@@ -149,7 +145,10 @@ const filterCoins = (coinHash) => {
 }
 
 const setDate = (stockData) => {
-    stockData.forEach(instance => instance.date = toDateTime(instance.time))
+    stockData.forEach(instance => {
+        instance.date = toDateTime(instance.time);
+        instance.x = toDateTime(instance.time)
+    })
 }
 
 const toDateTime = (secs) => {

@@ -40,6 +40,10 @@ class ManageCoinScreen extends Component {
         this.state = { index: 0, routes: [ {key: 'general', title: 'General'}, {key: 'transactions', title: "Transactions"} ]}
     }
 
+    shouldComponentUpdate(){
+        return false;
+    }
+
     render() {
         const { coin, refresh } = this.props.navigation.state.params;
         const GeneralScreen = () => (<CoinInfo coin={coin} />);
@@ -59,7 +63,7 @@ class ManageCoinScreen extends Component {
                         {...props}
                         style={{backgroundColor: '#282E33',}}
                         indicatorStyle={{backgroundColor: "#fff"}}
-                        labelStyle={{fontWeight: 'bold', fontSize: 15}}
+                        labelStyle={{fontWeight: 'bold', fontSize: 13}}
                         pressOpacity={1}
                     />
                 }
