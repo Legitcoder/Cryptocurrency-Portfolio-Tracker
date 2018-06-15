@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Holding from './Holding';
 import AddButton from '../common/AddButton';
-import { updateCoinsCurrentUsdPrices } from '../actions';
+import { updateCoinsCurrentUsdPrices, getHoldings } from '../actions';
 
 class HoldingList extends Component {
     constructor(props) {
@@ -12,8 +12,9 @@ class HoldingList extends Component {
     }
 
     componentDidMount() {
-        const { updateCoinsCurrentUsdPrices } = this.props;
+        const { updateCoinsCurrentUsdPrices, getHoldings } = this.props;
         updateCoinsCurrentUsdPrices();
+        getHoldings();
     }
 
     renderaddButton = () => {
@@ -31,11 +32,6 @@ class HoldingList extends Component {
         this.setState({ refreshing: false});
     }
 
-    _renderItem = ({ item }) => {
-        const { navigation } = this.props;
-        return <Holding holding={item} navigation={navigation} />
-    }
-
     render() {
         const {holdings, navigation} = this.props;
         return(
@@ -44,7 +40,7 @@ class HoldingList extends Component {
             <FlatList
             data={holdings}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={this._renderItem}
+            renderItem={({ item }) => <Holding holding={item} navigation={navigation} />}
                 refreshControl={
                     <RefreshControl 
                         refreshing={this.state.refreshing}
@@ -71,4 +67,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(null,  { updateCoinsCurrentUsdPrices })(HoldingList);
+export default connect(null,  { updateCoinsCurrentUsdPrices, getHoldings })(HoldingList);

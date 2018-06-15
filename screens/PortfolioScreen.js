@@ -32,7 +32,7 @@ class PortfolioScreen extends Component {
 
     componentWillReceiveProps(nextProps) {
         const { holdings } = nextProps;
-        this.setState({ totalcurrentUSDPrices: holdings.map(holding => holding.currentUSDPrice * holding.amount)});
+        if(holdings) this.setState({ totalcurrentUSDPrices: holdings.map(holding => holding.currentUSDPrice * holding.amount)});
     }
 
     renderWithoutHoldings = () => {

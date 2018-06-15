@@ -67,7 +67,7 @@ class TransactionScreen extends Component {
         const { navigation, saveTransaction } = this.props;
         const transaction= { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPriceBought: formState.usdPriceBought, btcPriceBought: formState.btcPriceBought, currentUSDPrice: formState.currentUSDPrice, currentBTCPrice: formState.currentBTCPrice};
         saveTransaction(transaction);
-        navigation.navigate('managecoin', { refresh: () => {
+        navigation.navigate('managecoin', { coin: coin, refresh: () => {
             const { getHoldings } = this.props;
             getHoldings();
         }});

@@ -5,13 +5,6 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import CoinInfo from '../components/CoinInfo';
 import Transactions from '../components/Transactions';
 
-const GeneralScreen = () => (
-    <CoinInfo />
-  );
-const TransactionsScreen = () => (
-    <Transactions />
-  );
-
 class ManageCoinScreen extends Component {
     static navigationOptions = ({ navigation }) => {
     const { coin, refresh } = navigation.state.params;
@@ -48,8 +41,12 @@ class ManageCoinScreen extends Component {
     }
 
     render() {
+        const { coin, refresh } = this.props.navigation.state.params;
+        const GeneralScreen = () => (<CoinInfo coin={coin} />);
+        const TransactionsScreen = () => (<Transactions />);
         return(
             <TabView
+                style={styles.tabViewStyles}
                 navigationState={this.state}
                 renderScene={SceneMap({
                     general: GeneralScreen,
@@ -57,6 +54,15 @@ class ManageCoinScreen extends Component {
                 })}
                 onIndexChange={index => this.setState({ index: index })}
                 initialLayout={{width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                renderTabBar={props =>
+                    <TabBar
+                        {...props}
+                        style={{backgroundColor: '#282E33',}}
+                        indicatorStyle={{backgroundColor: "#fff"}}
+                        labelStyle={{fontWeight: 'bold', fontSize: 15}}
+                        pressOpacity={1}
+                    />
+                }
             />
         );
     }
@@ -64,10 +70,8 @@ class ManageCoinScreen extends Component {
 
 
  const styles = StyleSheet.create({
-     container: {
+     tabViewStyles: {
          flex: 1,
-         backgroundColor: '#202428',
-         justifyContent: 'flex-start'
      }
  })
 

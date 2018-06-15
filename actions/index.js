@@ -8,7 +8,9 @@ import {
     GET_TRADING_PAIRS_PRICE_HASH,
     GET_HOLDINGS,
     GET_COIN_USD_PRICE,
-    GET_COIN_BTC_PRICE
+    GET_COIN_BTC_PRICE,
+    GET_COIN_ALL_USD_PRICES,
+    GET_COIN_ALL_BTC_PRICES
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -24,6 +26,22 @@ export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
         }
         dispatch({ type: GET_COIN_EXCHANGES_AND_TRADING_PAIRS, payload: exchangesCoinBelongsTo });
     })
+}
+
+export const getHistoricalUSDPrices = (symbol) => dispatch => {
+    cryptoCompareApi.histoDay(symbol, 'USD', {limit: 'none'})
+    .then(stockData =>{
+        setDate(stockData);
+        dispatch({ type: GET_COIN_ALL_USD_PRICES, payload: stockData })
+    });
+}
+
+export const getHistoricalBTCPrices = (symbol) =>  dispatch => {
+    cryptoCompareApi.histoDay(symbol, 'BTC', {limit: 'none'})
+    .then(stockData =>{
+        setDate(stockData);
+        dispatch({ type: GET_COIN_ALL_BTC_PRICES, payload: stockData })
+    });
 }
 
 export const updateCoinsCurrentUsdPrices = () => dispatch => {
@@ -70,9 +88,14 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 }
 
 export const getCoins = () => dispatch => {
-    //Testing Getting Price
-    // cryptoCompareApi.priceMulti(["ETH", "BTC", "LSK", "BTCP"], ["USD"])
+    // cryptoCompareApi.histoDay('LSK', 'USD', {limit: 'none'})
+    // .then(data => {
+    // console.log(data)
+    // })
+    // //Testing Getting Price
+    // cryptoCompareApi.priceFull(["LSK"], ["USD"])
     // .then(prices => console.log(prices))
+    getHistoricalBTCPrices("LSK");
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});
@@ -124,3 +147,13 @@ const filterCoins = (coinHash) => {
     for(symbol in coinHash) coins.push(coinHash[symbol]);
     return coins;
 }
+
+const setDate = (stockData) => {
+    stockData.forEach(instance => instance.date = toDateTime(instance.time))
+}
+
+const toDateTime = (secs) => {
+    let t = new Date();
+    t.setTime(secs * 1000);
+    return t;
+} 
