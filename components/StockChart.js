@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { getHistoricalBTCPrices } from '../actions';
-import { VictoryCandlestick } from 'victory-native';
+import { VictoryCandlestick, VictoryAxis, VictoryChart, VictoryTheme } from 'victory-native';
 
 class StockChart extends Component {
     constructor(props) {
@@ -11,7 +11,8 @@ class StockChart extends Component {
     }
 
     componentDidMount(){
-        const { getHistoricalBTCPrices, coin } = this.props;
+        const { getHistoricalBTCPrices } = this.props;
+        const { coin } = this.props.holding;
         getHistoricalBTCPrices(coin.Symbol);
     }
 
@@ -23,14 +24,40 @@ class StockChart extends Component {
 
     render() {
         const { allBtcPrices } = this.state;
-        console.log(allBtcPrices);
+        const { CoinName, Symbol } = this.props.holding.coin;
+        const { currentUSDPrice } = this.props.holding;
+        console.log(currentUSDPrice);
         if(allBtcPrices.length !== 0) {
             return(
                 <View style={styles.container}>
-                   <VictoryCandlestick
-                    candleColors={{ positive: "#5f5c5b", negative: "#c43a31" }}
-                    data={allBtcPrices.slice(10,-1)}
-                   />
+                <View>
+                    <Text style={styles.symbolTextSyles}>{Symbol}  ${currentUSDPrice}</Text>
+                </View>    
+                    <View style={styles.candleStickContainer}>
+                    <VictoryChart
+                    width={350}
+                    height={400}
+                        domainPadding={{ x: 5 }}
+                        scale={{ x: "time" }}
+                        style={{marginLeft: 20}}
+                    >
+                    <VictoryAxis tickFormat={(t) => `${t.getMonth() + 1}/${t.getFullYear().toString().substr(-2)}`} 
+                                style={{ 
+                                    tickLabels: {fill: '#000', padding: 5},
+                                    axis: {stroke: '#000'} 
+                                    }}/>
+                    <VictoryAxis dependentAxis 
+                                style={{
+                                    tickLabels: {fill: '#000', padding: 5},
+                                    axis: {stroke: '#000'}
+                                    }}/>
+                        <VictoryCandlestick
+                            candleColors={{ positive: "green", negative: "#c43a31" }}
+                            //Bug on CryptoCompare Api where the first few data objects are off in open, close prices
+                            data={allBtcPrices.slice(5)}
+                        />
+                    </VictoryChart>    
+                    </View>   
                 </View>    
             );
         }
@@ -46,10 +73,25 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#fff',
+        borderWidth: 0.5
     },
+    candleStickContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#000',
+        borderWidth: 3,
+        margin: 10,
+        backgroundColor: '#fff'
+    },
+    symbolTextSyles: {
+        fontSize: 30,
+        color: "#fff",
+        fontWeight: 'bold'
+    }
   });
 
 

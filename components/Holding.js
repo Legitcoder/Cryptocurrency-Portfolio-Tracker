@@ -37,7 +37,7 @@ class Holding extends Component {
     render() {
         const { holding, navigation } = this.props;
         return(
-            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { coin: holding.coin, refresh: () => {
+            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { holding: holding, refresh: () => {
                 const { getHoldings } = this.props;
                 getHoldings();
             }})}>

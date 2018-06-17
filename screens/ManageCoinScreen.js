@@ -7,8 +7,8 @@ import Transactions from '../components/Transactions';
 
 class ManageCoinScreen extends Component {
     static navigationOptions = ({ navigation }) => {
-    const { coin, refresh } = navigation.state.params;
-
+    const { holding, refresh } = navigation.state.params;
+    const { coin } = holding;
     refreshAndNavigate = () => {
         refresh();
         navigation.navigate('portfolio');        
@@ -45,8 +45,8 @@ class ManageCoinScreen extends Component {
     }
 
     render() {
-        const { coin, refresh } = this.props.navigation.state.params;
-        const GeneralScreen = () => (<CoinInfo coin={coin} />);
+        const { holding, refresh } = this.props.navigation.state.params;
+        const GeneralScreen = () => (<CoinInfo holding={holding} />);
         const TransactionsScreen = () => (<Transactions />);
         return(
             <TabView

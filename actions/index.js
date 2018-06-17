@@ -37,7 +37,7 @@ export const getHistoricalUSDPrices = (symbol) => dispatch => {
 }
 
 export const getHistoricalBTCPrices = (symbol) =>  dispatch => {
-    cryptoCompareApi.histoDay(symbol, symbol === 'BTC' ? 'USD': 'BTC', {limit: 'none'})
+    cryptoCompareApi.histoDay(symbol, symbol === 'BTC' ? 'USD': 'BTC', {aggregate: 30}, {limit: 'none'})
     .then(stockData =>{
         setDate(stockData);
         dispatch({ type: GET_COIN_ALL_BTC_PRICES, payload: stockData })
