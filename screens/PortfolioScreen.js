@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import {Ionicons } from '@expo/vector-icons';
+import {Ionicons, Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { coins } from '../App';
 import SearchCoinsScreen from './SearchCoinsScreen';

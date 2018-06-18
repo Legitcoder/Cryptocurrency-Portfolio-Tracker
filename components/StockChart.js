@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, RefreshControl, ScrollView } from 'react-native';
 import { getHistoricalBTCPrices } from '../actions';
 import { VictoryCandlestick, VictoryAxis, VictoryChart, VictoryTheme } from 'victory-native';
 
 class StockChart extends Component {
     constructor(props) {
         super(props);
-        this.state = { allBtcPrices: [] }
+        this.state = { allBtcPrices: [], refreshing: false }
     }
 
     componentDidMount(){
@@ -17,38 +17,48 @@ class StockChart extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         const { allBtcPrices } = nextProps;
         this.setState(({ allBtcPrices: allBtcPrices}))
+    }
+
+    _onRefresh = () => {
+        const { getHistoricalBTCPrices } = this.props;
+        const { coin } = this.props.holding;
+        this.setState({refreshing: true}, () => getHistoricalBTCPrices(coin.Symbol));
+        this.setState({refreshing: false});
     }
 
     render() {
         const { allBtcPrices } = this.state;
         const { CoinName, Symbol } = this.props.holding.coin;
         const { currentUSDPrice } = this.props.holding;
-        console.log(currentUSDPrice);
         if(allBtcPrices.length !== 0) {
             return(
                 <View style={styles.container}>
-                <View>
-                    <Text style={styles.symbolTextSyles}>{Symbol}  ${currentUSDPrice}</Text>
+                <View style={styles.titleViewContainer}>
+                    <Text style={styles.symbolTextSyles}>{Symbol}  ${currentUSDPrice.toFixed(2)}</Text>
                 </View>    
                     <View style={styles.candleStickContainer}>
                     <VictoryChart
-                    width={350}
-                    height={400}
+                        // refreshControl={
+                        //     <RefreshControl 
+                        //         refreshing={this.state.refreshing}
+                        //         onRefresh={() => this._onRefresh()}
+                        //     />}
+                        width={350}
+                        height={350}
                         domainPadding={{ x: 5 }}
                         scale={{ x: "time" }}
                         style={{marginLeft: 20}}
                     >
                     <VictoryAxis tickFormat={(t) => `${t.getMonth() + 1}/${t.getFullYear().toString().substr(-2)}`} 
                                 style={{ 
-                                    tickLabels: {fill: '#000', padding: 5},
+                                    tickLabels: {fill: '#000', padding: 5, fontSize: 10},
                                     axis: {stroke: '#000'} 
                                     }}/>
                     <VictoryAxis dependentAxis 
                                 style={{
-                                    tickLabels: {fill: '#000', padding: 5},
+                                    tickLabels: {fill: '#000', padding: 5, fontSize: 12},
                                     axis: {stroke: '#000'}
                                     }}/>
                         <VictoryCandlestick
@@ -74,23 +84,25 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        borderColor: '#fff',
-        borderWidth: 0.5
     },
     candleStickContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: '#000',
         borderWidth: 3,
-        margin: 10,
-        backgroundColor: '#fff'
+        backgroundColor: '#5f6c7a'
     },
     symbolTextSyles: {
         fontSize: 30,
         color: "#fff",
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        padding: 20
+    },
+    titleViewContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     }
   });
 

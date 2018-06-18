@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import {getHoldings } from '../actions';
+import { getHoldings } from '../actions';
+import { Entypo } from '@expo/vector-icons';
 
 class Holding extends Component {
     constructor(props) {
@@ -23,12 +24,24 @@ class Holding extends Component {
 
     }
 
+    renderGreenDelta = () =>{ return <Entypo style={{color: 'green', alignSelf: 'center'}} name="triangle-up" size={25} /> } 
+
+    renderRedDelta = () => {return <Entypo style={{color: 'red', alignSelf: 'center', }} name="triangle-down" size={25} /> }
+
+    calculatePercentage = () => {
+        const { holding } = this.props;
+        return ((1-(holding.currentUSDPrice/holding.usdPriceBought))*100).toFixed(2);
+    }
+
     renderGains = () => {
         const { holding } = this.props;
         console.log(holding);
         return(
             <View style={styles.rightStyle}>
-                <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>Percentage Gain</Text>
+                <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>
+                {holding.usdPriceBought < holding.currentUSDPrice ? this.renderGreenDelta() : this.renderRedDelta()}
+                {this.calculatePercentage()}%
+                </Text>
                 <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.currentUSDPrice * holding.amount).toFixed(2)}</Text>
                 {/* <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text> */}
             </View>      
@@ -78,6 +91,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 5
+    },
+    deltaIconStyles: {
+        color: 'green'
     }
 })
 
