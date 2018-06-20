@@ -9,7 +9,6 @@ class Holding extends Component {
         super(props);
     }
 
-
     renderLogoAndQuantity = () => {
         const { holding } = this.props;
         return(
@@ -30,17 +29,16 @@ class Holding extends Component {
 
     calculatePercentage = () => {
         const { holding } = this.props;
-        return ((1-(holding.currentUSDPrice/holding.usdPriceBought))*100).toFixed(2);
+        return `${((Math.abs(1-(holding.currentUSDPrice/holding.usdPriceBought))*100).toFixed(2))}%`;
     }
 
     renderGains = () => {
         const { holding } = this.props;
-        console.log(holding);
         return(
             <View style={styles.rightStyle}>
                 <Text style={{marginBottom: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>
                 {holding.usdPriceBought < holding.currentUSDPrice ? this.renderGreenDelta() : this.renderRedDelta()}
-                {this.calculatePercentage()}%
+                {this.calculatePercentage()}
                 </Text>
                 <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.currentUSDPrice * holding.amount).toFixed(2)}</Text>
                 {/* <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text> */}

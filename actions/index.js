@@ -7,10 +7,11 @@ import {
     GET_COINS,
     GET_TRADING_PAIRS_PRICE_HASH,
     GET_HOLDINGS,
+    GET_TRANSACTIONS,
     GET_COIN_USD_PRICE,
     GET_COIN_BTC_PRICE,
     GET_COIN_ALL_USD_PRICES,
-    GET_COIN_ALL_BTC_PRICES
+    GET_COIN_ALL_BTC_PRICES,
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -101,6 +102,12 @@ export const getCoins = () => dispatch => {
 export const getHoldings =  () => dispatch => {
     AsyncStorage.getItem('holdings').then( existingHoldings => {
         dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
+    });
+}
+
+export const getTransactions = () => dispatch => {
+    AsyncStorage.getItem('transactions').then( existingTransactions => {
+        dispatch({ type: GET_TRANSACTIONS, payload: JSON.parse(existingTransactions) });  
     });
 }
 

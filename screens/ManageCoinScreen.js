@@ -46,8 +46,9 @@ class ManageCoinScreen extends Component {
 
     render() {
         const { holding, refresh } = this.props.navigation.state.params;
+        const { navigation } = this.props;
         const GeneralScreen = () => (<CoinInfo holding={holding} />);
-        const TransactionsScreen = () => (<Transactions />);
+        const TransactionsScreen = () => (<Transactions navigation={navigation} />);
         return(
             <TabView
                 style={styles.tabViewStyles}

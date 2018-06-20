@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import TransactionList from './TransactionList';
 
 
-class Transactions extends Component {
+class Transaction extends Component {
     render() {
         return(
             <View style={styles.container}>
-                <TransactionList />
+                <Text>Individual Transaction List Item Goes Here</Text>
             </View>    
         );
     }
@@ -16,10 +15,8 @@ class Transactions extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#282E33',
-      justifyContent: 'center',
-      alignItems: 'center'
     },
   });
 
-export default Transactions;
+
+export default Transaction;

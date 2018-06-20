@@ -55,8 +55,8 @@ class TransactionForm extends Component {
                 activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair,
                 tradingPairsPrices: tradingPairsPrices,
                 priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] : tradingPairsPrices[exchanges[0].pairs[0]] : 0,
-                usdPriceBought: usdPrice ? usdPrice["USD"] : null,
-                btcPriceBought: btcPrice ? btcPrice["BTC"] : null,
+                usdPriceTransacted: usdPrice ? usdPrice["USD"] : null,
+                btcPriceTransacted: btcPrice ? btcPrice["BTC"] : null,
                 currentUSDPrice: usdPrice ? usdPrice["USD"] : null,
                 currentBTCPrice: btcPrice ? btcPrice["BTC"] : null,
             }
