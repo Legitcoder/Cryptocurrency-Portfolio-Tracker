@@ -16,22 +16,20 @@ class ManageCoinScreen extends Component {
 
     renderTitle = () => {
         return(
-            <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
+            <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', alignItems: 'center', justifyContent: 'center'}}>
             <Image style={{width: 30, height: 30, alignSelf: 'center', resizeMode: 'contain'}}  source={{ uri: coin.ImageUrl }}/>
             <Text style={{fontWeight: 'bold', color: '#fff', fontSize: 20}}>  {coin.CoinName}</Text>
             </View> 
         );
     } 
         return {
-            title: renderTitle(),
+            headerTitle: renderTitle(),
             headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => refreshAndNavigate() } />,
+            headerRight: <View />, //Needed to center for Android
             headerStyle: {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
             },
-            headerTitleStyle: {
-                color: "#fff"
-            }
         }
     }
 
