@@ -90,9 +90,9 @@ export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExc
 
 export const getCoins = () => dispatch => {
     // //Testing Getting Price
-    // cryptoCompareApi.priceFull(["LSK"], ["USD"])
-    // .then(prices => console.log(prices))
-    //getHistoricalBTCPrices("LSK");
+    cryptoCompareApi.price(["LSK"], ["USD"])
+    .then(prices => console.log(prices))
+    getHistoricalBTCPrices("LSK");
     cryptoCompareApi.coinList()
     .then(coinList => {
         dispatch({ type: GET_COINS, payload: filterCoins(coinList.Data)});

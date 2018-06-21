@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import ListScreen from '../components/ListScreen'
+import ListItem from '../common/ListItem';
 import { Feather } from '@expo/vector-icons';
 
 //TradingPairListScreen and ExchangeListScreen appear identical.
@@ -24,14 +25,14 @@ class ExchangeListScreen extends Component {
     render() {
         const { exchanges, onPressExchanges } = this.props.navigation.state.params;
         const { navigation } = this.props;
+        const filteredExchanges = exchanges.map( exchangeObject => exchangeObject.exchange);
+        console.log(filteredExchanges);
         return(
             <View style={styles.container}>
-                <FlatList
-                    style={styles.listStyle}
-                    keyExtractor={(item, index) => index.toString()}
+                <ListScreen
+                    navigation={navigation}
                     data={exchanges}
-                    renderItem={({item}) => <ListItem titleStyle={styles.titleStyle} title={item.exchange} 
-                    onPress={ () => { onPressExchanges(item.exchange, item.pairs); navigation.goBack(); } }/>}
+                    onPress={onPressExchanges}/>}
                 />
             </View>    
         );

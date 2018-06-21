@@ -77,10 +77,12 @@ class TransactionForm extends Component {
         this._hideDateTimePicker();
     };
 
-    onPressExchanges = (selectedExchange, tradingPairs) => {
+    onPressExchanges = (item) => {
+        const { exchange, pairs } = item;
+        console.log(item);
         const { getTradingPairsPriceHash } = this.props;
-        this.props.getTradingPairsPriceHash(this.props.coin.Symbol, tradingPairs, selectedExchange);
-        this.setState((prevState, props) => {return { activeExchange: selectedExchange, activeTradingPair: tradingPairs[0], tradingPairs: tradingPairs}});
+        this.props.getTradingPairsPriceHash(this.props.coin.Symbol, pairs, exchange);
+        this.setState((prevState, props) => {return { activeExchange: exchange, activeTradingPair: pairs[0], tradingPairs: pairs}});
     }
 
     onPressTradingPairs = (selectedTradingPair) => {

@@ -7,12 +7,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 export default class Coin extends Component {
     render() {
         const { onPress, avatar, title, subtitle } = this.props;
-        console.log(avatar);
         return (
             <TouchableWithoutFeedback onPress={ () => onPress() }>
             <View style={ styles.listItemContainer }>
-                <Image style={{width: 40, height: 40, resizeMode: 'contain', backgroundColor: '#D3D3D3', padding: 5,         marginRight: 10,
-        marginLeft: 5}}  source={avatar} />
+                <Image style={styles.avatarStyles}  source={avatar} />
                 <View style={styles.textContainer}>
                 <Text>{title}</Text>
                 <Text>{subtitle}</Text>
@@ -35,5 +33,14 @@ styles = StyleSheet.create({
     rightArrowStyles: {
         position: 'absolute',
         right: 0,
+    },
+    avatarStyles: {
+        width: 40, 
+        height: 40, 
+        resizeMode: 'contain', 
+        backgroundColor: '#D3D3D3', 
+        padding: 5, 
+        marginRight: 10,
+        marginLeft: 5
     }
 })
