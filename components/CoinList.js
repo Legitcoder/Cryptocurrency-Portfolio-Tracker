@@ -9,18 +9,18 @@ class CoinList extends Component {
     renderList() {
         const { coins, onPress } = this.props;
         return(
-                        <FlatList keyboardShouldPersistTaps='handled'
-                            data={coins}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({item}) => {
-                                return <Coin 
-                                            onPress={() => onPress({...item, ImageUrl: `${BASE_URL}${item.ImageUrl}` })}
-                                            avatar={{ uri: `${BASE_URL}${item.ImageUrl}` }}
-                                            key={item.CoinName} 
-                                            title={item.CoinName} 
-                                            subtitle={item.Symbol} 
-                                        />
-                            }}
+            <FlatList keyboardShouldPersistTaps='handled'
+                data={coins}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({item}) => {
+                    return <Coin 
+                                onPress={() => onPress({...item, ImageUrl: `${BASE_URL}${item.ImageUrl}` })}
+                                avatar={{ uri: `${BASE_URL}${item.ImageUrl}` }}
+                                key={item.CoinName} 
+                                title={item.CoinName} 
+                                subtitle={item.Symbol} 
+                            />
+                }}
                         /> 
             );
     }
