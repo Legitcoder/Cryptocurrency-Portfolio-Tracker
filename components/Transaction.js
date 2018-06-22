@@ -6,7 +6,7 @@ class Transaction extends Component {
     render() {
         return(
             <View style={styles.container}>
-                {/* <Text>Individual Transaction List Item Goes Here</Text> */}
+                <Text>Individual Transaction List Item Goes Here</Text>
             </View>    
         );
     }

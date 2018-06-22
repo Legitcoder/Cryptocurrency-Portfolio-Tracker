@@ -4,10 +4,9 @@ import StockChart from './StockChart';
 
 class CoinInfo extends Component {
     render() {
-        const { holding } = this.props;
         return(
             <View style={styles.container}>
-                <StockChart holding={holding}/>
+                <StockChart/>
             </View>    
         );
     }

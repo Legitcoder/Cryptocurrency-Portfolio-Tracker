@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { getHoldings } from '../actions';
+import { getHoldings, selectHolding, getHistoricalBTCPrices } from '../actions';
 import { Entypo } from '@expo/vector-icons';
 
 class Holding extends Component {
@@ -23,9 +23,9 @@ class Holding extends Component {
 
     }
 
-    renderGreenDelta = () =>{ return <Entypo style={{color: 'green', alignSelf: 'center'}} name="triangle-up" size={25} /> } 
+    renderGreenDelta = () => <Entypo style={{color: 'green', alignSelf: 'center'}} name="triangle-up" size={25} />; 
 
-    renderRedDelta = () => {return <Entypo style={{color: 'red', alignSelf: 'center', }} name="triangle-down" size={25} /> }
+    renderRedDelta = () => <Entypo style={{color: 'red', alignSelf: 'center', }} name="triangle-down" size={25} /> ;
 
     calculatePercentage = () => {
         const { holding } = this.props;
@@ -41,17 +41,24 @@ class Holding extends Component {
                 {this.calculatePercentage()}
                 </Text>
                 <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.currentUSDPrice * holding.amount).toFixed(2)}</Text>
-                {/* <Text style={{marginTop: 3, color: "#fff", fontSize: 17, fontWeight: 'bold'}}>${(holding.usdPriceBought * holding.amount).toFixed(2)}</Text> */}
             </View>      
         );
     }
+
+    handlePressHolding = () => {
+        const { selectCoin, navigation, holding, selectHolding, getHistoricalBTCPrices } = this.props;
+        navigation.navigate('managecoin', { holding: holding, refresh: () => {
+            const { getHoldings } = this.props;
+            getHoldings();
+        }});
+        selectHolding(holding);
+        //getHistoricalBTCPrices(holding.coin);
+    }
+
     render() {
         const { holding, navigation } = this.props;
         return(
-            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => navigation.navigate('managecoin', { holding: holding, refresh: () => {
-                const { getHoldings } = this.props;
-                getHoldings();
-            }})}>
+            <TouchableOpacity activeOpacity={1} style={styles.container} onPress={() => this.handlePressHolding()}>
                 {this.renderLogoAndQuantity()}
                 {this.renderGains()}
             </TouchableOpacity>
@@ -97,4 +104,4 @@ const styles = StyleSheet.create({
 
 
 
-export default connect(mapStateToProps, {getHoldings })(Holding);
+export default connect(mapStateToProps, {getHoldings, selectHolding, getHistoricalBTCPrices })(Holding);

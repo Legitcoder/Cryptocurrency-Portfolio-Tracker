@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {Text, TextInput, View, ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage, Divider } from 'react-native-elements'
+import { Divider } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import TransactionButton from '../common/TransactionButton';
 //so if user searches for another coin the previous coins
 // autofilled credentials will appear. Come back and fix or 
 // worst case scenario, no default active exchange or trading pair is selected
+//Possible solution: pass refresh function through navgiation params
 
 class TransactionForm extends Component {
     constructor(props){

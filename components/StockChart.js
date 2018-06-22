@@ -11,28 +11,37 @@ class StockChart extends Component {
     }
 
     componentDidMount(){
+        console.log("StockChart mounted!")
+        console.log(this.props);
         const { getHistoricalBTCPrices } = this.props;
         const { coin } = this.props.holding;
         getHistoricalBTCPrices(coin.Symbol);
     }
 
+    componentDidUpdate() {
+        console.log("It's upating", this.props);
+    }
+
     componentWillReceiveProps(nextProps) {
+        console.log("It's receiving Props");
         const { allBtcPrices } = nextProps;
         this.setState(({ allBtcPrices: allBtcPrices}))
     }
 
-    _onRefresh = () => {
-        const { getHistoricalBTCPrices } = this.props;
-        const { coin } = this.props.holding;
-        this.setState({refreshing: true}, () => getHistoricalBTCPrices(coin.Symbol));
-        this.setState({refreshing: false});
-    }
+    // _onRefresh = () => {
+    //     const { getHistoricalBTCPrices } = this.props;
+    //     const { coin } = this.props.holding;
+    //     this.setState({refreshing: true}, () => getHistoricalBTCPrices(coin.Symbol));
+    //     this.setState({refreshing: false});
+    // }
+
 
     render() {
+        const { holding } = this.props;
         const { allBtcPrices } = this.state;
-        const { CoinName, Symbol } = this.props.holding.coin;
-        const { currentUSDPrice } = this.props.holding;
-        if(allBtcPrices.length !== 0) {
+        if(!holding && allBtcPrices.length === 0)return <ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
+            const { CoinName, Symbol } = this.props.holding.coin;
+            const { currentUSDPrice } = this.props.holding;
             return(
                 <View style={styles.container}>
                 <View style={styles.titleViewContainer}>
@@ -71,13 +80,14 @@ class StockChart extends Component {
                 </View>    
             );
         }
-        return <ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
     }
-}
+
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         allBtcPrices: state.coins.allBtcPrices,
+        holding: state.holdings.holding,
     }
 }
 

@@ -41,10 +41,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#202428',
     },
-    titleStyle: {
-        color: '#fff',
-        fontWeight: 'bold'
-    }
   });
 
 

@@ -7,6 +7,8 @@ import {
     GET_COINS,
     GET_TRADING_PAIRS_PRICE_HASH,
     GET_HOLDINGS,
+    GET_HOLDING,
+    SELECT_HOLDING,
     GET_TRANSACTIONS,
     GET_COIN_USD_PRICE,
     GET_COIN_BTC_PRICE,
@@ -59,8 +61,22 @@ export const updateCoinsCurrentUsdPrices = () => dispatch => {
     });
 }
 
+export const getHolding = (coin, transaction) => dispatch => {
+    AsyncStorage.getItem('holdings').then( existingholdings => {
+        let holdings, holding, existingHolding;
+        existingholdings ? holdings  = JSON.parse(existingholdings) : holdings = [];
+        if(existingholdings.length !== 0) existingHolding = holdings.filter((holding) => holding.coin.Symbol === transaction.coin.Symbol)[0];
+        debugger;
+        dispatch({ type: GET_HOLDING, payload: existingHolding ? existingHolding : transaction }); 
+    })   
+}
+
 export const selectCoin = (coin) => dispatch => {
     dispatch({ type: SELECT_COIN, payload: coin })
+}
+
+export const selectHolding = (holding) => dispatch => {
+    dispatch({ type: SELECT_HOLDING, payload: holding })
 }
 
 export const matchSearchArray = (searchArray) => dispatch => {
@@ -141,6 +157,9 @@ const consolidateHoldings = (holdings, transaction) => {
     existingHolding.forEach(holding => {
         if( holding.coin.Symbol === transaction.coin.Symbol ) {
             holding.amount = (Number(holding.amount) + Number(transaction.amount)).toString();
+        }
+        else{
+            holdings.push(transaction);
         }
     })
 }
