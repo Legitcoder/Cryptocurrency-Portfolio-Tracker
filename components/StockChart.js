@@ -58,7 +58,7 @@ class StockChart extends Component {
                         height={350}
                         domainPadding={{ x: 5 }}
                         scale={{ x: "time" }}
-                        style={{marginLeft: 20}}
+                        style={{marginLeft: 20,}}
                     >
                     <VictoryAxis tickFormat={(t) => `${t.getMonth() + 1}/${t.getFullYear().toString().substr(-2)}`} 
                                 style={{ 

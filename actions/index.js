@@ -65,10 +65,9 @@ export const getHolding = (coin, transaction) => dispatch => {
     AsyncStorage.getItem('holdings').then( existingholdings => {
         let holdings, holding, existingHolding;
         existingholdings ? holdings  = JSON.parse(existingholdings) : holdings = [];
-        if(existingholdings.length !== 0) existingHolding = holdings.filter((holding) => holding.coin.Symbol === transaction.coin.Symbol)[0];
-        debugger;
+        if(existingholdings && existingholdings.length !== 0) existingHolding = holdings.filter((holding) => holding.coin.Symbol === transaction.coin.Symbol)[0];
         dispatch({ type: GET_HOLDING, payload: existingHolding ? existingHolding : transaction }); 
-    })   
+    });   
 }
 
 export const selectCoin = (coin) => dispatch => {
@@ -131,8 +130,8 @@ export const saveTransaction = (transaction) => dispatch => {
     AsyncStorage.getItem('transactions').then( existingTransactions => {
         let transactions;
         existingTransactions ? transactions  = JSON.parse(existingTransactions) : transactions = [];
-        if(transactions.length !== 0) saveHolding(transaction);
         transactions.push(transaction);
+        if(transactions.length !== 0) saveHolding(transaction);
         existingTransactions ? AsyncStorage.setItem('transactions', JSON.stringify(transactions)) : AsyncStorage.setItem('transactions', JSON.stringify([transaction]));
     })
 }
