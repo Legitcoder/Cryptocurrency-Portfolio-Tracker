@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image , Dimensions} from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
 import { saveTransaction, getHoldings, getHolding } from '../actions';
@@ -80,6 +80,8 @@ class TransactionScreen extends Component {
 
 
     render() {
+        const DEVICE_WIDTH = Dimensions.get('window').width;
+        const DEVICE_HEIGHT = Dimensions.get('window').height;
         const { coin } = this.props.navigation.state.params;
         const { scrollHeight, activeState } = this.state;
         const { container, buttonsContainer} = styles;
@@ -90,7 +92,7 @@ class TransactionScreen extends Component {
             enableOnAndroid={true}
             resetScrollToCoords={{ x: 0, y: 0 }}   
             contentContainerStyle={container}
-            onKeyboardWillShow={ (e) => this.setState({scrollHeight: -60})} 
+            onKeyboardWillShow={ (e) =>  this.setState({scrollHeight: (e.startCoordinates.height - e.endCoordinates.height)})} 
             onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
             extraScrollHeight={scrollHeight}
             keyboardShouldPersistTaps='handled'

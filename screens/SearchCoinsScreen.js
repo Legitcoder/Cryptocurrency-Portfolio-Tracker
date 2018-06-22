@@ -27,7 +27,7 @@ class SearchCoinsScreen extends Component {
             <View style={styles.container}>
                 <SearchBar />
                 <KeyboardAwareScrollView style={{flex: 1}} 
-                    onKeyboardWillShow={ (e) => this.setState({scrollHeight: -85})} 
+                    onKeyboardWillShow={ (e) => this.setState({scrollHeight: (e.startCoordinates.height - e.endCoordinates.height - 50)})} 
                     onKeyboardWillHide={ (e) => this.setState({scrollHeight: 0})} 
                     extraScrollHeight={this.state.scrollHeight}
                     enableOnAndroid={true}  
