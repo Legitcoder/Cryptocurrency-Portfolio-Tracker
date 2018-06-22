@@ -4,9 +4,15 @@ import { View, Text, StyleSheet } from 'react-native';
 
 class Transaction extends Component {
     render() {
+        const { transaction } = this.props;
+        //console.log(transaction);
         return(
             <View style={styles.container}>
-                <Text>Individual Transaction List Item Goes Here</Text>
+                <Text>{transaction.amount}</Text>
+                <Text>{transaction.tradingPair}</Text>
+                <Text>Current USD: ${transaction.currentUSDPrice.toFixed(2)}</Text>
+                <Text>Bought USD: ${transaction.usdPriceTransacted.toFixed(2)}</Text>
+                <Text>Gains: ${((transaction.currentUSDPrice) - (transaction.usdPriceTransacted)).toFixed(2)}</Text>
             </View>    
         );
     }
@@ -15,6 +21,8 @@ class Transaction extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: '#fff',
+      margin: 10
     },
   });
 

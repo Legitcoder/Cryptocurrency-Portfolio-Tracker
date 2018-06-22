@@ -21,13 +21,13 @@ class TransactionList extends Component {
     }
 
     render() {
-        const {transactions, navigation} = this.props;
+        const {transactions, navigation, holding} = this.props;
         return(
          <View style={styles.container}> 
             <FlatList
             data={transactions}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => <Transaction transaction={item} navigation={navigation} />}
+            renderItem={({ item }) => <Transaction transaction={item} holding={holding} navigation={navigation} />}
             />
         </View>
         );
@@ -35,6 +35,7 @@ class TransactionList extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         transactions: state.transactions.transactions,
     }

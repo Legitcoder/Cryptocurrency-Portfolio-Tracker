@@ -11,19 +11,12 @@ class StockChart extends Component {
     }
 
     componentDidMount(){
-        console.log("StockChart mounted!")
-        console.log(this.props);
         const { getHistoricalBTCPrices } = this.props;
         const { coin } = this.props.holding;
         getHistoricalBTCPrices(coin.Symbol);
     }
 
-    componentDidUpdate() {
-        console.log("It's upating", this.props);
-    }
-
     componentWillReceiveProps(nextProps) {
-        console.log("It's receiving Props");
         const { allBtcPrices } = nextProps;
         this.setState(({ allBtcPrices: allBtcPrices}))
     }
@@ -84,7 +77,6 @@ class StockChart extends Component {
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         allBtcPrices: state.coins.allBtcPrices,
         holding: state.holdings.holding,

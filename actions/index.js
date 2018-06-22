@@ -10,6 +10,7 @@ import {
     GET_HOLDING,
     SELECT_HOLDING,
     GET_TRANSACTIONS,
+    GET_COIN_TRANSACTIONS,
     GET_COIN_USD_PRICE,
     GET_COIN_BTC_PRICE,
     GET_COIN_ALL_USD_PRICES,
@@ -48,14 +49,16 @@ export const getHistoricalBTCPrices = (symbol) =>  dispatch => {
 }
 
 export const updateCoinsCurrentUsdPrices = () => dispatch => {
-    AsyncStorage.getItem('holdings').then( existingHoldings => {
-        const holdings = JSON.parse(existingHoldings);
+    AsyncStorage.multiGet(['holdings', 'transactions']).then( store => {
+        const holdings = JSON.parse(store[0][1]);
+        const transactions = JSON.parse(store[1][1]);
         const coins = holdings.map( holding => holding.coin);
         const coinSymbols = coins.map( coin => coin.Symbol);
         cryptoCompareApi.priceMulti(coinSymbols, ["USD"])
         .then(priceHash => {
+            transactions.forEach( transaction => transaction.currentUSDPrice = priceHash[transaction.coin.Symbol]["USD"]);
             holdings.forEach( holding => holding.currentUSDPrice = priceHash[holding.coin.Symbol]["USD"]);
-            AsyncStorage.setItem('holdings', JSON.stringify(holdings));
+            AsyncStorage.multiSet([['holdings', JSON.stringify(holdings)], ['transactions', JSON.stringify(transactions)]]);
             dispatch({ type: GET_HOLDINGS, payload: holdings });  
         })
     });
@@ -70,12 +73,18 @@ export const getHolding = (coin, transaction) => dispatch => {
     });   
 }
 
-export const selectCoin = (coin) => dispatch => {
-    dispatch({ type: SELECT_COIN, payload: coin })
+export const getHoldings =  () => dispatch => {
+    AsyncStorage.getItem('holdings').then( existingHoldings => {
+        dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
+    });
 }
 
 export const selectHolding = (holding) => dispatch => {
     dispatch({ type: SELECT_HOLDING, payload: holding })
+}
+
+export const selectCoin = (coin) => dispatch => {
+    dispatch({ type: SELECT_COIN, payload: coin })
 }
 
 export const matchSearchArray = (searchArray) => dispatch => {
@@ -114,10 +123,11 @@ export const getCoins = () => dispatch => {
     })
 }
 
-export const getHoldings =  () => dispatch => {
-    AsyncStorage.getItem('holdings').then( existingHoldings => {
-        dispatch({ type: GET_HOLDINGS, payload: JSON.parse(existingHoldings) });  
-    });
+export const getCoinTransactions = (coin) => dispatch => {
+    AsyncStorage.getItem('transactions').then(existingTransactions => {
+        let matchingTransactions = JSON.parse(existingTransactions).filter(transaction => transaction.coin.CoinName === coin.CoinName);
+        dispatch({type: GET_COIN_TRANSACTIONS, payload: matchingTransactions});
+    })
 }
 
 export const getTransactions = () => dispatch => {
