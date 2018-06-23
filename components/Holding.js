@@ -23,9 +23,9 @@ class Holding extends Component {
 
     }
 
-    renderGreenDelta = () => <Entypo style={{color: 'green', alignSelf: 'center'}} name="triangle-up" size={25} />; 
+    renderGreenDelta = () => <Entypo style={{color: '#008000', alignSelf: 'center'}} name="triangle-up" size={25} />; 
 
-    renderRedDelta = () => <Entypo style={{color: 'red', alignSelf: 'center', }} name="triangle-down" size={25} /> ;
+    renderRedDelta = () => <Entypo style={{color: '#ff0000', alignSelf: 'center', }} name="triangle-down" size={25} /> ;
 
     calculatePercentage = () => {
         const { holding } = this.props;

@@ -21,14 +21,6 @@ class StockChart extends Component {
         this.setState(({ allBtcPrices: allBtcPrices}))
     }
 
-    // _onRefresh = () => {
-    //     const { getHistoricalBTCPrices } = this.props;
-    //     const { coin } = this.props.holding;
-    //     this.setState({refreshing: true}, () => getHistoricalBTCPrices(coin.Symbol));
-    //     this.setState({refreshing: false});
-    // }
-
-
     render() {
         const { holding } = this.props;
         const { allBtcPrices } = this.state;
@@ -36,27 +28,20 @@ class StockChart extends Component {
             const { CoinName, Symbol } = this.props.holding.coin;
             const { currentUSDPrice } = this.props.holding;
             return(
-                <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.titleViewContainer}>
                     <Text style={styles.symbolTextSyles}>{Symbol}  ${currentUSDPrice.toFixed(2)}</Text>
                 </View>    
-                    <View style={styles.candleStickContainer}>
+                    <View style={styles.candleStickContainer}> 
                     <VictoryChart
-                        // refreshControl={
-                        //     <RefreshControl 
-                        //         refreshing={this.state.refreshing}
-                        //         onRefresh={() => this._onRefresh()}
-                        //     />}
-                        width={350}
-                        height={350}
                         domainPadding={{ x: 5 }}
                         scale={{ x: "time" }}
-                        style={{marginLeft: 20,}}
+                        style={{flex: 1}}
                     >
                     <VictoryAxis tickFormat={(t) => `${t.getMonth() + 1}/${t.getFullYear().toString().substr(-2)}`} 
                                 style={{ 
                                     tickLabels: {fill: '#000', padding: 5, fontSize: 10},
-                                    axis: {stroke: '#000'} 
+                                    axis: {stroke: '#000'}
                                     }}/>
                     <VictoryAxis dependentAxis 
                                 style={{
@@ -67,10 +52,20 @@ class StockChart extends Component {
                             candleColors={{ positive: "green", negative: "#c43a31" }}
                             //Bug on CryptoCompare Api where the first few data objects are off in open, close prices
                             data={allBtcPrices.slice(5)}
+                            animate={{
+                                duration: 200,
+                                onLoad: { duration: 1000 }
+                              }}
                         />
                     </VictoryChart>    
-                    </View>   
-                </View>    
+                    </View>  
+                    <View style={styles.coinStatsContainer}>
+                        <Text style={{fontSize: 25}}>Coin Stats</Text>
+                        <Text style={{fontSize: 25}}>Coin Stats</Text>
+                        <Text style={{fontSize: 25}}>Coin Stats</Text>
+                        <Text style={{fontSize: 25}}>Coin Stats</Text>
+                    </View>    
+                </ScrollView> 
             );
         }
     }
@@ -85,7 +80,7 @@ const mapStateToProps = (state) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
@@ -94,7 +89,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#000',
         borderWidth: 3,
-        backgroundColor: '#5f6c7a'
+        backgroundColor: '#5f6c7a',
     },
     symbolTextSyles: {
         fontSize: 30,
@@ -105,6 +100,12 @@ const styles = StyleSheet.create({
     titleViewContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    coinStatsContainer: {
+        flex: 1,
+        marginTop: 10,
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     }
   });
 
