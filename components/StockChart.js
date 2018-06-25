@@ -21,6 +21,13 @@ class StockChart extends Component {
         this.setState(({ allBtcPrices: allBtcPrices}))
     }
 
+    _onRefresh = () => {
+        const { getHistoricalBTCPrices } = this.props;
+        const { coin } = this.props.holding;
+        this.setState({refreshing: true}, () => getHistoricalBTCPrices(coin.Symbol));
+        this.setState({refreshing: false});
+    }
+
     render() {
         const { holding } = this.props;
         const { allBtcPrices } = this.state;
@@ -28,7 +35,14 @@ class StockChart extends Component {
             const { CoinName, Symbol } = this.props.holding.coin;
             const { currentUSDPrice } = this.props.holding;
             return(
-                <ScrollView contentContainerStyle={styles.container}>
+                <ScrollView contentContainerStyle={styles.container}
+                    refreshControl={
+                        <RefreshControl 
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => this._onRefresh()}
+                        />
+                    }
+                >
                 <View style={styles.titleViewContainer}>
                     <Text style={styles.symbolTextSyles}>{Symbol}  ${currentUSDPrice.toFixed(2)}</Text>
                 </View>    
@@ -37,6 +51,7 @@ class StockChart extends Component {
                         domainPadding={{ x: 5 }}
                         scale={{ x: "time" }}
                         style={{flex: 1}}
+                        width={350}
                     >
                     <VictoryAxis tickFormat={(t) => `${t.getMonth() + 1}/${t.getFullYear().toString().substr(-2)}`} 
                                 style={{ 
@@ -83,6 +98,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        backgroundColor: '#202428',
     },
     candleStickContainer: {
         justifyContent: 'center',

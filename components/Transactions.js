@@ -14,10 +14,10 @@ class Transactions extends Component {
     }
 
     render() {
-        const { holding } = this.props;
+        const { holding, navigation } = this.props;
         return(
             <View style={styles.container}>
-                <TransactionList holding={holding} />
+                <TransactionList holding={holding} navigation={navigation} />
             </View>    
         );
     }
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#282E33',
+      backgroundColor: '#202428',
       justifyContent: 'center',
       alignItems: 'center'
     },

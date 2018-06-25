@@ -75,6 +75,7 @@ class ManageCoinScreen extends Component {
  const styles = StyleSheet.create({
      tabViewStyles: {
          flex: 1,
+         backgroundColor: '#202428',
      }
  })
 

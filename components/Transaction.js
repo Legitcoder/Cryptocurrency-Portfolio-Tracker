@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { getExchangesCoinBelongsTo } from '../actions';
 
 class Transaction extends Component {
 
@@ -8,7 +10,7 @@ class Transaction extends Component {
         const { transaction } = this.props;
         const { activeOrderState } = transaction;
         const percentage  = ((Math.abs(1-(transaction.currentUSDPrice/transaction.usdPriceTransacted))*100).toFixed(2));
-        if(activeOrderState === "Buy" && percentage !== 0) {
+        if(percentage !== 0) {
             return(
                 <Text style={[styles.transactionTextStyles, {alignSelf: 'center'}]}>Percentage:
                     {transaction.usdPriceTransacted < transaction.currentUSDPrice ? this.renderGreenDelta() : this.renderRedDelta()}
@@ -18,34 +20,43 @@ class Transaction extends Component {
         }
     }
 
+    navigateToTransactionForm = () => {
+        //Edit Transaction
+        const { navigation, transaction, getExchangesCoinBelongsTo } = this.props;
+        const { coin } = this.props.transaction;
+        getExchangesCoinBelongsTo(coin.Symbol);
+        navigation.navigate('transaction', { coin: coin, transaction: transaction });
+    }
+
     renderGreenDelta = () => <Entypo style={{color: '#008000', alignSelf: 'center'}} name="triangle-up" size={25} />; 
 
     renderRedDelta = () => <Entypo style={{color: '#ff0000', alignSelf: 'center', }} name="triangle-down" size={25} /> ;
 
     render() {
-        const { transaction } = this.props;
-        console.log(transaction.currentUSDPrice);
+        const { transaction, navigation } = this.props;
         const activeColor = transaction.activeOrderState === "Sell" ? "#ff0000" : "#008000";
         const action = transaction.activeOrderState === "Sell" ? "Sold" : "Bought";   
         return(
-            <View style={styles.container}>
-                <View style={[styles.orderStatusTextContainer, {backgroundColor: activeColor}]}>
-                    <Text style={styles.orderStatusTextStyles}>{transaction.activeOrderState.split('')[0]}</Text>
-                </View>
-            <View style={styles.transactionContainer}>    
-                <View style={styles.innerTransactionContainer}>
-                    <View style={styles.leftSide}>
-                        <Text style={styles.transactionTextStyles}>Amount: {transaction.amount}</Text>
-                        <Text style={styles.transactionTextStyles}>TradingPair: {transaction.tradingPair}</Text>
+            <TouchableWithoutFeedback onPress={() => this.navigateToTransactionForm()}>
+                <View style={styles.container}>
+                    <View style={[styles.orderStatusTextContainer, {backgroundColor: activeColor}]}>
+                        <Text style={styles.orderStatusTextStyles}>{transaction.activeOrderState.split('')[0]}</Text>
                     </View>
-                <View style={styles.rightSide}>    
-                    <Text style={styles.transactionTextStyles}>{action}: ${transaction.usdPriceTransacted.toFixed(2)}</Text>
-                    <Text style={styles.transactionTextStyles}>Gains: ${((transaction.currentUSDPrice) - (transaction.usdPriceTransacted)).toFixed(2)}</Text>
+                <View style={styles.transactionContainer}>    
+                    <View style={styles.innerTransactionContainer}>
+                        <View style={styles.leftSide}>
+                            <Text style={styles.transactionTextStyles}>Amount: {transaction.amount}</Text>
+                            <Text style={styles.transactionTextStyles}>TradingPair: {transaction.tradingPair}</Text>
+                        </View>
+                    <View style={styles.rightSide}>    
+                        <Text style={styles.transactionTextStyles}>{action}: ${transaction.usdPriceTransacted}</Text>
+                        <Text style={styles.transactionTextStyles}>Gains: ${((transaction.currentUSDPrice) - (transaction.usdPriceTransacted)).toFixed(2)}</Text>
+                    </View>
+                    </View>
+                    {this.renderTransactionPercentage()}
                 </View>
                 </View>
-                {this.renderTransactionPercentage()}
-            </View>
-            </View>    
+            </TouchableWithoutFeedback>    
         );
     }
 }
@@ -71,7 +82,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 14,
         color: '#fff',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     orderStatusTextContainer: {
         borderWidth: 1,
@@ -81,6 +92,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         height: 35,
         width: 40,
+        justifyContent: 'center'
     },
     transactionTextStyles: {
         color: '#fff',
@@ -97,4 +109,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default Transaction;
+export default connect(null, { getExchangesCoinBelongsTo })(Transaction);

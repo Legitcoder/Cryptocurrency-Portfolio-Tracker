@@ -8,6 +8,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Feather, Ionicons } from '@expo/vector-icons';
 
 
+//Props Need: coin
+
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
 
@@ -17,7 +19,6 @@ class TransactionScreen extends Component {
         }
 
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
-        console.log(CoinName);
         return{
             headerTitle:  <Image style={{width: 40, height: 40, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
             headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => navigation.goBack()} />,
@@ -55,6 +56,25 @@ class TransactionScreen extends Component {
         );   
     }
 
+    renderUpdateButton() {
+        return(
+            <View style={[styles.buttonContainer]}>
+                <TouchableOpacity style={[styles.buttonStyles, {backgroundColor: '#6495ED'}]} >
+                    <Text style={[styles.textStyles]}>Update</Text>
+                </TouchableOpacity>
+            </View> 
+        ); 
+    }
+
+    renderButtons = () => {
+        return(
+            <View style={styles.buttonsContainer}>
+                {this.renderBuyButton()}
+                {this.renderSellButton()}
+            </View>    
+        )
+    }
+
     renderHeader() {
         const {CoinName, Symbol, ImageUrl} = this.props.navigation.state.params.coin;
         return(
@@ -85,6 +105,7 @@ class TransactionScreen extends Component {
         const { coin } = this.props.navigation.state.params;
         const { scrollHeight, activeState } = this.state;
         const { container, buttonsContainer} = styles;
+        const { transaction } = this.props.navigation.state.params;
         return(
            <View style={container}> 
             <KeyboardAwareScrollView
@@ -100,8 +121,7 @@ class TransactionScreen extends Component {
             <View style={container}>
                     {this.renderHeader()}
                 <View style={buttonsContainer}>
-                    {this.renderBuyButton()}
-                    {this.renderSellButton()}
+                    {transaction ? this.renderUpdateButton() : this.renderButtons()}
                 </View>
                 <TransactionForm navigation={this.props.navigation} activeOrderState={activeState} onPress={ this.handleTransaction.bind(this)} />
              </View>   
