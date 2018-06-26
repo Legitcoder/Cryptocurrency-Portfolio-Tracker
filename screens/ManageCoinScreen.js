@@ -39,8 +39,9 @@ class ManageCoinScreen extends Component {
         this.state = { index: 0, routes: [ {key: 'general', title: 'General'}, {key: 'transactions', title: "Transactions"} ]}
     }
 
-    shouldComponentUpdate() {
-        return false;
+    shouldComponentUpdate(nextProps) {
+        if(JSON.stringify(this.props) === JSON.stringify(nextProps)) return false;
+        return true;       
     }
 
     render() {

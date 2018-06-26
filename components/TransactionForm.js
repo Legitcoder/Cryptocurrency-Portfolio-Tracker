@@ -28,7 +28,7 @@ class TransactionForm extends Component {
             activeTradingPair: '', 
             isDateTimePickerVisible: false,
             date: new Date().toString().slice(0 , -18),
-            tradingPairsPrices: '',
+            tradingPairsPrices: null,
             amount: "",
             priceBought: 0,
             usdPrice: null                
@@ -51,13 +51,28 @@ class TransactionForm extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {getTradingPairsPriceHash, tradingPairsPrices, exchanges, usdPrice, btcPrice } = nextProps;
+        console.log(this.props, nextProps);
         let { coin } = nextProps;
-        let newState;
+        let newState, activeExchangeIndex;
         const { transaction } = this.props.navigation.state.params
+        console.log(transaction);
         if(!coin) coin = this.props.navigation.state.params.coin;
-        let activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
+        activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
-        if(exchanges) {
+        if( transaction && exchanges ) {
+            newState = { exchanges: exchanges, tradingPairs: this.state.activeExchange ? exchanges[activeExchangeIndex].pairs : []};
+            this.setState(newState, () => {
+                if(!tradingPairsPrices) {
+                    getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
+                }
+            });
+            if(this.state.priceBought === 0){
+                newState = { ...newState,  priceBought: tradingPairsPrices ? this.state.activeTradingPair !== '' ? tradingPairsPrices[this.state.activeTradingPair] ? tradingPairsPrices[this.state.activeTradingPair].toString() : "" : "" : "", activeTradingPair: exchanges.length === 0 ? "N/A" : this.state.activeTradingPair === '' ? exchanges[0].pairs[0] : this.state.activeTradingPair }
+                this.setState(newState);
+            }
+        }
+        console.log(this.state);
+        if(exchanges && !transaction) {
              newState = {
                 exchanges: exchanges,
                 tradingPairs: this.state.activeExchange ? exchanges[activeExchangeIndex].pairs : [] ,
@@ -89,9 +104,7 @@ class TransactionForm extends Component {
     onPressExchanges = (item) => {
         let { coin } = this.props;
         if(!coin) coin = this.props.navigation.state.params.coin;
-        console.log(coin);
         const { exchange, pairs } = item;
-        console.log(item);
         const { getTradingPairsPriceHash } = this.props;
         this.props.getTradingPairsPriceHash(coin.Symbol, pairs, exchange);
         this.setState((prevState, props) => {return { activeExchange: exchange, activeTradingPair: pairs[0], tradingPairs: pairs}});
@@ -161,7 +174,7 @@ class TransactionForm extends Component {
              <TransactionButton 
                 text={this.props.activeOrderState ? 'Add Transaction' : ''} 
                 buttonColor={this.props.activeOrderState  === "Buy" && !transaction ? '#008000' : transaction ? null : '#FF0000'}
-                onPress={ () => {onPress({...this.state, activeOrderState: activeOrderState }), this.refresh()} } 
+                onPress={ () => {onPress({...this.state, activeOrderState: activeOrderState })} } 
               />    
             </View>
         );

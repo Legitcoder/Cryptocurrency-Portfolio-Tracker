@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Transaction from './Transaction';
 import AddButton from '../common/AddButton';
-import { getTransactions } from '../actions';
+import { getCoinTransactions } from '../actions';
 
 class TransactionList extends Component {
     constructor(props) {
@@ -12,19 +12,33 @@ class TransactionList extends Component {
     }
 
     componentDidMount() {
-        const { getTransactions } = this.props;
-        getTransactions();
+        const { getCoinTransactions, holding } = this.props;
+        const { coin } = holding;
+        getCoinTransactions(coin);
     }
 
     componentWillReceiveProps(nextProps) {
         //console.log(nextProps);
     }
 
+    _onRefresh = () => {
+        const { getTransactions, holding } = this.props;
+        const { coin } = holding;
+        this.setState({ refreshing: true}, () => getCoinTransactions(coin));
+        this.setState({refreshing: false});
+    } 
+
     render() {
         const {transactions, navigation, holding} = this.props;
         return(
          <View style={styles.container}> 
             <FlatList
+            refreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={() => this._onRefresh()}
+                />
+            }
             data={transactions}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => <Transaction transaction={item} holding={holding} navigation={navigation} />}
@@ -55,4 +69,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(mapStateToProps,  { getTransactions })(TransactionList);
+export default connect(mapStateToProps,  { getCoinTransactions })(TransactionList);

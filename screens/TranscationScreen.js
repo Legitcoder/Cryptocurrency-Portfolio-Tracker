@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, Image , Dimensions} from 'react-native';
 import TransactionButton from '../common/TransactionButton';
 import TransactionForm from '../components/TransactionForm';
-import { saveTransaction, getHoldings, getHolding } from '../actions';
+import { saveTransaction, getHoldings, getHolding, updateTransaction } from '../actions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Feather, Ionicons } from '@expo/vector-icons';
 
@@ -18,6 +18,13 @@ class TransactionScreen extends Component {
             navigation.navigate('portfolio');
         }
 
+        renderIcon = () => {
+            const { transaction } = navigation.state.params;
+            if( transaction ) return <Ionicons name="md-trash" size={20} color="#fff" style={{marginRight: 10}} onPress={this.handleTrash} />
+            return <View />
+
+        }
+
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
         return{
             headerTitle:  <Image style={{width: 40, height: 40, alignSelf: 'center', flex: 1, resizeMode: 'contain'}} source={{ uri: ImageUrl}} />,
@@ -27,7 +34,7 @@ class TransactionScreen extends Component {
                 backgroundColor: '#282E33',
                 borderBottomWidth: 0,
             },
-            headerRight: <Ionicons name="md-trash" size={20} color="#fff" style={{marginRight: 10}} onPress={this.handleTrash} /> //For Android the Image doesn't center and veers off to the right so adding an empty View centers it
+            headerRight: this.renderIcon()
         };
     }
 
@@ -86,16 +93,22 @@ class TransactionScreen extends Component {
 
     handleTransaction = (formState) => {
         const { coin } = this.props.navigation.state.params;
-        const { navigation, saveTransaction, getHolding } = this.props;
+        const { navigation, saveTransaction, getHolding, updateTransaction } = this.props;
         const transaction = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPriceTransacted: formState.usdPriceTransacted, btcPriceTransacted: formState.btcPriceTransacted, currentUSDPrice: formState.currentUSDPrice, currentBTCPrice: formState.currentBTCPrice};
-        saveTransaction(transaction);
+        const existingTransaction = this.props.navigation.state.params.transaction;
+        if(existingTransaction) {
+            updateTransaction(existingTransaction, transaction);
+        }
+        else {
+            saveTransaction(transaction); 
+        }
         getHolding(coin, transaction);
         setTimeout(() => {
             navigation.navigate('managecoin', { coin: coin, refresh: () => {
                 const { getHoldings } = this.props;
                 getHoldings();
             }});    
-        }, 500);
+        }, 500);  
     } 
 
 
@@ -179,4 +192,4 @@ class TransactionScreen extends Component {
  })
 
 
- export default connect(null, { saveTransaction, getHoldings, getHolding })(TransactionScreen);
+ export default connect(null, { saveTransaction, getHoldings, getHolding, updateTransaction })(TransactionScreen);

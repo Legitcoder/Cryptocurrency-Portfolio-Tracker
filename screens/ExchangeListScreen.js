@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, Text, StyleSheet, FlatList } from 'react-native';
 import ListScreen from '../common/ListScreen'
 import ListItem from '../common/ListItem';
+import { } from '../actions';
 import { Feather } from '@expo/vector-icons';
 
 class ExchangeListScreen extends Component {

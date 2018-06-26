@@ -15,6 +15,7 @@ import {
     GET_COIN_BTC_PRICE,
     GET_COIN_ALL_USD_PRICES,
     GET_COIN_ALL_BTC_PRICES,
+    UPDATE_TRANSACTION
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
@@ -48,7 +49,7 @@ export const getHistoricalBTCPrices = (symbol) =>  dispatch => {
     });
 }
 
-export const updateCoinsCurrentUsdPrices = () => dispatch => {
+export const updateCoinsCurrentUsdPrices = (transaction) => dispatch => {
     AsyncStorage.multiGet(['holdings', 'transactions']).then( store => {
         const holdings = JSON.parse(store[0][1]);
         const transactions = JSON.parse(store[1][1]);
@@ -59,10 +60,34 @@ export const updateCoinsCurrentUsdPrices = () => dispatch => {
             transactions.forEach( transaction => transaction.currentUSDPrice = priceHash[transaction.coin.Symbol]["USD"]);
             holdings.forEach( holding => holding.currentUSDPrice = priceHash[holding.coin.Symbol]["USD"]);
             AsyncStorage.multiSet([['holdings', JSON.stringify(holdings)], ['transactions', JSON.stringify(transactions)]]);
-            dispatch({ type: GET_HOLDINGS, payload: holdings });  
+            dispatch({ type: GET_HOLDINGS, payload: holdings });
         })
+    });   
+
+} 
+
+export const updateTransaction = (existingTransaction, formTransaction) => dispatch => {
+    AsyncStorage.multiGet(['holdings', 'transactions']).then( store => {
+        const holdings = JSON.parse(store[0][1]);
+        const transactions = JSON.parse(store[1][1]);
+        let existingHolding, difference;
+        //Tried to use filter, didn't work
+        holdings.forEach( holding => {
+            if(holding.coin.CoinName === formTransaction.coin.CoinName){
+                existingHolding = holding;
+        }});
+        transactions.forEach( (currentTransaction, index ) => {
+            if(JSON.stringify(currentTransaction) === JSON.stringify(existingTransaction)) {
+                 difference = formTransaction.amount - currentTransaction.amount;
+                 existingHolding.amount = (Number(difference) + Number(existingHolding.amount)).toString(); 
+                 transactions[index] = formTransaction;
+            }
+        });
+        AsyncStorage.multiSet([['holdings', JSON.stringify(holdings)], ['transactions', JSON.stringify(transactions)]]); 
+        dispatch({type: UPDATE_TRANSACTION, payload: {}}); 
     });
 }
+
 
 export const getHolding = (coin, transaction) => dispatch => {
     AsyncStorage.getItem('holdings').then( existingholdings => {

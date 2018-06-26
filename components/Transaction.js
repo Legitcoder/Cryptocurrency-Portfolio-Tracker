@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { getExchangesCoinBelongsTo } from '../actions';
+import { getExchangesCoinBelongsTo, selectCoin } from '../actions';
 
 class Transaction extends Component {
 
@@ -22,9 +22,10 @@ class Transaction extends Component {
 
     navigateToTransactionForm = () => {
         //Edit Transaction
-        const { navigation, transaction, getExchangesCoinBelongsTo } = this.props;
+        const { navigation, transaction, getExchangesCoinBelongsTo, selectCoin } = this.props;
         const { coin } = this.props.transaction;
         getExchangesCoinBelongsTo(coin.Symbol);
+        selectCoin(coin);
         navigation.navigate('transaction', { coin: coin, transaction: transaction });
     }
 
@@ -50,7 +51,7 @@ class Transaction extends Component {
                         </View>
                     <View style={styles.rightSide}>    
                         <Text style={styles.transactionTextStyles}>{action}: ${transaction.usdPriceTransacted}</Text>
-                        <Text style={styles.transactionTextStyles}>Gains: ${((transaction.currentUSDPrice) - (transaction.usdPriceTransacted)).toFixed(2)}</Text>
+                        <Text style={styles.transactionTextStyles}>Gains: ${(((transaction.currentUSDPrice) - (transaction.usdPriceTransacted))*transaction.amount).toFixed(2)}</Text>
                     </View>
                     </View>
                     {this.renderTransactionPercentage()}
@@ -109,4 +110,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(null, { getExchangesCoinBelongsTo })(Transaction);
+export default connect(null, { getExchangesCoinBelongsTo, selectCoin })(Transaction);
