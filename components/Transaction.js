@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { getExchangesCoinBelongsTo, selectCoin } from '../actions';
+import { getExchangesCoinBelongsTo, selectCoin, deleteTransaction, getHoldings } from '../actions';
 
 class Transaction extends Component {
 
@@ -22,11 +22,11 @@ class Transaction extends Component {
 
     navigateToTransactionForm = () => {
         //Edit Transaction
-        const { navigation, transaction, getExchangesCoinBelongsTo, selectCoin } = this.props;
+        const { navigation, transaction, getExchangesCoinBelongsTo, selectCoin, deleteTransaction, getHoldings } = this.props;
         const { coin } = this.props.transaction;
         getExchangesCoinBelongsTo(coin.Symbol);
         selectCoin(coin);
-        navigation.navigate('transaction', { coin: coin, transaction: transaction });
+        navigation.navigate('transaction', { coin: coin, transaction: transaction, deleteTransaction: deleteTransaction, refresh: () => getHoldings() });
     }
 
     renderGreenDelta = () => <Entypo style={{color: '#008000', alignSelf: 'center'}} name="triangle-up" size={25} />; 
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default connect(null, { getExchangesCoinBelongsTo, selectCoin })(Transaction);
+export default connect(null, { getExchangesCoinBelongsTo, selectCoin, deleteTransaction, getHoldings })(Transaction);

@@ -171,6 +171,26 @@ export const saveTransaction = (transaction) => dispatch => {
     })
 }
 
+export const deleteTransaction = (transaction) => dispatch => {
+    AsyncStorage.multiGet(['holdings', 'transactions']).then( store => {
+        const storedHoldings = JSON.parse(store[0][1]);
+        const storedTransactions = JSON.parse(store[1][1]);
+        const storedTransaction = storedTransactions.filter( currentTransaction => JSON.stringify(currentTransaction) === JSON.stringify(transaction))[0];
+        updateHolding(storedHoldings, storedTransaction);
+        storedTransactions.splice(storedTransactions.indexOf(storedTransaction), 1);
+        AsyncStorage.setItem('transactions', JSON.stringify(storedTransactions));
+    })
+}
+
+
+const updateHolding = (storedHoldings, transaction) => {
+    const storedHolding = storedHoldings.filter(holdings => holdings.coin.CoinName === transaction.coin.CoinName)[0];
+    storedHolding.amount = Number(storedHolding.amount) - Number(transaction.amount);
+    if(storedHolding.amount === 0) storedHoldings.splice(storedHoldings.indexOf(storedHolding), 1);
+    debugger;
+    AsyncStorage.setItem('holdings', JSON.stringify(storedHoldings));
+}
+
 
 //// Helper Methods
 

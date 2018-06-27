@@ -13,16 +13,17 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
 
-        handleTrash = () => {
-            alert("Clicking Trash");
-            navigation.navigate('portfolio');
+        handleDeleteTransaction = () => {
+            const { transaction, deleteTransaction, refresh } = navigation.state.params;
+            const { coin } = transaction;
+            deleteTransaction(transaction);
+            navigation.navigate('managecoin', { coin: coin, refresh: refresh })
         }
 
         renderIcon = () => {
             const { transaction } = navigation.state.params;
-            if( transaction ) return <Ionicons name="md-trash" size={20} color="#fff" style={{marginRight: 10}} onPress={this.handleTrash} />
+            if( transaction ) return <Ionicons name="md-trash" size={20} color="#fff" style={{marginRight: 10}} onPress={this.handleDeleteTransaction} />
             return <View />
-
         }
 
         const { CoinName, Symbol, ImageUrl } = navigation.state.params.coin;
