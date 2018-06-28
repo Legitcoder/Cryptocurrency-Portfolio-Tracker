@@ -6,7 +6,8 @@ import {
     GET_COIN_USD_PRICE,
     GET_COIN_BTC_PRICE,
     GET_COIN_ALL_USD_PRICES,
-    GET_COIN_ALL_BTC_PRICES
+    GET_COIN_ALL_BTC_PRICES,
+    GET_USD_COIN_INFO
 } from '../actions/types';
 
 
@@ -28,6 +29,8 @@ export default( state = {}, action ) => {
             return {...state, allUsdPrices: action.payload}
         case GET_COIN_ALL_BTC_PRICES:
             return {...state, allBtcPrices: action.payload}
+        case GET_USD_COIN_INFO:
+            return {...state, priceInfo: action.payload}
         default: 
             return state
     }

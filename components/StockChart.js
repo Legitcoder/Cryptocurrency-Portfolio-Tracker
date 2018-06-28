@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet, ActivityIndicator, RefreshControl, ScrollView } from 'react-native';
-import { getHistoricalBTCPrices } from '../actions';
+import { getHistoricalBTCPrices, getUSDCoinInfo } from '../actions';
 import { VictoryCandlestick, VictoryAxis, VictoryChart, VictoryTheme } from 'victory-native';
 
 class StockChart extends Component {
     constructor(props) {
         super(props);
-        this.state = { allBtcPrices: [], refreshing: false }
+        this.state = { refreshing: false }
     }
 
     componentDidMount(){
-        const { getHistoricalBTCPrices } = this.props;
+        const { getHistoricalBTCPrices, getUSDCoinInfo } = this.props;
         const { coin } = this.props.holding;
         getHistoricalBTCPrices(coin.Symbol);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { allBtcPrices } = nextProps;
-        this.setState(({ allBtcPrices: allBtcPrices}))
+        getUSDCoinInfo(coin.Symbol);
     }
 
     _onRefresh = () => {
@@ -28,10 +24,38 @@ class StockChart extends Component {
         this.setState({refreshing: false});
     }
 
+    numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+    renderCoinStats = () => {
+        const { MKTCAP, VOLUME24HOUR, SUPPLY, HIGH24HOUR, LOW24HOUR } = this.props.priceInfo;
+        const { Symbol } = this.props.holding.coin;
+        return(
+            <View style={styles.coinStatsContainer}>
+                <View style={styles.coinStatsInnerContainer}>
+                    <View style={styles.leftSideContainer}>
+                        <Text style={styles.coinStatsTitleTextStyles}>Market Cap</Text>
+                        <Text style={styles.coinStatsTextStyles}>${this.numberWithCommas(MKTCAP.toFixed(0))}</Text>
+                        <Text style={[styles.coinStatsTitleTextStyles, {marginTop: 10}]}>High(24HR)</Text>
+                        <Text style={[styles.coinStatsTextStyles]}>${HIGH24HOUR.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.rightSideContainer}>
+                        <Text style={styles.coinStatsTitleTextStyles}>Supply</Text>
+                        <Text style={styles.coinStatsTextStyles}>{this.numberWithCommas(SUPPLY)} {Symbol}</Text>
+                        <Text style={[styles.coinStatsTitleTextStyles, {marginTop: 10}]}>LOW(24HR)</Text>
+                        <Text style={[styles.coinStatsTextStyles]}>${LOW24HOUR.toFixed(2)}</Text>
+                    </View>
+                </View>
+            </View>
+        );
+    }
+
+
+
     render() {
-        const { holding } = this.props;
-        const { allBtcPrices } = this.state;
-        if(!holding && allBtcPrices.length === 0)return <ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
+        const { holding, allBtcPrices, priceInfo } = this.props;
+        if(!holding || !allBtcPrices || !priceInfo)return <ActivityIndicator style={{flex: 1}} size="large" color="#fff" />; 
             const { CoinName, Symbol } = this.props.holding.coin;
             const { currentUSDPrice } = this.props.holding;
             return(
@@ -74,12 +98,7 @@ class StockChart extends Component {
                         />
                     </VictoryChart>    
                     </View>  
-                    <View style={styles.coinStatsContainer}>
-                        <Text style={{fontSize: 25}}>Coin Stats</Text>
-                        <Text style={{fontSize: 25}}>Coin Stats</Text>
-                        <Text style={{fontSize: 25}}>Coin Stats</Text>
-                        <Text style={{fontSize: 25}}>Coin Stats</Text>
-                    </View>    
+                    {this.renderCoinStats()}   
                 </ScrollView> 
             );
         }
@@ -90,6 +109,7 @@ const mapStateToProps = (state) => {
     return {
         allBtcPrices: state.coins.allBtcPrices,
         holding: state.holdings.holding,
+        priceInfo: state.coins.priceInfo,
     }
 }
 
@@ -119,11 +139,41 @@ const styles = StyleSheet.create({
     },
     coinStatsContainer: {
         flex: 1,
-        marginTop: 10,
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    coinStatsInnerContainer: {
+        backgroundColor: '#2b3136',
+        flexDirection: 'row',
+        borderRadius: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    coinStatsTextStyles: {
+        fontSize: 15,
+        color: '#fff',
+        margin: 5
+    },
+    coinStatsTitleTextStyles: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff'
+    },
+    leftSideContainer: {
+        flex: 1,
+        //backgroundColor: 'green',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    rightSideContainer: {
+        flex: 1,
+        //backgroundColor: 'orangered',
+        justifyContent: 'center', 
+        alignItems: 'center',
     }
   });
 
 
-export default connect(mapStateToProps, { getHistoricalBTCPrices })(StockChart);
+export default connect(mapStateToProps, { getHistoricalBTCPrices, getUSDCoinInfo })(StockChart);

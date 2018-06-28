@@ -15,12 +15,21 @@ import {
     GET_COIN_BTC_PRICE,
     GET_COIN_ALL_USD_PRICES,
     GET_COIN_ALL_BTC_PRICES,
+    GET_USD_COIN_INFO,
     UPDATE_TRANSACTION
 } from './types';
 
 //To be fixed: Instead of selecting a coin and seeing N/A and no trading pair available in Transaction Form. User shouldn't populate
 // a coin in searchArray that has no exchanges being traded on. filtercoins and getCoins returns all coins instead of filtering only the
 //ones with at least one exchange being traded on. 
+
+
+export const getUSDCoinInfo = (coinSymbol) => dispatch => {
+    cryptoCompareApi.priceFull([coinSymbol], ['USD'])
+        .then(priceInfo => {
+            dispatch({ type: GET_USD_COIN_INFO, payload: priceInfo[coinSymbol]['USD']});
+        });
+}
 
 export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
     const exchangesCoinBelongsTo = [];
