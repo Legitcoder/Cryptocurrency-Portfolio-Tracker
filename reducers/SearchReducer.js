@@ -1,5 +1,6 @@
 import {
-    MATCH_SEARCH_ARRAY
+    MATCH_SEARCH_ARRAY,
+    CLEAR_SEARCH_ARRAY
 } from '../actions/types';
 
 const INITIAL_STATE = {

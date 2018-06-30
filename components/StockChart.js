@@ -42,7 +42,7 @@ class StockChart extends Component {
                     </View>
                     <View style={styles.rightSideContainer}>
                         <Text style={styles.coinStatsTitleTextStyles}>Supply</Text>
-                        <Text style={styles.coinStatsTextStyles}>{this.numberWithCommas(SUPPLY)} {Symbol}</Text>
+                        <Text style={styles.coinStatsTextStyles}>{this.numberWithCommas(SUPPLY.toFixed(0))} {Symbol}</Text>
                         <Text style={[styles.coinStatsTitleTextStyles, {marginTop: 10}]}>LOW(24HR)</Text>
                         <Text style={[styles.coinStatsTextStyles]}>${LOW24HOUR.toFixed(2)}</Text>
                     </View>
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: 15
 
     },
     coinStatsInnerContainer: {
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 10,
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
     },
     coinStatsTextStyles: {
         fontSize: 15,

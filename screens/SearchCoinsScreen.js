@@ -5,12 +5,34 @@ import SearchBar from '../components/SearchBar';
 import CoinList from '../components/CoinList'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { selectCoin, getExchangesCoinBelongsTo } from '../actions';
+import { Feather } from '@expo/vector-icons';
 
 
 class SearchCoinsScreen extends Component { 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Search Cryptocurrencies',
+            headerLeft: <Feather name="arrow-left" size={25} color='#fff' onPress={() => navigation.goBack()} />,
+            headerStyle: {
+                backgroundColor: '#282E33',
+                borderBottomWidth: 0,
+                elevation: 0,
+                shadowOpacity: 0
+            },
+            headerTitleStyle: {
+                color: "#fff"
+            }
+        }
+    } 
+
     constructor(props) {
         super(props);
-        this.state = {scrollHeight: -50}
+        this.state = {scrollHeight: -50, searchArray: []}
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { searchArray } = nextProps;
+        this.setState({ searchArray: searchArray })
     }
 
     handleSelectedCoin = (coin) => {
@@ -21,8 +43,7 @@ class SearchCoinsScreen extends Component {
     }
 
     render() {
-        const { searchArray } = this.props;
-        if(!searchArray) return <ActivityIndicator />;
+        const { searchArray } = this.state;
         return(
             <View style={styles.container}>
                 <SearchBar />
@@ -48,7 +69,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        backgroundColor: '#202428',
     },
   });
 

@@ -17,8 +17,8 @@ class SearchBar extends Component {
         this.props.getCoins();
     }
 
-    componentWillReceiveProps() {
-        const {coins} = this.props;
+    componentWillReceiveProps(nextProps) {
+        const {coins} = nextProps;
         if(coins && this.state.coins === null) this.setState({coins: coins});
     }
 
@@ -52,7 +52,6 @@ class SearchBar extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        searchArray: state.search.searchArray,
         coins: state.coins.coins
     }
 }

@@ -21,7 +21,7 @@ class HoldingList extends Component {
         const { navigation } = this.props;
         return(
             <View style={styles.addButtonViewStyles}>
-                <AddButton activeOpacity={0.7} propsButtonStyle={{opacity: 0.7, margin: 8, marginRight: 25 }} onPress={() => navigation.navigate('addtoporfolio')}/>  
+                <AddButton activeOpacity={0.7} propsButtonStyle={{opacity: 0.7, margin: 8, marginRight: 25 }} onPress={() => navigation.navigate('searchcoins')}/>  
             </View>    
         );
     }

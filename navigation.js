@@ -5,17 +5,17 @@ import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import PorfolioScreen from './screens/PortfolioScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import WatchlistScreen from './screens/WatchlistScreen';
-import AddToPortfolioScreen from './screens/AddToPortfolioScreen';
 import TransactionScreen from './screens/TranscationScreen';
 import ExchangeListScreen from './screens/ExchangeListScreen';
 import TradingPairListScreen from './screens/TradingPairListScreen';
 import ManageCoinScreen from './screens/ManageCoinScreen';
+import SearchCoinsScreen from './screens/SearchCoinsScreen';
 
 export const MainNavigator = createBottomTabNavigator({
     portfolio: {
       screen: createStackNavigator( {
         portfolio: { screen: PorfolioScreen },
-        addtoporfolio: { screen: AddToPortfolioScreen },
+        searchcoins: { screen: SearchCoinsScreen },
         managecoin: { screen: ManageCoinScreen },
         transaction: {screen: TransactionScreen},
         exchanges: {screen: ExchangeListScreen},
@@ -45,7 +45,12 @@ export const MainNavigator = createBottomTabNavigator({
       }
     )
     },
-    watchlist: { screen: WatchlistScreen},
+    watchlist: {
+      screen: createStackNavigator({
+        watchlist: { screen: WatchlistScreen},
+        searchcoins: { screen: SearchCoinsScreen }
+      }), 
+    }
     // settings: { screen: SettingsScreen },
     
   },

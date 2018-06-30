@@ -40,7 +40,7 @@ class PortfolioScreen extends Component {
         return(
             <View style={[styles.container, {justifyContent: 'center'}]}>
                 <Text style={styles.welcomeTextStyles}>Your Portfolio Starts Here!</Text>
-                <AddButton onPress={() => navigation.navigate('addtoporfolio')} />
+                <AddButton onPress={() => navigation.navigate('searchcoins')} />
             </View>
         );
     }
