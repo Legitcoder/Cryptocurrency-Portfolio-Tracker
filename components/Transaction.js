@@ -50,8 +50,8 @@ class Transaction extends Component {
                             <Text style={styles.transactionTextStyles}>TradingPair: {transaction.tradingPair}</Text>
                         </View>
                     <View style={styles.rightSide}>    
-                        <Text style={styles.transactionTextStyles}>{action}: ${transaction.usdPriceTransacted}</Text>
-                        <Text style={styles.transactionTextStyles}>Gains: ${(((transaction.currentUSDPrice) - (transaction.usdPriceTransacted))*transaction.amount).toFixed(2)}</Text>
+                        <Text style={styles.transactionTextStyles}>{action}: ${transaction.usdPriceTransacted.toFixed(2)}</Text>
+                        <Text style={styles.transactionTextStyles}>Profit/Loss: ${(((transaction.currentUSDPrice) - (transaction.usdPriceTransacted))*transaction.amount).toFixed(2)}</Text>
                     </View>
                     </View>
                     {this.renderTransactionPercentage()}
@@ -102,10 +102,10 @@ const styles = StyleSheet.create({
         padding: 5
     },
     leftSide: {
-
+        alignItems: 'flex-end'
     },
     rightSide: {
-
+        alignItems: 'flex-end'
     }
   });
 

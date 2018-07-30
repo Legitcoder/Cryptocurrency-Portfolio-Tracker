@@ -7,7 +7,9 @@ const ListItem = ({ title, onPress }) => {
     return (
         <TouchableWithoutFeedback onPress={ () => onPress() }>
             <View style={styles.listItemContainer}>
-                <Text style={styles.listItemTextStyles}>{title}</Text>
+                <Text style={styles.listItemTextStyles}> 
+                    {title} 
+                </Text>
                 <MaterialIcons style={styles.rightArrowStyles} color={'#fff'} name="chevron-right" size={30} />
             </View>
         </TouchableWithoutFeedback>    

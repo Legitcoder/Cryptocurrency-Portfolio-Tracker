@@ -45,31 +45,31 @@ export const MainNavigator = createBottomTabNavigator({
       }
     )
     },
-    watchlist: {
-      screen: createStackNavigator({
-        watchlist: { screen: WatchlistScreen},
-        searchcoins: { screen: SearchCoinsScreen }
-      }), 
-    }
+    // watchlist: {
+    //   screen: createStackNavigator({
+    //     watchlist: { screen: WatchlistScreen},
+    //     searchcoins: { screen: SearchCoinsScreen }
+    //   }), 
+    // }
     // settings: { screen: SettingsScreen },
     
   },
     {
-      navigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({tintColor }) => {
-          const { routeName } = navigation.state;
-          let iconName;
-          let size = 25;
-          if (routeName === 'portfolio') {
-            return <Entypo name='wallet' size={size} color={tintColor} />;
-          } else if (routeName === 'settings') {
-            return <MaterialIcons name='settings' size={size} color={tintColor} />;
-          }
-            else if (routeName === 'watchlist') {
-            return <FontAwesome name='binoculars' size={size} color={tintColor} />;
-          }
-        },
-      }),
+      // navigationOptions: ({ navigation }) => ({
+      //   tabBarIcon: ({tintColor }) => {
+      //     const { routeName } = navigation.state;
+      //     let iconName;
+      //     let size = 25;
+      //     if (routeName === 'portfolio') {
+      //       return <Entypo name='wallet' size={size} color={tintColor} />;
+      //     } else if (routeName === 'settings') {
+      //       return <MaterialIcons name='settings' size={size} color={tintColor} />;
+      //     }
+      //       else if (routeName === 'watchlist') {
+      //       return <FontAwesome name='binoculars' size={size} color={tintColor} />;
+      //     }
+      //   },
+      // }),
       swipeEnabled: false,
       tabBarOptions: {
         showLabel: false,

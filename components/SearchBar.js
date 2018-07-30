@@ -14,7 +14,8 @@ class SearchBar extends Component {
     }
 
     componentDidMount(){
-        this.props.getCoins();
+        const { getCoins } = this.props; 
+        getCoins();
     }
 
     componentWillReceiveProps(nextProps) {

@@ -10,6 +10,10 @@ export const BASE_URL = 'https://www.cryptocompare.com';
 // AsyncStorage.removeItem('holdings');
 // AsyncStorage.removeItem('transactions');
 
+//WatchList feature can be implemented
+//Settings feature can also be implemented
+
+
 export default class App extends React.Component {
   render() {
     return (

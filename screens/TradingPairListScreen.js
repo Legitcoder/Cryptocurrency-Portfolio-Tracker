@@ -27,8 +27,7 @@ class TradingPairListScreen extends Component {
                 <ListScreen
                     navigation={navigation}
                     data={tradingPairs}
-                    onPress={onPressTradingPairs}/>}
-                />
+                    onPress={onPressTradingPairs}/>
             </View>    
         );
     }

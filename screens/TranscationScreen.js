@@ -12,7 +12,6 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 
 class TransactionScreen extends Component {
     static navigationOptions = ({navigation}) => {
-
         handleDeleteTransaction = () => {
             const { transaction, deleteTransaction, refresh } = navigation.state.params;
             const { coin } = transaction;
@@ -95,7 +94,14 @@ class TransactionScreen extends Component {
     handleTransaction = (formState) => {
         const { coin } = this.props.navigation.state.params;
         const { navigation, saveTransaction, getHolding, updateTransaction } = this.props;
-        const transaction = { exchange: formState.activeExchange, amount: formState.amount, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPriceTransacted: formState.usdPriceTransacted, btcPriceTransacted: formState.btcPriceTransacted, currentUSDPrice: formState.currentUSDPrice, currentBTCPrice: formState.currentBTCPrice};
+        let transaction;
+        if(formState.activeOrderState === 'Sell') {
+            transaction = {amount: -(Number(formState.amount))}
+        }
+        else {
+            transaction = {amount: Number(formState.amount)}
+        }
+        transaction = { ...transaction, exchange: formState.activeExchange, date: formState.date, priceBought: formState.priceBought, tradingPair: formState.activeTradingPair, activeOrderState: formState.activeOrderState, coin: coin, usdPriceTransacted: formState.usdPriceTransacted, btcPriceTransacted: formState.btcPriceTransacted, currentUSDPrice: formState.currentUSDPrice, currentBTCPrice: formState.currentBTCPrice};
         const existingTransaction = this.props.navigation.state.params.transaction;
         if(existingTransaction) {
             updateTransaction(existingTransaction, transaction);

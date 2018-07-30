@@ -1,2 +1,3 @@
 # Cryptocurrency Portfolio Tracker
-### Blockfolio clone app made in React Native. Can't think of a name yet, but hopefully by the time I'm done. 
+https://expo.io/@moin_u/cryptocurrency-portfolio-tracker
+#### Will add info and gifs soon.   

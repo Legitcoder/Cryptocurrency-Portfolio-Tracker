@@ -5,18 +5,10 @@ import { Divider } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePicker  from 'react-native-modal-datetime-picker';
 import { MaterialIcons } from '@expo/vector-icons';
-import { getTradingPairsPriceHash, getCoinUSDPrice, getCoinBTCPrice } from '../actions';
+import { getTradingPairsPriceHash, getCoinUSDPrice, getCoinBTCPrice, getPriceOnSpecficDate } from '../actions';
 import TransactionButton from '../common/TransactionButton';
 
-//React Native's Stack Navigator doesn't allow state to be reseted 
-//so if user searches for another coin the previous coins
-// autofilled credentials will appear. Come back and fix or 
-// worst case scenario, no default active exchange or trading pair is selected
-//Possible solution: pass refresh function through navgiation params
-
-
-//This component needs major refactoring. Will come back after MVP is deployed.
-//Temporarily disbaled price autofill feature to implement update feature
+//Component needs to be refactored
 class TransactionForm extends Component {
     constructor(props){
         super(props);
@@ -30,10 +22,10 @@ class TransactionForm extends Component {
             date: new Date().toString().slice(0 , -18),
             tradingPairsPrices: null,
             amount: "",
-            priceBought: 0,
+            priceBought: "",
             usdPrice: null                
         }
-        if(transaction) this.initialState = { ...transaction, activeExchange: transaction.exchange, activeTradingPair: transaction.tradingPair, priceBought: transaction.priceBought.toString()};
+        if(transaction) this.initialState = { ...transaction, activeExchange: transaction.exchange, activeTradingPair: transaction.tradingPair, priceBought: transaction.priceBought.toString(), amount: transaction.amount.toString()};
         this.state = this.initialState;
     }
 
@@ -51,19 +43,19 @@ class TransactionForm extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {getTradingPairsPriceHash, tradingPairsPrices, exchanges, usdPrice, btcPrice } = nextProps;
+        const { transaction } = this.props.navigation.state.params;
         let { coin } = nextProps;
         if(!coin) coin = this.props.navigation.state.params.coin;
         let newState, activeExchangeIndex;
-        const { transaction } = this.props.navigation.state.params
+        if(tradingPairsPrices && this.state.activeTradingPair && !transaction) this.setState({ tradingPairsPrices: tradingPairsPrices, priceBought: tradingPairsPrices[this.state.activeTradingPair].toString()});
         activeExchangeIndex = this.extractExchangeIndex(exchanges, this.state.activeExchange);
         if(activeExchangeIndex === -1) activeExchangeIndex = 0;
         if( transaction && exchanges ) {
-            newState = { exchanges: exchanges, tradingPairs: this.state.activeExchange ? exchanges[activeExchangeIndex].pairs : []};
-            this.setState(newState, () => {
-                if(!tradingPairsPrices) {
-                    getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
-                }
-            });
+            newState = { 
+                exchanges: exchanges, 
+                tradingPairs: this.state.activeExchange ? exchanges[activeExchangeIndex].pairs : [], 
+                tradingPairsPrices: tradingPairsPrices
+            };
         }
         if(exchanges && !transaction) {
              newState = {
@@ -75,14 +67,8 @@ class TransactionForm extends Component {
                 currentUSDPrice: usdPrice ? usdPrice["USD"] : null,
                 currentBTCPrice: btcPrice ? btcPrice["BTC"] : null,
             }
-                this.setState(newState, () => {
-                    if(!tradingPairsPrices) {
-                        getTradingPairsPriceHash(coin.Symbol, this.state.tradingPairs, this.state.activeExchange);
-                    }
-                });
-                newState = { ...newState, priceBought: this.state.tradingPairsPrices ? (this.state.tradingPairsPrices[this.state.activeTradingPair]) ? (this.state.tradingPairsPrices[this.state.activeTradingPair]).toString() : "" : ""}
-                this.setState(newState);
         }
+        this.setState(newState);
     }
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -90,6 +76,8 @@ class TransactionForm extends Component {
     _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
     _handleDatePicked = (date) => {
+        const {coin, getPriceOnSpecficDate} = this.props;
+        getPriceOnSpecficDate(coin.Symbol);
         this.setState({date: date.toString().slice(0 , -18)})
         this._hideDateTimePicker();
     };
@@ -99,16 +87,12 @@ class TransactionForm extends Component {
         if(!coin) coin = this.props.navigation.state.params.coin;
         const { exchange, pairs } = item;
         const { getTradingPairsPriceHash } = this.props;
-        this.props.getTradingPairsPriceHash(coin.Symbol, pairs, exchange);
-        this.setState({ activeExchange: exchange, activeTradingPair: pairs[0], tradingPairs: pairs});
+        this.setState({ activeExchange: exchange, activeTradingPair: pairs[0], tradingPairs: pairs });
+        getTradingPairsPriceHash(coin.Symbol, pairs, exchange );
     }
 
     onPressTradingPairs = (selectedTradingPair) => {
-        this.setState({ activeTradingPair: selectedTradingPair});
-    }
-
-    refresh = () => {
-        this.setState(this.initialState);
+        this.setState({ activeTradingPair: selectedTradingPair, priceBought: this.state.tradingPairsPrices[selectedTradingPair].toString()});
     }
 
     renderForm = () => {
@@ -136,7 +120,7 @@ class TransactionForm extends Component {
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
                     <Text style={styles.selectionTextStyles}>{this.props.activeOrderState} Price in {this.state.activeTradingPair}</Text>
-                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"  value={this.state.priceBought !== 0 ? this.state.priceBought : this.state.tradingPairsPrices ? (this.state.tradingPairsPrices[this.state.activeTradingPair]) ? (this.state.tradingPairsPrices[this.state.activeTradingPair]).toString() : "" : ""} onChangeText={ (text) => this.setState({priceBought: text})} />
+                    <TextInput underlineColorAndroid='transparent' style={[styles.selectionTextStyles, {width: '100%'}]} placeholder="Price" placeholderTextColor="#80808050"  value={this.state.priceBought} onChangeText={ (text) => this.setState({priceBought: text})} />
                 </View>  
                 <Divider style={{ backgroundColor: '#000' }} />
                 <View style={styles.formItemContainer}>                     
@@ -167,7 +151,7 @@ class TransactionForm extends Component {
              <TransactionButton 
                 text={this.props.activeOrderState ? 'Add Transaction' : ''} 
                 buttonColor={this.props.activeOrderState  === "Buy" && !transaction ? '#008000' : transaction ? null : '#FF0000'}
-                onPress={ () => {onPress({...this.state, activeOrderState: activeOrderState })} } 
+                onPress={ () => onPress({...this.state, activeOrderState: activeOrderState }) } 
               />    
             </View>
         );
@@ -218,4 +202,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, {getTradingPairsPriceHash, getCoinUSDPrice})(TransactionForm);
+export default connect(mapStateToProps, {getTradingPairsPriceHash, getCoinUSDPrice, getPriceOnSpecficDate})(TransactionForm);

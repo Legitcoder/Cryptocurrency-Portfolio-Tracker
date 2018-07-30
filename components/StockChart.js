@@ -28,6 +28,8 @@ class StockChart extends Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
 
+    //Modularize as own component in the future. Call it CoinStats and import it 
+    // to CoinInfo Component and place under StockChart
     renderCoinStats = () => {
         const { MKTCAP, VOLUME24HOUR, SUPPLY, HIGH24HOUR, LOW24HOUR } = this.props.priceInfo;
         const { Symbol } = this.props.holding.coin;

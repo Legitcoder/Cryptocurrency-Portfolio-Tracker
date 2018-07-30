@@ -36,7 +36,7 @@ class SearchCoinsScreen extends Component {
     }
 
     handleSelectedCoin = (coin) => {
-        const {getExchangesCoinBelongsTo,selectCoin, navigation} = this.props;
+        const {getExchangesCoinBelongsTo, selectCoin, navigation} = this.props;
         navigation.navigate('transaction', {coin: coin}); 
         getExchangesCoinBelongsTo(coin.Symbol);
         selectCoin(coin);

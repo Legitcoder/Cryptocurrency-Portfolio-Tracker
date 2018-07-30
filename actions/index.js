@@ -16,6 +16,7 @@ import {
     GET_COIN_ALL_USD_PRICES,
     GET_COIN_ALL_BTC_PRICES,
     GET_USD_COIN_INFO,
+    GET_PRICE_ON_SPECIFIC_DATE,
     UPDATE_TRANSACTION
 } from './types';
 
@@ -40,6 +41,15 @@ export const getExchangesCoinBelongsTo = (coinSymbol) => dispatch => {
         }
         dispatch({ type: GET_COIN_EXCHANGES_AND_TRADING_PAIRS, payload: exchangesCoinBelongsTo });
     })
+}
+
+export const getPriceOnSpecficDate = (symbol, date) => dispatch => {
+    let pairs = ['USD', 'BTC'];
+    if(symbol === 'BTC') pairs = ['USD'];
+    cryptoCompareApi.priceHistorical(symbol, pairs, date)
+        .then(prices => {
+            dispatch({ type: GET_PRICE_ON_SPECIFIC_DATE, payload: prices[symbol] });
+        })
 }
 
 export const getHistoricalUSDPrices = (symbol) => dispatch => {
@@ -140,6 +150,7 @@ export const getCoinBTCPrice = (selectedCoin) => dispatch => {
 }
 
 export const getTradingPairsPriceHash = (selectedCoin, tradingPairs, selectedExchange) => dispatch => {
+    //debugger;
     cryptoCompareApi.price(selectedCoin, tradingPairs, { exchanges: [selectedExchange] })
     .then(prices => {
         dispatch({ type: GET_TRADING_PAIRS_PRICE_HASH, payload: prices });
