@@ -19,6 +19,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "regex-sort": "^1.0.6",
-    "victory-native": "^0.18.2"
+    "victory-native": "^0.18.2",
+    "merge": ">=1.2.1"
   }
 }
